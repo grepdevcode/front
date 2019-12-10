@@ -1,0 +1,4 @@
+.grilla{
+    display: grid;
+    grid-template-columns:repeat( minmax(100px, 1fr));
+}
