@@ -1,1 +1,40 @@
-<p>registro works!</p>
+<div class="container-fluid justify-content-center p-1">
+<div class="col-sm-5 mx-auto px-3">
+    <p class="h3">Registro de Usuario</p>
+<form>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Correo</label>
+          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" autocomplete=email>
+        </div>
+
+        <div class="form-group">
+                <label for="nombreRegistro">Nombre</label>
+                <input type="text" class="form-control" id="nombreRegistro" placeholder="Nombre"  autocomplete=name >
+        </div>
+
+        <div class="form-group">
+                <label for="apellidoRegistro">Apellido</label>
+                <input type="text" class="form-control" id="apellidoRegistro" placeholder="Apellido" autocomplete=family-name>
+        </div>
+
+        <div class="form-group">
+                <label for="contrasenaRegistro">Contraseña</label>
+                <input type="password" class="form-control" id="contrasenaRegistro" placeholder="Contraseña" autocomplete=new-password >
+        </div>
+
+        <div class="form-group">
+                <label for="confirmaRegistro">Repetir Contraseña</label>
+                <input type="password" class="form-control" id="confirmaRegistro" placeholder="Contraseña" autocomplete=new-password>
+        </div>
+
+
+        <div class="form-check">
+                <p>
+                    <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="acepto" aria-label="...">
+                Acepto las condiciones de uso y los terminos de privacidad</p>
+        </div>
+
+        <button type="submit" class="btn btn-primary mb-3 float-right">Registrarme</button>
+      </form>
+    </div>
+</div>
