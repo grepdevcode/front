@@ -1,21 +1,21 @@
 <div class="container-fluid justify-content-center" >
 <div class="col-sm-5 mx-auto">
-    <p class="h3" >Ingresa a el Buen Sabor</p>
-<form>
+    <p class="h3" >El Buen Sabor</p>
+<form >
     <div class="form-group">
-        <label for="exampleInputEmail1">Correo</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingresa tu correo" autocomplete="email">
+        <label for="ingresoEmail">Correo</label>
+        <input #correo type="email" class="form-control" id="ingresoEmail" aria-describedby="emailHelp" placeholder="Ingresa tu correo" autocomplete="email">
         <small id="emailHelp" class="form-text text-muted">Tu correo no sera publicado, ni compartido.</small>
     </div>
     <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" autocomplete="current-password">
+        <label for="ingresoPassword">Password</label>
+        <input #password type="password" class="form-control" id="ingresoPassword" placeholder="Password" autocomplete="current-password">
     </div>
     <div class="form-check mb-2">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label small" for="exampleCheck1">Recordar mis datos</label>
+        <input type="checkbox" class="form-check-input" id="ingresoRecordar">
+        <label class="form-check-label small" for="ingresoRecordar">Recordar mis datos</label>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary" (click)="this.ingresar(correo.value,password.value,$event)">Ingresar</button>
 </form>
 </div>
 </div>

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { IngresoService } from 'src/app/services/ingreso.service';
+import { Usuario } from 'src/app/interfaces/usuario';
+
 
 @Component({
   selector: 'app-ingreso',
@@ -7,9 +10,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IngresoComponent implements OnInit {
 
-  constructor() { }
+  
+  constructor(private _ingresoService: IngresoService ) { }
+
 
   ngOnInit() {
   }
+
+  ingresar(email:string,password:string,event:Event){
+
+    event.preventDefault();
+    this._ingresoService.login(email,password)
+    .subscribe(
+      res =>{ console.log(res);},
+      error =>{ console.log(error)},
+    )
+  }
+
 
 }
