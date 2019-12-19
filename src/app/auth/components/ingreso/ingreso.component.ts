@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { IngresoService } from 'src/app/services/ingreso.service';
+
 import { Usuario } from 'src/app/interfaces/usuario';
+import { AuthService } from '../../../services/auth.service';
 
 
 @Component({
@@ -11,21 +12,14 @@ import { Usuario } from 'src/app/interfaces/usuario';
 export class IngresoComponent implements OnInit {
 
   
-  constructor(private _ingresoService: IngresoService ) { }
+  constructor(private auth: AuthService) { }
 
 
   ngOnInit() {
   }
 
-  ingresar(email:string,password:string,event:Event){
-
-    event.preventDefault();
-    this._ingresoService.login(email,password)
-    .subscribe(
-      res =>{ console.log(res);},
-      error =>{ console.log(error)},
-    )
+  ingresar(){
+    this.auth.login('');
   }
-
 
 }

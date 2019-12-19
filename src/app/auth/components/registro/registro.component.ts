@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IngresoService } from 'src/app/services/ingreso.service';
+
 import { FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
@@ -20,7 +20,7 @@ export class RegistroComponent implements OnInit {
 
     })
 
-  constructor(private _ingresoService:IngresoService, private formBuilder:FormBuilder) { }
+  constructor( private formBuilder:FormBuilder) { }
 
   ngOnInit() {
   }
@@ -34,7 +34,7 @@ export class RegistroComponent implements OnInit {
       telefono: form.telefono,
       email:form.correo
     }
-    this._ingresoService.addUsuario(usuario)
+
   }
 
   /* registrar(usuario:Usuario, event:Event){

@@ -7,7 +7,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
-import { IngresoService } from './services/ingreso.service';
+
 import { ReactiveFormsModule } from '@angular/forms';
 
 
@@ -24,7 +24,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule
   ],
   providers: [
-    IngresoService
+
   ],
   bootstrap: [AppComponent]
 })
