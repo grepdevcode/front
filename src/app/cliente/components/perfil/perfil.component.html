@@ -1,1 +1,13 @@
-<p>perfil works!</p>
+<div class="container-fluid">
+    <div class="row mx-3 mt-2">
+        <div class="col-sm-4 mx-auto">
+            <p class="h2">Mi Perfil</p>
+
+            <div class="p-3">
+                <pre *ngIf="this.auth.userProfile$ | async as profile">
+                    <code>{{ profile | json }}</code>
+                </pre>
+            </div>
+        </div>
+    </div>
+</div>

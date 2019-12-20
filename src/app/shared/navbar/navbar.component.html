@@ -9,7 +9,7 @@
     </button>
   
     <!-- Step 2: Add the ngbCollapse directive to the element below. -->
-    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end" *ngIf="this.auth.loggedIn">
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end" *ngIf="!this.auth.loggedIn">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" [routerLink]="'ingreso/registrarse'" (click)="isMenuCollapsed = true">Registrarse</a>
@@ -20,7 +20,7 @@
       </ul>
     </div>
 
-    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end"  *ngIf="!this.auth.loggedIn">
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end"  *ngIf="this.auth.loggedIn">
       <ul class="navbar-nav">
         <li class="nav-item" ngbDropdown>
           <a class="nav-link" style="cursor: pointer" ngbDropdownToggle id="navbarDropdown2" role="button">
