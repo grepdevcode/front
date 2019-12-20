@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
     <a class="navbar-brand" [routerLink]="''">logo</a>
     
@@ -8,22 +9,30 @@
     </button>
   
     <!-- Step 2: Add the ngbCollapse directive to the element below. -->
-    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end" *ngIf="!this.auth.loggedIn">
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end" *ngIf="this.auth.loggedIn">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" [routerLink]="'ingreso/registrarse'" (click)="isMenuCollapsed = true">Registrarse</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="'ingreso'" (click)="isMenuCollapsed = true">Ingresar</a>
+          <a style="cursor: pointer;" class="nav-link" (click)="isMenuCollapsed = true" (click)="this.ingresar()" >Ingresar</a>
         </li>
       </ul>
     </div>
 
-    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end"  *ngIf="this.auth.loggedIn">
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end"  *ngIf="!this.auth.loggedIn">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" (click)="this.auth.logout()" >Cerrar Sesion</a>
+        <li class="nav-item" ngbDropdown>
+          <a class="nav-link" style="cursor: pointer" ngbDropdownToggle id="navbarDropdown2" role="button">
+            <i class="fa fa-user"></i><!-- icono usuario -->
+          </a>
+          <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-right">
+            <a [routerLink]="'cliente/perfil'" ngbDropdownItem  (click)="$event.preventDefault()">Perfil</a>
+            <a [routerLink]="'cliente/pedidos'" ngbDropdownItem (click)="$event.preventDefault()">Mis Pedidos</a>
+            <a style="cursor: pointer;" ngbDropdownItem (click)="$event.preventDefault()" (click)= "this.salir()">Cerrar Sesion</a>
+          </div>
         </li>
       </ul>
     </div>
+
   </nav>

@@ -15,6 +15,11 @@ export class NavbarComponent implements OnInit {
 
   public isMenuCollapsed = true;
 
-
+  ingresar(){
+    this.auth.login('');
+  }
+  salir(){
+    this.auth.logout();
+  }
 
 }

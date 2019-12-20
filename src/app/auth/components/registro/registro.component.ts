@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FormBuilder, FormGroup} from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-registro',
@@ -11,30 +12,26 @@ export class RegistroComponent implements OnInit {
 
   registerForm: FormGroup = this.formBuilder.group(
     {
+      client_id: 'elNVVXt73bWPs98oIovZ0lOWJ9a2nrvi',
+      connection: 'YOUR_CONNECTION_NAME',
+      email:"",
       nombre: "",
       apellido: "",
       telefono: "",
-      correo:"",
-      contrasena:"",
-      repContrasena:""
-
+      password:"",
+      repPassword:"",
+      user_metadata: {
+      }
     })
 
-  constructor( private formBuilder:FormBuilder) { }
+  constructor( private formBuilder:FormBuilder, private http: HttpClient) { }
 
   ngOnInit() {
   }
 
   handleSubmit(){
-    let form =this.registerForm.value;
-    let usuario = 
-    {
-      nombre: form.nombre,
-      apellido: form.apellido,
-      telefono: form.telefono,
-      email:form.correo
-    }
-
+    console.log(this.registerForm.value);
+    console.log(this.http.post('https://enzomzaocv.auth0.com/dbconnections/signup',this.registerForm.value));
   }
 
   /* registrar(usuario:Usuario, event:Event){
