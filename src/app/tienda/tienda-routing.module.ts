@@ -1,11 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProductosComponent } from './components/productos/productos.component';
+import { CarritoComponent } from './components/carrito/carrito.component';
 
 const routes: Routes = [
   {
     path:'',
     component: ProductosComponent
+  },
+  {
+    path:'carrito',
+    component: CarritoComponent
   }
 ];
 

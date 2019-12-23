@@ -2,6 +2,6 @@
 
 <div class="d-flex flexwrap justify-content-sm-center ">
     <div class="row mx-3 justify-content-center ">
-            <app-producto *ngFor='let un of productos' class="m-2" [unidad]="un"></app-producto>
+            <app-producto *ngFor='let un of productos' class="m-2" [unidad]="un" (carrito)="cargaCarrito($event)"></app-producto>
     </div>
 </div>
