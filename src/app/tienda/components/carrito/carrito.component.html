@@ -4,24 +4,40 @@
             <div>
                 <p class="h2"> Carrito</p>
             </div>
-            <div>
+            <div > <!-- *ngIf="!this.contenidoCarrito.lenght === 0; else vacio" -->
                 <table class="table">
                     <thead>
                         <tr>
                             <th scope="col">Producto</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Precio unitario</th>
+                            <th  scope="col">Cantidad</th>
+                            <th scope="col">Precio c/u</th>
                             <th scope="col">Total</th>
+                            <th scope="col"> </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <tr>
+                            <th scope="row">{{this.unidadcarrito.nombre}}</th>
+                            <td class="text-center" >
+                                <input #inputCantidad type="number" style="max-width: 50px; " value="{{this.unidadcarrito.clicks}}" (change)="getCantidad($event)">
+                            </td>
+                            <td>{{this.unidadcarrito.precio | currency}}</td>
+                            <td>{{this.unidadcarrito.cantidad * this.unidadcarrito.precio }}</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" (click)="quitarProducto(this.unidadcarrito.nombre)" >Quitar</button>
+                             </td>
+                        </tr>
+                        <tr> <!-- precio final  -->
+                            <th scope="row" colspan="3" class="text-right">Final</th>
+                            <td>{{this.precioTotal() | currency}}</td>
+                        </tr>
+ 
                     </tbody>
                 </table>
             </div>
+            <!-- <ng-template #vacio>
+                <p class="h5">Aun no tienes productos agregados en tu carrito </p>
+            </ng-template> -->
         </div>
     </div>
 </div>
