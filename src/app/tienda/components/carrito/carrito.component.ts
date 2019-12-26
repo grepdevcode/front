@@ -6,26 +6,45 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./carrito.component.css']
 })
 export class CarritoComponent implements OnInit {
-  contenidoCarrito = [];
+  contenidoCarrito = [
+    /* {
+      nombre: 'Hamburguesa',
+      precio: 150,
+      cantidad: 1
+    },
+    {
+      nombre: 'Pizza',
+      precio: 350,
+      cantidad: 1
+    },
+    {
+      nombre: 'Lomo',
+      precio: 170,
+      cantidad: 1
+    } */
+  ] ;
 
-  unidadcarrito= {
-    nombre: 'Hamburguesa',
-    precio: 150,
-  }
+  precioFinal = 0;
+ 
 
   constructor() { }
 
   ngOnInit() {
     this.initCarrito();
+    
   }
 
   initCarrito(){
     this.contenidoCarrito = JSON.parse( localStorage.getItem("carrito"));
+    this.precioTotal();
   }
 
-  getCantidad(event){
-    console.log(event.target.value)
-    this.unidadcarrito.cantidad = Number(event.target.value);
+  getCantidad(event,index){
+    /* console.log(event.target.value)
+    console.log('index'+ index) */
+    this.contenidoCarrito[index].cantidad = Number(event.target.value);
+    localStorage.setItem("carrito", JSON.stringify(this.contenidoCarrito));
+    this.precioTotal();
   }
 
   quitarProducto(nombre:string){
@@ -34,6 +53,7 @@ export class CarritoComponent implements OnInit {
       if (value.nombre === nombre ){
         this.contenidoCarrito.splice(index,1);
         localStorage.setItem('carrito',JSON.stringify(this.contenidoCarrito));
+        this.precioTotal();
         return;
       } 
       });
@@ -43,11 +63,11 @@ export class CarritoComponent implements OnInit {
 
   precioTotal(){
     if(this.contenidoCarrito !== null){
-      return  this.contenidoCarrito.reduce((acumulador,actual,index,array)=>{
-        return acumulador + (actual.precio * actual.cantidad);
-      });
+      this.precioFinal = this.contenidoCarrito.reduce(function (acc, obj) { return acc + obj.precio*obj.cantidad; }, 0); // 7
+      /* console.log(this.precioFinal); */
     }
-    return;
   }
+
+
 
 }

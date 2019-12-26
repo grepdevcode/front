@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductoService } from '../../../services/producto.service';
 import { map } from 'rxjs/operators';
 
+import { data} from '../../../../assets/menu.js';
 
 @Component({
   selector: 'app-productos',
@@ -9,8 +10,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./productos.component.css']
 })
 export class ProductosComponent implements OnInit {
-
-  productos=[];
+  productos=JSON.parse(JSON.stringify( data));
   carrito = [];
   constructor(private servicio:ProductoService) { }
 
@@ -23,12 +23,13 @@ export class ProductosComponent implements OnInit {
   }
 
   //agregar producto en el carrito
-  cargarcarrito(producto){
+  cargarCarrito(producto){
     console.log(producto)
     if (typeof(Storage) !== "undefined") {
       // LocalStorage disponible
       this.carrito.push(producto);
       localStorage.setItem("carrito", JSON.stringify(this.carrito));
+      console.log(this.carrito);
     } else {
         // LocalStorage no soportado en este navegador
         console.log('intenta utilizar un navegador compatible o actualizar el actual');

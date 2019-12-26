@@ -4,7 +4,7 @@
             <div>
                 <p class="h2"> Carrito</p>
             </div>
-            <div > <!-- *ngIf="!this.contenidoCarrito.lenght === 0; else vacio" -->
+            <div *ngIf="this.contenidoCarrito.length; else vacio"> <!--  -->
                 <table class="table">
                     <thead>
                         <tr>
@@ -16,28 +16,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">{{this.unidadcarrito.nombre}}</th>
+                        <tr *ngFor = 'let unidadcarrito of contenidoCarrito; let i = index'>
+                            <th scope="row">{{unidadcarrito.nombre}}</th>
                             <td class="text-center" >
-                                <input #inputCantidad type="number" style="max-width: 50px; " value="{{this.unidadcarrito.clicks}}" (change)="getCantidad($event)">
+                                <input #inputCantidad type="number" style="max-width: 50px; " value="{{unidadcarrito.cantidad}}" (change)="getCantidad($event,i)">
                             </td>
-                            <td>{{this.unidadcarrito.precio | currency}}</td>
-                            <td>{{this.unidadcarrito.cantidad * this.unidadcarrito.precio }}</td>
+                            <td>{{unidadcarrito.precio | currency}}</td>
+                            <td>{{unidadcarrito.cantidad * unidadcarrito.precio | currency}}</td>
                             <td>
-                                <button class="btn btn-danger btn-sm" (click)="quitarProducto(this.unidadcarrito.nombre)" >Quitar</button>
+                                <button class="btn btn-danger btn-sm" (click)="quitarProducto(unidadcarrito.nombre)" >Quitar</button>
                              </td>
                         </tr>
+
                         <tr> <!-- precio final  -->
                             <th scope="row" colspan="3" class="text-right">Final</th>
-                            <td>{{this.precioTotal() | currency}}</td>
+                            <td colspan="2">{{this.precioFinal | currency}}</td>
                         </tr>
  
                     </tbody>
                 </table>
+                <div class="text-right">
+                    <button class=" btn btn-success btn-lg ">Pagar</button>
+                </div>
             </div>
-            <!-- <ng-template #vacio>
+            <ng-template #vacio>
                 <p class="h5">Aun no tienes productos agregados en tu carrito </p>
-            </ng-template> -->
+            </ng-template>
         </div>
     </div>
 </div>
