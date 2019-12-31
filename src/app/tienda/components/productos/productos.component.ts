@@ -16,6 +16,7 @@ export class ProductosComponent implements OnInit {
 
   ngOnInit() {
     this.loadProductos();
+    this.loadCarrito();
   }
 
   loadProductos(){
@@ -24,16 +25,12 @@ export class ProductosComponent implements OnInit {
 
   //agregar producto en el carrito
   cargarCarrito(producto){
-    console.log(producto)
-    if (typeof(Storage) !== "undefined") {
-      // LocalStorage disponible
       this.carrito.push(producto);
-      localStorage.setItem("carrito", JSON.stringify(this.carrito));
-      console.log(this.carrito);
-    } else {
-        // LocalStorage no soportado en este navegador
-        console.log('intenta utilizar un navegador compatible o actualizar el actual');
-    }
-  
+      this.servicio.cambiarPedido(JSON.stringify(this.carrito));
+      console.log('--> al tocar boton agregar al carrito', this.carrito);  
+  }
+
+  loadCarrito(){
+    this.servicio.currentPedido.subscribe(data => this.carrito = JSON.parse(data));
   }
 }

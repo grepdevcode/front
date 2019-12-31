@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProductoService } from 'src/app/services/producto.service';
 
 @Component({
   selector: 'app-carrito',
@@ -6,28 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./carrito.component.css']
 })
 export class CarritoComponent implements OnInit {
-  contenidoCarrito = [
-    /* {
-      nombre: 'Hamburguesa',
-      precio: 150,
-      cantidad: 1
-    },
-    {
-      nombre: 'Pizza',
-      precio: 350,
-      cantidad: 1
-    },
-    {
-      nombre: 'Lomo',
-      precio: 170,
-      cantidad: 1
-    } */
-  ] ;
+  contenidoCarrito = [] ;
 
   precioFinal = 0;
  
 
-  constructor() { }
+  constructor(private servicio:ProductoService) { }
 
   ngOnInit() {
     this.initCarrito();
@@ -35,16 +20,15 @@ export class CarritoComponent implements OnInit {
   }
 
   initCarrito(){
-    this.contenidoCarrito = JSON.parse( localStorage.getItem("carrito"));
+    this.servicio.currentPedido.subscribe(pedido => this.contenidoCarrito = JSON.parse(pedido));
     this.precioTotal();
   }
 
   getCantidad(event,index){
-    /* console.log(event.target.value)
-    console.log('index'+ index) */
     this.contenidoCarrito[index].cantidad = Number(event.target.value);
-    localStorage.setItem("carrito", JSON.stringify(this.contenidoCarrito));
+    this.servicio.cambiarPedido(JSON.stringify(this.contenidoCarrito));
     this.precioTotal();
+    console.log('--> al cambiar la cantidad',this.contenidoCarrito);
   }
 
   quitarProducto(nombre:string){
@@ -52,7 +36,7 @@ export class CarritoComponent implements OnInit {
       this.contenidoCarrito.forEach((value,index,array)=>{
       if (value.nombre === nombre ){
         this.contenidoCarrito.splice(index,1);
-        localStorage.setItem('carrito',JSON.stringify(this.contenidoCarrito));
+        this.servicio.cambiarPedido(JSON.stringify(this.contenidoCarrito));
         this.precioTotal();
         return;
       } 
