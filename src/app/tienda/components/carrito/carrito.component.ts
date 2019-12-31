@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductoService } from 'src/app/services/producto.service';
+import * as jsPDF from 'jspdf'
 
 @Component({
   selector: 'app-carrito',
@@ -52,6 +53,25 @@ export class CarritoComponent implements OnInit {
     }
   }
 
+  generarTexto(){
+    let texto:string='';
+    this.contenidoCarrito.forEach((item,index)=> {
+      texto+=`\n\t -${item.nombre}\t-${item.cantidad}\t-${item.precio}`
+    });
+    texto+='\n El total a pagar es:'+ this.precioFinal;
+    return texto;
+  }
 
+  realizarPedido(){
+    var doc = new jsPDF();
+    doc.text('Gracias por comprar en el Buen Sabor!', 10, 10);
+    doc.text('El pedido --> id del pedido, ya esta siendo elaborado',10,20);
+    doc.text('Su comida sera enviada/retirada en --> tiempo estimado en minutos',10,30);
+    doc.text('Pedidos del cliente --> id del cliente',10,40);
+    doc.text(this.generarTexto(),10,50);
+    
+   
+    doc.output('dataurlnewwindow');
+  }
 
 }
