@@ -11,18 +11,23 @@ export class CarritoComponent implements OnInit {
   contenidoCarrito = [] ;
 
   precioFinal = 0;
- 
+  
+  /* Pedido = {
+    fecha: new Date(Date.now()),
+    estado: 'demorado',
+    horaEstimadaFin: 'date',
+    tipoEnvio: false
+  } */
 
   constructor(private servicio:ProductoService) { }
 
   ngOnInit() {
     this.initCarrito();
-    
+    this.precioTotal();
   }
 
   initCarrito(){
     this.servicio.currentPedido.subscribe(pedido => this.contenidoCarrito = JSON.parse(pedido));
-    this.precioTotal();
   }
 
   getCantidad(event,index){
