@@ -1,0 +1,7 @@
+{
+    "/articulomanufacturado/*":{
+    "target":"http://192.168.191.208:8000",
+    "secure":false,
+    "changeOrigin":true
+    }
+}

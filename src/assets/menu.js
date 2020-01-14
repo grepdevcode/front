@@ -1,33 +1,34 @@
 export const data = 
 [
     {
-       "nombre":"Hamburguesa",
-       "precio":150,
-       "cantidad":1
+      "tiempoEstimadoCocina": 12,
+      "denominacion": "Pizza Muzza",
+      "precioVenta": 126.00
     },
     {
-       "nombre":"Pizza",
-       "precio":350,
-       "cantidad":1
+      "tiempoEstimadoCocina": 40,
+      "denominacion": "LomoPizza",
+      "precioVenta": 326.00
     },
     {
-       "nombre":"Lomo",
-       "precio":170,
-       "cantidad":1
+      "tiempoEstimadoCocina": 10,
+      "denominacion": "Papas",
+      "precioVenta": 100.00
     },
     {
-      "nombre":"Barroluco",
-      "precio":370,
-      "cantidad":1
-   },
-   {
-      "nombre":"LomoPizza",
-      "precio":420,
-      "cantidad":1
-   },
-   {
-      "nombre":"Papas",
-      "precio":120,
-      "cantidad":1
-   }
+      "tiempoEstimadoCocina": 30,
+      "denominacion": "Empanadas",
+      "precioVenta": 226.00
+    },
+    {
+      "tiempoEstimadoCocina": 22,
+      "denominacion": "Pizza Cuaroquesos",
+      "precioVenta": 260.00
+    },
+    {
+      "tiempoEstimadoCocina": 35,
+      "denominacion": "Barroluco",
+      "precioVenta": 300.00
+    }
+    
  ]

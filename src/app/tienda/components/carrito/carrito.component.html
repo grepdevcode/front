@@ -4,7 +4,7 @@
             <div>
                 <p class="h2"> Carrito</p>
             </div>
-            <div *ngIf="this.contenidoCarrito.length; else vacio"> <!--  -->
+            <div *ngIf="this.arrayDetalles.length; else vacio"> <!--  -->
                 <table class="table">
                     <thead>
                         <tr>
@@ -16,21 +16,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor = 'let unidadcarrito of contenidoCarrito; let i = index'>
-                            <th scope="row">{{unidadcarrito.nombre}}</th>
+                        <tr *ngFor = 'let unidadcarrito of arrayDetalles; let i = index'>
+                            <th scope="row">{{unidadcarrito.producto.denominacion}}</th>
                             <td class="text-center" >
                                 <input #inputCantidad type="number" style="max-width: 50px; " value="{{unidadcarrito.cantidad}}" (change)="getCantidad($event,i)">
                             </td>
-                            <td>{{unidadcarrito.precio | currency}}</td>
-                            <td>{{unidadcarrito.cantidad * unidadcarrito.precio | currency}}</td>
+                            <td>{{unidadcarrito.producto.precioVenta | currency}}</td>
+                            <td>{{unidadcarrito.subtotal | currency}}</td>
                             <td>
-                                <button class="btn btn-danger btn-sm" (click)="quitarProducto(unidadcarrito.nombre)" >Quitar</button>
+                                <button class="btn btn-danger btn-sm" (click)="quitarProducto(unidadcarrito.producto.denominacion)" >Quitar</button>
                              </td>
                         </tr>
 
                         <tr> <!-- precio final  -->
                             <th scope="row" colspan="3" class="text-right">Final</th>
-                            <td colspan="2">{{this.precioFinal | currency}}</td>
+                            <td colspan="2">{{this.precioTotal() | currency}}</td>
                         </tr>
  
                     </tbody>

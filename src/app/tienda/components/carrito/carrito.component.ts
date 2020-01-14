@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductoService } from 'src/app/services/producto.service';
 import * as jsPDF from 'jspdf'
+import { Pedido } from 'src/app/interfaces/pedido';
 
 @Component({
   selector: 'app-carrito',
@@ -8,16 +9,8 @@ import * as jsPDF from 'jspdf'
   styleUrls: ['./carrito.component.css']
 })
 export class CarritoComponent implements OnInit {
-  contenidoCarrito = [] ;
+  arrayDetalles= [] ;
 
-  precioFinal = 0;
-  
-  /* Pedido = {
-    fecha: new Date(Date.now()),
-    estado: 'demorado',
-    horaEstimadaFin: 'date',
-    tipoEnvio: false
-  } */
 
   constructor(private servicio:ProductoService) { }
 
@@ -27,22 +20,23 @@ export class CarritoComponent implements OnInit {
   }
 
   initCarrito(){
-    this.servicio.currentPedido.subscribe(pedido => this.contenidoCarrito = JSON.parse(pedido));
+    this.servicio.currentPedido.subscribe(pedido => this.arrayDetalles = JSON.parse(pedido));
   }
 
   getCantidad(event,index){
-    this.contenidoCarrito[index].cantidad = Number(event.target.value);
-    this.servicio.cambiarPedido(JSON.stringify(this.contenidoCarrito));
+    this.arrayDetalles[index].cantidad = Number(event.target.value);
+    this.arrayDetalles[index].subtotal = Number(event.target.value) * this.arrayDetalles[index].producto.precioVenta;
+    this.servicio.cambiarPedido(JSON.stringify(this.arrayDetalles));
     this.precioTotal();
-    console.log('--> al cambiar la cantidad',this.contenidoCarrito);
+    console.log('--> al cambiar la cantidad',this.arrayDetalles);
   }
 
   quitarProducto(nombre:string){
-    if(this.contenidoCarrito !== null){
-      this.contenidoCarrito.forEach((value,index,array)=>{
-      if (value.nombre === nombre ){
-        this.contenidoCarrito.splice(index,1);
-        this.servicio.cambiarPedido(JSON.stringify(this.contenidoCarrito));
+    if(this.arrayDetalles !== null){
+      this.arrayDetalles.forEach((value,index,array)=>{
+      if (value.producto.denominacion === nombre ){
+        this.arrayDetalles.splice(index,1);
+        this.servicio.cambiarPedido(JSON.stringify(this.arrayDetalles));
         this.precioTotal();
         return;
       } 
@@ -52,22 +46,22 @@ export class CarritoComponent implements OnInit {
   }
 
   precioTotal(){
-    if(this.contenidoCarrito !== null){
-      this.precioFinal = this.contenidoCarrito.reduce(function (acc, obj) { return acc + obj.precio*obj.cantidad; }, 0); // 7
+    if(this.arrayDetalles !== null){
+      return this.arrayDetalles.reduce(function (acc, obj) { return acc + obj.subtotal; }, 0); // 7
       /* console.log(this.precioFinal); */
     }
   }
 
   generarTexto(){
     let texto:string='';
-    this.contenidoCarrito.forEach((item,index)=> {
-      texto+=`\n\t -${item.nombre}\t-${item.cantidad}\t-${item.precio}`
+    this.arrayDetalles.forEach((item,index)=> {
+      texto+=`\n\t -${item.producto.nombre}\t-${item.cantidad}\t-${item.producto.precio}`
     });
-    texto+='\n El total a pagar es:'+ this.precioFinal;
+    texto+='\n El total a pagar es:'+ this.precioTotal();
     return texto;
   }
 
-  realizarPedido(){
+  generarComprobantePedido(){
     var doc = new jsPDF();
     doc.text('Gracias por comprar en el Buen Sabor!', 10, 10);
     doc.text('El pedido --> id del pedido, ya esta siendo elaborado',10,20);
@@ -79,4 +73,22 @@ export class CarritoComponent implements OnInit {
     doc.output('dataurlnewwindow');
   }
 
+  DateNowtoInt(){
+    let fecha = new Date(Date.now());
+    let numero = fecha.getDay()+ '' + fecha.getMonth() + '' + fecha.getUTCFullYear();
+    return Number(numero);
+  }
+
+  realizarPedido(){
+    console.log('realizando pedido')
+    const pedido:Pedido ={
+      fecha: this.DateNowtoInt(),
+      numero: 1,
+      estado: 1,
+      horaEstimadaFin: new Date(Date.now()),
+      tipoEnvio: 1,
+      detalles:this.arrayDetalles
+      }
+    this.servicio.postPedido(pedido);
+  }
 }
