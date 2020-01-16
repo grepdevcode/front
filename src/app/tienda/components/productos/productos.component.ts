@@ -11,13 +11,14 @@ import { DetallePedido } from 'src/app/interfaces/detalle-pedido';
   styleUrls: ['./productos.component.css']
 })
 export class ProductosComponent implements OnInit {
-  productos=[]/* JSON.parse(JSON.stringify( data)) */;
+  productos= JSON.parse(JSON.stringify( data));
   carrito = [];
   constructor(private servicio:ProductoService) { }
 
   ngOnInit() {
     this.loadProductos();
     this.loadCarrito();
+
   }
 
   loadProductos(){

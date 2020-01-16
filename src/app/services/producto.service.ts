@@ -15,7 +15,7 @@ export class ProductoService {
   currentPedido = this.pedido.asObservable();
   //
   url:string = '/articulomanufacturado';
-  urlpostpedido = "http://192.168.191.208:8000/prueba";
+  urlpostpedido = "/recibir_pedido/";
 
 
   constructor( private http: HttpClient) { }
@@ -36,8 +36,7 @@ export class ProductoService {
         'Authorization': 'my-auth-token'
       })
     };
-    return this.http.post<Pedido>(this.urlpostpedido, pedido, httpOptions).toPromise()
-    .then(Response => console.log(Response));
+    return this.http.post<any>(this.urlpostpedido, pedido, httpOptions);
   }
 }
 

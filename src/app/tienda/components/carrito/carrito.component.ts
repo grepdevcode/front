@@ -89,6 +89,6 @@ export class CarritoComponent implements OnInit {
       tipoEnvio: 1,
       detalles:this.arrayDetalles
       }
-    this.servicio.postPedido(pedido);
+    this.servicio.postPedido(pedido).subscribe(data => console.log(data));
   }
 }
