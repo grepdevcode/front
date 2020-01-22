@@ -19,6 +19,10 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: './admin/admin.module#AdminModule',
+  },
+  {
+    path: 'cocina',
+    loadChildren: './cocina/cocina.module#CocinaModule'
   }
 ];
 

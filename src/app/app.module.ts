@@ -9,12 +9,17 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
+import { LeerComponent } from './helpers/crud/leer/leer.component';
+import { CrearComponent } from './helpers/crud/crear/crear.component';
+import { EditarComponent } from './helpers/crud/editar/editar.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent
+    NavbarComponent,
+    LeerComponent,
+    EditarComponent
   ],
   imports: [
     BrowserModule,
