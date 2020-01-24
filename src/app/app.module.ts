@@ -24,8 +24,9 @@ import { EditarComponent } from './helpers/crud/editar/editar.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule,
+
     HttpClientModule,
+    NgbModule,
     ReactiveFormsModule
   ],
   providers: [

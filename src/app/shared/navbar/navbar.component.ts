@@ -13,8 +13,6 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
   }
 
-  public isMenuCollapsed = true;
-
   ingresar(){
     this.auth.login('');
   }
