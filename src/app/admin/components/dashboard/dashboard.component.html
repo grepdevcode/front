@@ -1,0 +1,16 @@
+<nav class="my-4 ml-3">
+<button [routerLink]="'productos'" type="button" class="btn btn-outline-secondary mr-2" placement="top" ngbTooltip="Tooltip on top">
+    Productos
+  </button>
+  <button [routerLink]="'stock'" type="button" class="btn btn-outline-secondary mr-2" placement="right" ngbTooltip="Tooltip on right">
+    Stock
+  </button>
+  <button [routerLink]="'reportes'" type="button" class="btn btn-outline-secondary mr-2" placement="bottom" ngbTooltip="Tooltip on bottom">
+    Reportes
+  </button>
+  <button [routerLink]="'facturacion'" type="button" class="btn btn-outline-secondary mr-2" placement="left" ngbTooltip="Tooltip on left">
+    Facturas
+  </button>
+</nav>
+
+<router-outlet name="dashoutlet" ></router-outlet>
