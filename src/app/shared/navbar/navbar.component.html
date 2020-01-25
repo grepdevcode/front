@@ -18,6 +18,12 @@
         <li class="nav-item">
           <a [routerLink]="'tienda/carrito'" class="nav-link" (click)="isMenuCollapsed = true">Carrito</a>
         </li>
+        <li class="nav-item">
+          <a [routerLink]="'admin/productos'" class="nav-link" (click)="isMenuCollapsed = true">Administracion</a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="'cocina/pedidos'" class="nav-link" (click)="isMenuCollapsed = true">Cocina</a>
+        </li>
       </ul>
 
       <ul class="navbar-nav " *ngIf="!this.auth.loggedIn">

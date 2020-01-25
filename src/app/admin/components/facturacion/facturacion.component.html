@@ -1,1 +1,39 @@
-<p>facturacion works!</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-7 mx-auto">
+
+            <p class="h2">Administación de Facturas</p>
+
+            <div class="text-right m-2 p-1">
+                <button class="btn btn-sm btn-info">
+                    <i class="fas fa-plus"></i>
+                    Nuevo
+                </button>
+            </div>
+            <div>
+                <table class="table">
+                    <th>fecha</th>
+                    <th>numero</th>
+                    <th>total</th>
+                    <th>Detalles</th>
+                    
+                    <tbody>
+
+                        <tr *ngFor="let factura of listaFacturas">
+                            <td>{{factura.fecha}}</td>
+                            <td>{{factura.numero}}</td>
+                            <td>{{factura.total}}</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-link">Ver...</button>
+                            </td>
+
+                        </tr>
+                       
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>

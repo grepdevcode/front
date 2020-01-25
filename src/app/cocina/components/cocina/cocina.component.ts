@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CrearComponent} from '../../../helpers/crud/crear/crear.component';
 import Articulo from '../../../templates/Articulo';
+import { Pedido } from 'src/app/models/pedido';
 
 @Component({
   selector: 'app-cocina',
@@ -8,11 +9,12 @@ import Articulo from '../../../templates/Articulo';
   styleUrls: ['./cocina.component.css']
 })
 export class CocinaComponent implements OnInit {
-  templateArticulo = Articulo;
+  listaPedidos : Pedido[]=[];
+
   constructor() { }
 
   ngOnInit() {
-    console.log('cocina',this.templateArticulo)
+
   }
 
 }

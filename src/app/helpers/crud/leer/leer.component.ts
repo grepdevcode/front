@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 export class LeerComponent implements OnInit {
 
+  @Input() template;
   constructor() { }
 
   ngOnInit() {
