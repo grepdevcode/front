@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { Pedido } from '../interfaces/pedido';
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductoService {
-
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      // 'Authorization': 'my-auth-token'
+    }),
+    params: new HttpParams()
+  };
 
   //para carrito
   carrito = [];
@@ -24,6 +29,7 @@ export class ProductoService {
   getProductos():Observable<any[]> {
     return this.http.get<any[]>(this.url);
   }
+  
 
   cambiarPedido(pedido:string){
     this.pedido.next(pedido);
@@ -38,5 +44,62 @@ export class ProductoService {
     };
     return this.http.post<any>(this.urlpostpedido, pedido, httpOptions);
   }
+
+  //universal
+  getData(url:string):Observable<any[]>{
+    return this.http.get<any[]>(url);
+  }
+
+  postData(url:string, nuevoObjeto:any){
+    this.http.post(url, nuevoObjeto, this.httpOptions)
+    .subscribe(
+      (res:any) =>{
+        console.log(res)
+      },
+      error=>{
+        console.log(error)
+      }
+    );
+  }
+
+  putData(url:string, objetoModificado:any){
+    this.http.put(url, objetoModificado, this.httpOptions)
+    .subscribe(
+      (res:any) =>{
+        console.log(res)
+      },
+      error=>{
+        console.log(error)
+      }
+    );
+  }
+
+  removeData(url:string, objetoToRemover:any, pedirPermiso?: boolean){
+    this.http.delete(url,this.httpOptions)
+    .subscribe(
+      (res:any)=>{
+        console.log(res);
+      },error =>{
+        console.log(error),
+        this.handleHttpError(error);
+      })
+  }
+
+  handleHttpError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+        // A client-side or network error occurred. Handle it accordingly.
+        console.error('An error occurred:', error.error.message);
+    } else {
+        // The backend returned an unsuccessful response code.
+        // The response body may contain clues as to what went wrong,
+        console.error(
+            `Backend returned code ${error.status}, ` +
+            `body was: ${error.error}`);
+    }
+    // return an observable with a user-facing error message
+    return throwError(error);
+};
+
+
 }
 

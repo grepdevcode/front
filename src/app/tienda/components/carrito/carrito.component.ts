@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductoService } from 'src/app/services/producto.service';
 import * as jsPDF from 'jspdf'
-import { Pedido } from 'src/app/interfaces/pedido';
+import { Pedido } from 'src/app/models/pedido';
+import { Cliente } from 'src/app/models/cliente';
+import { Factura } from 'src/app/models/factura';
 
 @Component({
   selector: 'app-carrito',
@@ -81,14 +83,7 @@ export class CarritoComponent implements OnInit {
 
   realizarPedido(){
     console.log('realizando pedido')
-    const pedido:Pedido ={
-      fecha: this.DateNowtoInt(),
-      numero: 1,
-      estado: 1,
-      horaEstimadaFin: new Date(Date.now()),
-      tipoEnvio: 1,
-      detalles:this.arrayDetalles
-      }
+    const pedido= new Pedido(new Date(),1,1, new Date(),1,new Cliente,new Factura,this.arrayDetalles);
     this.servicio.postPedido(pedido).subscribe(data => console.log(data));
   }
 }

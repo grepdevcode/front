@@ -10,4 +10,13 @@ export class DetallePedido {
     factura: Factura;
     articuloManufacturado: ArticuloManufacturado;
     articulo:Articulo;
+
+    /**
+     *
+     */
+    constructor() {
+
+
+        
+    }
 }

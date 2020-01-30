@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartsModule } from 'ng2-charts';
 import { AdminRoutingModule } from './admin-routing.module';
@@ -10,12 +10,15 @@ import { LinechartComponent } from './components/charts/linechart/linechart.comp
 import { BarchartComponent } from './components/charts/barchart/barchart.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [StockComponent, FacturacionComponent, AdminProductosComponent, ReportesComponent, LinechartComponent, BarchartComponent, DashboardComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
-    ChartsModule
+    ChartsModule,
+    ReactiveFormsModule
   ]
 })
 export class AdminModule { }

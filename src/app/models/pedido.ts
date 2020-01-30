@@ -13,4 +13,25 @@ cliente: Cliente;
 factura: Factura;
 listaDetalles: DetallePedido[];
 
+/**
+ *
+ */
+constructor(fecha,
+    numero,
+    estado,
+    horaEstimadaFin,
+    tipoEnvio,
+    cliente,
+    factura,
+    listaDetalles) {
+
+        this.numero = numero;
+        this.estado = estado;
+        this.horaEstimadaFin = horaEstimadaFin;
+        this.tipoEnvio = tipoEnvio;
+        this.cliente = cliente;
+        this.factura = factura;
+        this.listaDetalles = listaDetalles;
+}
+
 }

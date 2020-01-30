@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Factura } from 'src/app/models/factura';
 
 @Component({
   selector: 'app-facturacion',
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./facturacion.component.css']
 })
 export class FacturacionComponent implements OnInit {
-
+  listaFacturas:Factura[];
   constructor() { }
 
   ngOnInit() {

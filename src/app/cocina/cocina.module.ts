@@ -5,9 +5,9 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { CocinaRoutingModule } from './cocina-routing.module';
 import { CocinaComponent } from './components/cocina/cocina.component';
-import { CrearComponent } from '../helpers/crud/crear/crear.component';
+
 @NgModule({
-  declarations: [CocinaComponent, CrearComponent],
+  declarations: [CocinaComponent],
   imports: [
     CommonModule,
     CocinaRoutingModule,

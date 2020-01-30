@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -9,25 +9,23 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
-import { LeerComponent } from './helpers/crud/leer/leer.component';
-import { CrearComponent } from './helpers/crud/crear/crear.component';
-import { EditarComponent } from './helpers/crud/editar/editar.component';
+import { DynamicFormBuilderModule } from './dynamic-form-builder/dynamic-form-builder.module';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
-    LeerComponent,
-    EditarComponent
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-
     HttpClientModule,
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DynamicFormBuilderModule
+
   ],
   providers: [
 

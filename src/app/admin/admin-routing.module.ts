@@ -6,6 +6,7 @@ import { ReportesComponent } from './components/reportes/reportes.component';
 import { AdminProductosComponent } from './components/admin-productos/admin-productos.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
+
 const routes: Routes = [
       {
         path:'',

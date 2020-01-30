@@ -3,7 +3,9 @@ import { ProductoService } from '../../../services/producto.service';
 import { map } from 'rxjs/operators';
 
 import { data} from '../../../../assets/menu.js';
-import { DetallePedido } from 'src/app/interfaces/detalle-pedido';
+import { DetallePedido } from 'src/app/models/detalle-pedido';
+import { ArticuloManufacturado } from 'src/app/models/articulo-manufacturado';
+
 
 @Component({
   selector: 'app-productos',
@@ -36,11 +38,12 @@ export class ProductosComponent implements OnInit {
         }
     })
     }else{
-      const detalle: DetallePedido = {
-        cantidad:1,
-        subtotal: producto.precioVenta,
-        producto: producto
-      };
+      const detalle= new DetallePedido ()
+      
+        // detalle.cantidad:1,
+        // detalle.subtotal: producto.precioVenta,
+        // detalle.articuloManufacturado: new ArticuloManufacturado({producto})
+     
       this.carrito.push(detalle);
     }
       this.servicio.cambiarPedido(JSON.stringify(this.carrito));
