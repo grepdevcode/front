@@ -1,9 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'field-builder',
   template: `
-  <div class="form-group row" [formGroup]="form">
+  <div class="form-group row" [formGroup]="form" >
     <label class="col-md-3 form-control-label" [attr.for]="field.label">
       {{field.label}}
       <strong class="text-danger" *ngIf="field.required">*</strong>
@@ -14,6 +14,8 @@ import { Component, Input, OnInit } from '@angular/core';
       <checkbox *ngSwitchCase="'checkbox'" [field]="field" [form]="form"></checkbox>
       <radio *ngSwitchCase="'radio'" [field]="field" [form]="form"></radio>
       <file *ngSwitchCase="'file'" [field]="field" [form]="form"></file>
+
+
       <div class="alert alert-danger my-1 p-2 fadeInDown animated" *ngIf="!isValid && isDirty">{{field.label}} is required</div>
     </div>
   </div>
@@ -22,13 +24,14 @@ import { Component, Input, OnInit } from '@angular/core';
 export class FieldBuilderComponent implements OnInit {
   @Input() field:any;
   @Input() form:any;
-  
+
   get isValid() { return this.form.controls[this.field.name].valid; }
   get isDirty() { return this.form.controls[this.field.name].dirty; }
 
   constructor() { }
 
   ngOnInit() {
+    console.log(this.field.array)
   }
 
 }

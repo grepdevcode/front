@@ -5,6 +5,8 @@ import { FacturacionComponent } from './components/facturacion/facturacion.compo
 import { ReportesComponent } from './components/reportes/reportes.component';
 import { AdminProductosComponent } from './components/admin-productos/admin-productos.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { NuevoArticuloComponent } from './components/stock/nuevo-articulo.component';
+import { NuevoArtManComponent } from './components/admin-productos/nuevo-art-man.component';
 
 
 const routes: Routes = [
@@ -16,6 +18,11 @@ const routes: Routes = [
             path:'stock',children:[
               {path: '', component: StockComponent, outlet:'dashoutlet'}
             ] 
+          },
+          {
+            path:'stock/nuevo', children:[
+              {path:'', component: NuevoArticuloComponent, outlet:'dashoutlet'}
+            ]
           },
           {
             path:'facturacion', children:[
@@ -31,7 +38,14 @@ const routes: Routes = [
             path:'productos', children:[
               {path:'', component: AdminProductosComponent, outlet:'dashoutlet'}
             ]
+          },
+          
+          {
+            path:'productos/nuevo', children:[
+              {path:'', component: NuevoArtManComponent, outlet:'dashoutlet'}
+            ]
           }
+         
 
         ]
       },
