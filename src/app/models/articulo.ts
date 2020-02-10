@@ -3,14 +3,28 @@ import { DetallePedido } from './detalle-pedido';
 import { RubroArticulo } from './rubro-articulo';
 
 export class Articulo {
-denominación : string;
+id:number;
+denominacion : string;
 precioCompra: number;
 precioVenta: number;
 stockActual: number;
 unidadMedida: string;
 esInsumo: boolean;
 
-listaArtManufactDetalle:ArticuloManufacturadoDetalle[];
-listaDetallePedido:DetallePedido[];
-rubroArticulo:RubroArticulo;
+rubroArticulo:number;
+
+/**
+ *
+ */
+constructor(id,denominacion,precioCompra,precioVenta,stockActual,unidadMedida,esInsumo,rubroArticulo) {
+    this.id = id;
+    this.denominacion = denominacion;
+    this.precioCompra = precioCompra;
+    this.precioVenta = precioVenta;
+    this.stockActual = stockActual;
+    this.unidadMedida = unidadMedida;
+    this.esInsumo = esInsumo;
+    this.rubroArticulo = rubroArticulo;
+}
+
 }

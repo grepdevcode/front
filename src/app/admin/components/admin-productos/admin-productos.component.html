@@ -17,31 +17,20 @@
                     
                     <tbody>
 
-                        <tr *ngFor="let art of listaArtManufac">
+                        <tr *ngFor="let art of listaArtManufacturados">
                             <td>{{art.denominacion}}</td>
                             <td>
-                                <button type="button" class="btn btn-sm btn-link">Ver...</button>
+                                <button [routerLink]="['editmanufacturado', art.id]" type="button" class="btn btn-sm btn-link">Ver...</button>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <button class="btn btn-sm btn-danger">
+                                    <small>
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                     Eliminar
+                                </small>
                                 </button>
                             </td>
                         </tr>
-                        <tr *ngFor="let art of listaArticulo">
-                            <td>{{art.denominacion}}</td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-link">Ver...</button>
-                            </td>
-                            <td>
-                                <button class="btn btn-sm btn-danger">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                    Eliminar
-                                </button>
-                            </td>
-                        </tr>
-
                     </tbody>
                 </table>
             </div>

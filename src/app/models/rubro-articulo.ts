@@ -1,6 +1,14 @@
 import { Articulo } from './articulo';
 
 export class RubroArticulo {
+    id:number;
     denominacion: string;
-    listaArticulo:Articulo;
+    /**
+     *
+     */
+    constructor(id,denominacion) {
+        this.id = id;
+        this.denominacion= denominacion
+        
+    }
 }

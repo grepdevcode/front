@@ -7,6 +7,8 @@ import { AdminProductosComponent } from './components/admin-productos/admin-prod
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NuevoArticuloComponent } from './components/stock/nuevo-articulo.component';
 import { NuevoArtManComponent } from './components/admin-productos/nuevo-art-man.component';
+import { EditarArticuloComponent } from './components/stock/editar-articulo.component';
+import { EditarComponent } from './components/admin-productos/editar.component';
 
 
 const routes: Routes = [
@@ -25,6 +27,11 @@ const routes: Routes = [
             ]
           },
           {
+            path:'stock/edit/:id', children:[
+              {path:'',component:EditarArticuloComponent, outlet:'dashoutlet'}
+            ]
+          },
+          {
             path:'facturacion', children:[
              { path: '',component: FacturacionComponent, outlet:'dashoutlet'}
             ] 
@@ -39,20 +46,22 @@ const routes: Routes = [
               {path:'', component: AdminProductosComponent, outlet:'dashoutlet'}
             ]
           },
-          
           {
             path:'productos/nuevo', children:[
               {path:'', component: NuevoArtManComponent, outlet:'dashoutlet'}
             ]
+          },
+          {
+            path:'productos/editmanufacturado/:id', children:[
+              {path:'', component: EditarComponent, outlet:'dashoutlet'}
+            ]
           }
-         
-
         ]
       },
       
     ]
   ;
-
+  
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

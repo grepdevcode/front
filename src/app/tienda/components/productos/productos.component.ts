@@ -13,7 +13,7 @@ import { ArticuloManufacturado } from 'src/app/models/articulo-manufacturado';
   styleUrls: ['./productos.component.css']
 })
 export class ProductosComponent implements OnInit {
-  productos= JSON.parse(JSON.stringify( data));
+  productos=[];// JSON.parse(JSON.stringify( data));
   carrito = [];
   constructor(private servicio:ProductoService) { }
 

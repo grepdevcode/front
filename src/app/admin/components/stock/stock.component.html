@@ -15,12 +15,27 @@
                     <th>Cantidad</th>
                     <th>unidad</th>
                     <tbody>
-                        <tr>
-                            <td>Queso</td>
-                            <td>{{this.cantidad}}</td>
-                            <td>kg</td>
+                        <tr *ngFor="let art of listaArticulos">
+                            <td>{{art.denominacion}}</td>
+                            <td>{{art.stockActual}}</td>
+                            <td>{{art.unidadMedida}}</td>
                             <td>
-                                <button (click)="modificarStock()" class="btn btn-sm btn-danger">modificar</button>
+                                <button [routerLink]="['edit', art.id]" class="btn btn-sm btn-info">
+                                    <small>
+                                        <i class="fas fa-edit"></i>
+                                    </small>
+                                    <small>
+                                        Ver...
+                                    </small>
+                                </button>
+                                <button (click)="removeArticulo(art.id)" class="btn btn-sm btn-danger">
+                                     <small>
+                                          <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </small>
+                                    <small>
+                                        Eliminar
+                                    </small>
+                                 </button>
                             </td>
                         </tr>
                     </tbody>

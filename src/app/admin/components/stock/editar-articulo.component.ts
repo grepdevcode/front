@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { ProductoService } from 'src/app/services/producto.service';
 import { RubroArticulo } from 'src/app/models/rubro-articulo';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ProductoService } from 'src/app/services/producto.service';
+import { ActivatedRoute } from '@angular/router';
+import { Articulo } from 'src/app/models/articulo';
 
 @Component({
-  selector: 'app-nuevo-articulo',
-  template: `
+  selector: 'app-editar-articulo',
+  template:`
   <div class="col-sm-7 offset-sm-2">
   <p class="h2"> </p>
 <div class="card">
-  <div class="card-header">Nuevo articulo</div>
+  <div class="card-header">Articulo N°{{this.id}}</div>
   <div class="card-body">
     
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" >
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" >
   <div class="form-group">
     <label for="denominacion">Denominación</label> 
     <div class="input-group">
@@ -59,6 +61,7 @@ import { RubroArticulo } from 'src/app/models/rubro-articulo';
         <option value="c">Cajas</option>
         <option value="s">Sobres</option>
         <option value="u">Unidades</option>
+        <option value="f">Frasco</option>
       </select> 
       <span id="unidadMedidaHelpBlock" class="form-text text-muted">en que unidad se mide el producto</span>
     </div>
@@ -74,7 +77,7 @@ import { RubroArticulo } from 'src/app/models/rubro-articulo';
     </div>
   </div> 
   <div class="form-group">
-    <button name="submit" type="submit" class="btn btn-primary">Enviar</button>
+    <button name="submit" type="submit" class="btn btn-primary">Editar</button>
   </div>
 </form>
 
@@ -85,18 +88,23 @@ import { RubroArticulo } from 'src/app/models/rubro-articulo';
   `,
   styles: []
 })
-export class NuevoArticuloComponent implements OnInit {
+export class EditarArticuloComponent implements OnInit {
+
   listaRubros: RubroArticulo[];
-
-
-  ngOnInit() {
-  }
-
-
+  articulo:Articulo= new Articulo(3,"anchoas",12,50,100,"f",true,1);
   public form: FormGroup;
   unsubcribe: any
-  
-  constructor(private formBuilder: FormBuilder, private servicio:ProductoService) {
+  id:number;
+
+  ngOnInit() {
+    this.getRubros();
+    this.getArticulo();
+    this.id =Number( this.route.snapshot.paramMap.get('id'));
+    console.log(this.articulo)
+    this.initForm();
+  }
+
+  constructor(private formBuilder: FormBuilder, private servicio:ProductoService, private route:ActivatedRoute) {
     this.form= this.formBuilder.group(
       {
         denominacion:[null,Validators.required],
@@ -112,16 +120,28 @@ export class NuevoArticuloComponent implements OnInit {
 
   onSubmit(){
     if(this.form.valid){
-      this.servicio.postObservable('/articulos/',this.form.value).subscribe(art=>{
-        alert(`se ha agregado el articulo ${art.denominacion} id: ${art.id}.`)
+      this.servicio.putData(`/articulos/${this.id}`,this.form.value).subscribe(art=>{
+        alert(`se ha modificado el articulo ${art}.`)
       },error =>{ alert('ha ocurrido un error')})
     }
-    
   }
   getRubros(){
     this.servicio.getData('/rubro_articulo/')
     .subscribe(rubros=>this.listaRubros = rubros.map(x => new RubroArticulo(x.id, x.denominacion))
     ,error => console.log('no se han podido acceder a los rubros',error));
+  }
+  getArticulo(){
+    this.servicio.getData(`/articulo/${this.id}`)
+    .subscribe(x => {
+      let item = x.shift();
+      console.log(item)
+      this.articulo = new Articulo(item.id,item.denominacion,item.precioCompra,item.precioVenta,item.stockActual,item.unidadMedida,item.esInsumo,item.rubroArticulo)
+    })
+  }
+  initForm(){
+    for(let el in this.form.controls ){
+      this.form.get(el).setValue( this.articulo[el])
+    }
   }
 
 

@@ -4,14 +4,14 @@ import { Cliente } from './cliente';
 
 
 export class Pedido {
+    id:number;
 fecha:number;
 numero:number;
 estado:number;
 horaEstimadaFin: Date;
 tipoEnvio:number
-cliente: Cliente;
-factura: Factura;
-listaDetalles: DetallePedido[];
+cliente: number;
+factura: number;
 
 /**
  *
@@ -31,7 +31,6 @@ constructor(fecha,
         this.tipoEnvio = tipoEnvio;
         this.cliente = cliente;
         this.factura = factura;
-        this.listaDetalles = listaDetalles;
 }
 
 }

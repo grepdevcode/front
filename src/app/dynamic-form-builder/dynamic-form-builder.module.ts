@@ -10,12 +10,15 @@ import { DropDownComponent } from './atoms/dropdown';
 import { FileComponent } from './atoms/file';
 import { CheckBoxComponent } from './atoms/checkbox';
 import { RadioComponent } from './atoms/radio';
+import { DetalleArticuloComponent } from './detalle-articulo.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    NgbModule
   ],
   declarations: [
     DynamicFormBuilderComponent,
@@ -24,9 +27,10 @@ import { RadioComponent } from './atoms/radio';
     DropDownComponent,
     CheckBoxComponent,
     FileComponent,
-    RadioComponent
+    RadioComponent,
+    DetalleArticuloComponent
   ],
-  exports: [DynamicFormBuilderComponent],
+  exports: [DynamicFormBuilderComponent,DetalleArticuloComponent],
   providers: []
 })
 export class DynamicFormBuilderModule { }

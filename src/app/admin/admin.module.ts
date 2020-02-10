@@ -15,6 +15,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DynamicFormBuilderModule } from '../dynamic-form-builder/dynamic-form-builder.module';
 import { NuevoArticuloComponent } from './components/stock/nuevo-articulo.component';
 import { NuevoArtManComponent } from './components/admin-productos/nuevo-art-man.component';
+import { EditarComponent } from './components/admin-productos/editar.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { EditarArticuloComponent } from './components/stock/editar-articulo.component';
 
 @NgModule({
   declarations:
@@ -26,13 +29,16 @@ import { NuevoArtManComponent } from './components/admin-productos/nuevo-art-man
          BarchartComponent,
           DashboardComponent,
            NuevoArticuloComponent,
-           NuevoArtManComponent],
+           NuevoArtManComponent,
+           EditarComponent,
+           EditarArticuloComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
     ChartsModule,
     ReactiveFormsModule,
-    DynamicFormBuilderModule
+    DynamicFormBuilderModule,
+    NgbModule
   ]
 })
 export class AdminModule { }

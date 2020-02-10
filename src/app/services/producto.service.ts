@@ -51,7 +51,7 @@ export class ProductoService {
   }
 
   postData(url:string, nuevoObjeto:any){
-    this.http.post(url, nuevoObjeto, this.httpOptions)
+    return this.http.post(url, nuevoObjeto, this.httpOptions)
     .subscribe(
       (res:any) =>{
         console.log(res)
@@ -61,28 +61,18 @@ export class ProductoService {
       }
     );
   }
+
+  postObservable(url:string, nuevoObjeto:any):Observable<any>{
+    return this.http.post<any>(url, nuevoObjeto, this.httpOptions)
+  }
+
 
   putData(url:string, objetoModificado:any){
-    this.http.put(url, objetoModificado, this.httpOptions)
-    .subscribe(
-      (res:any) =>{
-        console.log(res)
-      },
-      error=>{
-        console.log(error)
-      }
-    );
+    return this.http.put(url, objetoModificado, this.httpOptions)
   }
 
-  removeData(url:string, objetoToRemover:any, pedirPermiso?: boolean){
-    this.http.delete(url,this.httpOptions)
-    .subscribe(
-      (res:any)=>{
-        console.log(res);
-      },error =>{
-        console.log(error),
-        this.handleHttpError(error);
-      })
+  removeData(url:string, pedirPermiso?: boolean):Observable<any>{
+    return this.http.delete(url,this.httpOptions)
   }
 
   handleHttpError(error: HttpErrorResponse) {

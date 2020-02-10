@@ -6,10 +6,10 @@ import { Articulo } from './articulo';
 export class DetallePedido {
     cantidad : number;
     subtotal : number;
-    pedido: Pedido;
-    factura: Factura;
-    articuloManufacturado: ArticuloManufacturado;
-    articulo:Articulo;
+    pedido: number;
+    factura: number;
+    articuloManufacturado: number;
+    articulo:number;
 
     /**
      *

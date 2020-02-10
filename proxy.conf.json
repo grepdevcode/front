@@ -1,11 +1,26 @@
 {
-    "/articulomanufacturado/*":{
-        "target":"http://192.168.191.208:8000",
+    "/articulo_manufacturado/*":{
+        "target":"http://192.168.2.102:8000",
         "secure":false,
         "changeOrigin":true
     },
     "/recibir_pedido/*":{
-        "target":"http://192.168.191.208:8000",
+        "target":"http://192.168.2.102:8000",
+        "secure":false,
+        "changeOrigin":true
+    },
+    "/rubro_articulo/*":{
+        "target":"http://192.168.2.102:8000",
+        "secure":false,
+        "changeOrigin":true
+    },
+    "/articulo/*":{
+        "target":"http://192.168.2.102:8000",
+        "secure":false,
+        "changeOrigin":true
+    },
+    "/articulo_manufacturado_detalle/*":{
+        "target":"http://192.168.2.102:8000",
         "secure":false,
         "changeOrigin":true
     }
