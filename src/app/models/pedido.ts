@@ -11,26 +11,16 @@ estado:number;
 horaEstimadaFin: Date;
 tipoEnvio:number
 cliente: number;
-factura: number;
 
 /**
  *
  */
-constructor(fecha,
-    numero,
-    estado,
-    horaEstimadaFin,
-    tipoEnvio,
-    cliente,
-    factura,
-    listaDetalles) {
-
-        this.numero = numero;
+constructor(fecha,estado,horaEstimadaFin,tipoEnvio,cliente) {
+        this.fecha = fecha;
         this.estado = estado;
         this.horaEstimadaFin = horaEstimadaFin;
         this.tipoEnvio = tipoEnvio;
         this.cliente = cliente;
-        this.factura = factura;
 }
 
 }

@@ -39,17 +39,13 @@ export class AdminProductosComponent implements OnInit {
     if (confirm(`Seguro que deseas eliminar el producto ${articuloSelected.denominacion} ${id} ?`) == true) {
       confirmacion = `Se ha eliminado un el producto ${articuloSelected.denominacion} ${id}`;
       this.servicio.removeData(`/articulo_manufacturado/${id}`).toPromise()
-      .then(x => this.getArticulosManufacturados());
+      .then(x =>{
+        alert(confirmacion);
+        this.getArticulosManufacturados();
+      } );
     } else {
       confirmacion = "Cancelado!";
     }
-  }
-  // update articulo manufacturado
-  modifyArticuloManufacturado(id, obj){
-
-
-    this.servicio.putData(`/articulo_manufacturado/${id}`, obj).toPromise()
-    .then(x=> this.getArticulosManufacturados());
   }
 
 

@@ -9,6 +9,9 @@ import { NuevoArticuloComponent } from './components/stock/nuevo-articulo.compon
 import { NuevoArtManComponent } from './components/admin-productos/nuevo-art-man.component';
 import { EditarArticuloComponent } from './components/stock/editar-articulo.component';
 import { EditarComponent } from './components/admin-productos/editar.component';
+import { RubroComponent } from './components/rubro.component';
+import { ClientesComponent } from './components/clientes/clientes.component';
+import { EditarClienteComponent } from './components/clientes/editar-cliente.component';
 
 
 const routes: Routes = [
@@ -54,6 +57,21 @@ const routes: Routes = [
           {
             path:'productos/editmanufacturado/:id', children:[
               {path:'', component: EditarComponent, outlet:'dashoutlet'}
+            ]
+          },
+          {
+            path:'rubro', children:[
+              {path:'', component: RubroComponent, outlet:'dashoutlet'}
+            ]
+          },
+          {
+            path:'clientes', children:[
+              {path:'', component:ClientesComponent, outlet:'dashoutlet'}
+            ]
+          },
+          {
+            path:'clientes/:id', children:[
+              {path:'', component:EditarClienteComponent, outlet:'dashoutlet'}
             ]
           }
         ]

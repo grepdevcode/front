@@ -7,24 +7,9 @@ import { tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
-  
+export class AuthGuard {
 
-  /**
-   *
-   */
   constructor(private auth: AuthService) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    return this.auth.isAuthenticated$.pipe(
-      tap(
-        loggedIn =>{
-          if(!loggedIn){
-            this.auth.login(state.url);
-          }
-        }
-      )
-    )
-  }
   
 }

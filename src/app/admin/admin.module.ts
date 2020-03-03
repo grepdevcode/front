@@ -18,6 +18,10 @@ import { NuevoArtManComponent } from './components/admin-productos/nuevo-art-man
 import { EditarComponent } from './components/admin-productos/editar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditarArticuloComponent } from './components/stock/editar-articulo.component';
+import { RubroComponent } from './components/rubro.component';
+import { ClientesComponent } from './components/clientes/clientes.component';
+import { NuevoClienteComponent } from './components/clientes/nuevo-cliente.component';
+import { EditarClienteComponent } from './components/clientes/editar-cliente.component';
 
 @NgModule({
   declarations:
@@ -31,7 +35,11 @@ import { EditarArticuloComponent } from './components/stock/editar-articulo.comp
            NuevoArticuloComponent,
            NuevoArtManComponent,
            EditarComponent,
-           EditarArticuloComponent],
+           EditarArticuloComponent,
+           RubroComponent,
+           ClientesComponent,
+           NuevoClienteComponent,
+           EditarClienteComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

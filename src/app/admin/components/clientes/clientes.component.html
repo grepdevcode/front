@@ -1,0 +1,45 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-7 mx-auto">
+
+            <p class="h2">Administación de Clientes y Personal</p>
+
+            <div class="text-right m-2 p-1">
+                <!-- <button class="btn btn-sm btn-info">
+                    <i class="fas fa-plus"></i>
+                    Nuevo
+                </button> -->
+            </div>
+            <div>
+                <table class="table">
+                    <th>Id</th>
+                    <th>Nombre y apellido</th>
+                    <th>Rol</th>
+                    <th>Editar/Eliminar</th>
+                    <tbody>
+
+                        <tr *ngFor="let usuario of listaUsuarios;let i = index">
+                            <td>{{usuario.email}}</td>
+                            <td>{{usuario.nombre+" "+usuario.apellido}}</td>
+                            <td>{{'rol que cumple'}}</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-info">
+                                    <small> <i class="fas fa-edit"></i> </small>
+                                  <small>Ver...</small>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-danger">
+                                    <small> <i class="fas fa-trash-alt"></i> </small>
+                                    <small>Eliminar</small>
+                                  </button>
+                            </td>
+                        </tr>
+                       
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+

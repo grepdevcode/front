@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Articulo } from 'src/app/models/articulo';
+import { ArticuloManufacturado } from 'src/app/models/articulo-manufacturado';
 
 @Component({
   selector: 'app-producto',
@@ -7,7 +9,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ProductoComponent implements OnInit {
 
-  @Input() unidad;
+  @Input() unidad:Articulo|ArticuloManufacturado;
   @Output() carrito = new EventEmitter();
   constructor() { }
 

@@ -1,21 +1,20 @@
 <div class="container-fluid justify-content-center" >
 <div class="col-sm-5 mx-auto">
     <p class="h3" >El Buen Sabor</p>
-<form >
+<form  [formGroup]="formIngreso" (ngSubmit)="onSubmit()">
+    <span *ngIf="!cartel" class="text-danger">
+        Hubo un error por favor verifica tu correo o contraseña.
+    </span>
     <div class="form-group">
         <label for="ingresoEmail">Correo</label>
-        <input #correo type="email" class="form-control" id="ingresoEmail" aria-describedby="emailHelp" placeholder="Ingresa tu correo" autocomplete="email">
+        <input formControlName="email" #correo type="email" class="form-control" id="ingresoEmail" aria-describedby="emailHelp" placeholder="Ingresa tu correo" autocomplete="email">
         <small id="emailHelp" class="form-text text-muted">Tu correo no sera publicado, ni compartido.</small>
     </div>
     <div class="form-group">
         <label for="ingresoPassword">Password</label>
-        <input #password type="password" class="form-control" id="ingresoPassword" placeholder="Password" autocomplete="current-password">
+        <input formControlName="password" #password type="password" class="form-control" id="ingresoPassword" placeholder="Password"  maxlength="8" minlength="8">
     </div>
-    <div class="form-check mb-2">
-        <input type="checkbox" class="form-check-input" id="ingresoRecordar">
-        <label class="form-check-label small" for="ingresoRecordar">Recordar mis datos</label>
-    </div>
-    <button type="submit" class="btn btn-primary" (click)="this.ingresar()">Ingresar</button>
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()" >Ingresar</button>
 </form>
 </div>
 </div>

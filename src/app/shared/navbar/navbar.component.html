@@ -26,12 +26,12 @@
         </li>
       </ul>
 
-      <ul class="navbar-nav " *ngIf="!this.auth.loggedIn">
+      <ul class="navbar-nav " >
         <li class="nav-item">
           <a class="nav-link" [routerLink]="'ingreso/registrarse'" (click)="isMenuCollapsed = true">Registrarse</a>
         </li>
         <li class="nav-item">
-          <a style="cursor: pointer;" class="nav-link" (click)="isMenuCollapsed = true" (click)="this.ingresar()" >Ingresar</a>
+          <a style="cursor: pointer;" class="nav-link" (click)="isMenuCollapsed = true" [routerLink]="'ingreso/login'" >Ingresar</a>
         </li>
       </ul>
 

@@ -23,5 +23,13 @@
         "target":"http://192.168.2.102:8000",
         "secure":false,
         "changeOrigin":true
+    },
+    "https://enzomzaocv.auth0.com/*":{
+        "secure":false,
+        "changeOrigin":true
+    },
+    "http://auth0.com/*":{
+        "secure":false,
+        "changeOrigin":true
     }
 }

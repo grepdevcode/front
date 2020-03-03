@@ -8,15 +8,15 @@ export class DetallePedido {
     subtotal : number;
     pedido: number;
     factura: number;
-    articuloManufacturado: number;
-    articulo:number;
-
+    articuloManufacturado: ArticuloManufacturado;
+    articulo:Articulo;
     /**
      *
      */
-    constructor() {
-
-
-        
+    constructor(cantidad,subtotal,articulo,articuloManufacturado) {
+        this.cantidad=cantidad;
+        this.subtotal = subtotal;
+        this.articulo = articulo;
+        this.articuloManufacturado = articuloManufacturado;
     }
 }

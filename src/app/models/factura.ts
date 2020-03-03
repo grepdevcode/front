@@ -6,6 +6,13 @@ export class Factura {
     numero: number;
     montoDescuento: number;
     total: number;
-    pedido:Pedido;
-    listaDetalles: DetallePedido[];
+    pedido:number;
+
+    constructor(fecha,numero,montoDescuento,total,pedido) {
+    this.fecha= fecha;
+    this.pedido= numero;
+    this.numero= montoDescuento;
+    this.montoDescuento= total;
+    this.total= pedido;
+    }
 }
