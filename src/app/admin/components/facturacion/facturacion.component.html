@@ -12,28 +12,29 @@
             </div>
             <div>
                 <table class="table">
-                    <th>fecha</th>
-                    <th>numero</th>
-                    <th>total</th>
-                    <th>Detalles</th>
-                    
+                    <th>Fecha</th>
+                    <th>Numero</th>
+                    <th>Monto Descuento</th>
+                    <th>Final</th>
+                    <th>Id Pedido</th>
                     <tbody>
-
                         <tr *ngFor="let factura of listaFacturas">
                             <td>{{factura.fecha}}</td>
                             <td>{{factura.numero}}</td>
-                            <td>{{factura.total}}</td>
+                            <td>{{factura.montoDescuento}}</td>
+                            <td>{{factura.total - factura.montoDescuento}}</td>
+                            <td>{{factura.pedidoId}}</td>
                             <td>
-                                <button type="button" class="btn btn-sm btn-link">Ver...</button>
+                                <button class="btn btn-sm btn-success" (click)="this.generarPdf(factura)">
+                                    <small>
+                                        Generar Pdf
+                                    </small> 
+                                </button>
                             </td>
-
                         </tr>
-                       
-
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
 </div>

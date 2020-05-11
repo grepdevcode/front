@@ -12,6 +12,7 @@ import { EditarComponent } from './components/admin-productos/editar.component';
 import { RubroComponent } from './components/rubro.component';
 import { ClientesComponent } from './components/clientes/clientes.component';
 import { EditarClienteComponent } from './components/clientes/editar-cliente.component';
+import { PedidosComponent } from './components/facturacion/pedidos.component';
 
 
 const routes: Routes = [
@@ -65,13 +66,18 @@ const routes: Routes = [
             ]
           },
           {
-            path:'clientes', children:[
+            path:'cliente', children:[
               {path:'', component:ClientesComponent, outlet:'dashoutlet'}
             ]
           },
           {
-            path:'clientes/:id', children:[
+            path:'cliente/edit/:id', children:[
               {path:'', component:EditarClienteComponent, outlet:'dashoutlet'}
+            ]
+          },
+          {
+            path:'pedidos', children:[
+              {path:'', component:PedidosComponent, outlet:'dashoutlet'}
             ]
           }
         ]

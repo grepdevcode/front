@@ -1,35 +1,63 @@
 {
-    "/articulo_manufacturado/*":{
-        "target":"http://192.168.2.102:8000",
+    "/ArticuloManufacturado/*":{
+        "target":"https://localhost:5001/api",
         "secure":false,
         "changeOrigin":true
     },
-    "/recibir_pedido/*":{
-        "target":"http://192.168.2.102:8000",
+    "/Pedido/*":{
+        "target":"https://localhost:5001/api",
         "secure":false,
         "changeOrigin":true
     },
-    "/rubro_articulo/*":{
-        "target":"http://192.168.2.102:8000",
+    "/RubroArticulo/*":{
+        "target":"https://localhost:5001/api",
         "secure":false,
         "changeOrigin":true
     },
-    "/articulo/*":{
-        "target":"http://192.168.2.102:8000",
+    "/Articulo/*":{
+        "target":"https://localhost:5001/api",
         "secure":false,
         "changeOrigin":true
     },
-    "/articulo_manufacturado_detalle/*":{
-        "target":"http://192.168.2.102:8000",
+    "/ArticuloManufacturadoDetalle/*":{
+        "target":"https://localhost:5001/api",
         "secure":false,
         "changeOrigin":true
     },
-    "https://enzomzaocv.auth0.com/*":{
+    "/DetallePedido/*":{
+        "target":"https://localhost:5001/api",
         "secure":false,
         "changeOrigin":true
     },
-    "http://auth0.com/*":{
+    "/Token/*":{
+        "target":"https://localhost:5001/api",
+        "secure":false,
+        "changeOrigin":true
+    },
+    "/Cliente/*":{
+        "target":"https://localhost:5001/api",
+        "secure":false,
+        "changeOrigin":true
+    },
+    "/Domicilio/*":{
+        "target":"https://localhost:5001/api",
+        "secure":false,
+        "changeOrigin":true
+    },
+    "/Factura/*":{
+        "target":"https://localhost:5001/api",
+        "secure":false,
+        "changeOrigin":true
+    },
+    "/ListaPedido/*":{
+        "target":"https://localhost:5001/api",
+        "secure":false,
+        "changeOrigin":true
+    },
+    "/timezone/America/Argentina/Mendoza/*":{
+        "target":"http://worldtimeapi.org/api/",
         "secure":false,
         "changeOrigin":true
     }
+    
 }

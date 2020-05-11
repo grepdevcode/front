@@ -2,14 +2,15 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Domicilio } from 'src/app/models/domicilio';
 import { ProductoService } from 'src/app/services/producto.service';
-import { Router, RouterLinkActive } from '@angular/router';
+import { Router, RouterLinkActive, ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
+import { Cliente } from 'src/app/models/cliente';
 
 @Component({
   selector: 'app-editar-cliente',
   template: `
   <div class="container-fluid justify-content-center p-1">
   <div class="col-sm-5 mx-auto px-3">
-          <p class="h3">Usuario n°{{usuario.id}}</p>
+          <p class="h3">Usuario n°</p>
 
           <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
               <div formGroupName="cliente">
@@ -58,17 +59,17 @@ import { Router, RouterLinkActive } from '@angular/router';
                     <label for="localidad">Localidad</label> 
                     <div>
                       <select formControlName="localidad"  id="localidad" name="localidad" class="custom-select" required="required">
-                        <option value="c">Ciudad</option>
-                        <option value="gc">Godoy Cruz</option>
-                        <option value="g">Guaymallén</option>
-                        <option value="m">Maipu</option>
-                        <option value="lh">Las Heras</option>
+                        <option value="Capital">Capital</option>
+                        <option value="Godoy Cruz">Godoy Cruz</option>
+                        <option value="Guaymallén">Guaymallén</option>
+                        <option value="Maipu">Maipu</option>
+                        <option value="Las Heras">Las Heras</option>
                       </select>
                     </div>
                   </div> 
              </div>
                   <div class="form-group">
-                    <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+                    <button [disabled]="!this.registerForm.valid" name="submit" type="submit" class="btn btn-primary">Enviar</button>
                   </div>
                 </form>
   </div>
@@ -77,45 +78,81 @@ import { Router, RouterLinkActive } from '@angular/router';
   styles: []
 })
 export class EditarClienteComponent implements OnInit {
-@Input() usuario;
+usuario:Cliente;
 domicilio:Domicilio;
 registerForm: FormGroup;
+
+ngOnInit() {
+  this.getCliente()
+  this.getDomicilio()
+  setTimeout(() => {
+    this.initForm()
+  }, 1000);
+}
   
-  constructor(private formBuilder: FormBuilder, private servicio:ProductoService,private router: Router ) {
+  constructor(private formBuilder: FormBuilder, private servicio:ProductoService,private router: Router, private route: ActivatedRoute ) {
+    this.buildForm();
+   }
+  // Tomar cliente del backend
+  getCliente(){
+    const id = Number( this.route.snapshot.paramMap.get("id"));
+    return this.servicio.getSingleData(`Cliente/${id}`).subscribe(data => this.usuario = data)
+  }
+  // Tomar el domicilio Correspondiente 
+  getDomicilio(){
+    const id = Number( this.route.snapshot.paramMap.get("id"));
+    this.servicio.getData(`Domicilio`)
+    .subscribe( list => {
+      this.domicilio = list.filter((item:Domicilio) => item.clienteId == id).shift();
+    });
+  }
+  // Construye el form
+  buildForm(){
     this.registerForm =  this.formBuilder.group(
       {
         cliente:new FormGroup({
-          nombre: new FormControl(this.usuario.nombre,[Validators.required,Validators.maxLength(30)]),
-          apellido: new FormControl(this.usuario.apellido,[Validators.required,Validators.maxLength(30)]),
-          telefono: new FormControl(this.usuario.telefono,[Validators.required,Validators.minLength(7),Validators.maxLength(12)]),
-          email: new FormControl(this.usuario.email,[Validators.required,Validators.email])
+          nombre: new FormControl(null,[Validators.required,Validators.maxLength(30)]),
+          apellido: new FormControl(null,[Validators.required,Validators.maxLength(30)]),
+          telefono: new FormControl(null,[Validators.required,Validators.minLength(7),Validators.maxLength(12)]),
+          email: new FormControl(null,[Validators.required,Validators.email])
         }),
         domicilio:new FormGroup({
-          calle:new FormControl(this.domicilio.calle,[Validators.required,Validators.maxLength(60)]),
-          numero:new FormControl(this.domicilio.numero,[Validators.required,Validators.maxLength(4),Validators.min(1)]),
-          localidad:new FormControl(this.domicilio.localidad,[Validators.required,Validators.maxLength(30)])
+          calle:new FormControl(null,[Validators.required,Validators.maxLength(60)]),
+          numero:new FormControl(null,[Validators.required,Validators.maxLength(4),Validators.min(1)]),
+          localidad:new FormControl(null,[Validators.required,Validators.maxLength(30)])
         })
       })
-   }
-  ngOnInit() {
-    this.getDomicilio(this.usuario.domicilio);
   }
-  getDomicilio(id){
-    this.servicio.getData(`/cliente/${id}`).subscribe(data => this.domicilio = data.shift());
+  // Carga los datos en el form
+  initForm(){
+    const grupoCli = this.registerForm.controls['cliente'] as FormGroup;
+    const grupoDom = this.registerForm.controls['domicilio'] as FormGroup;
+    for(let prop in grupoCli.controls){
+      grupoCli.controls[prop].setValue(this.usuario[prop])
+    }
+    for(let prop in grupoDom.controls){
+      grupoDom.controls[prop].setValue(this.domicilio[prop])
+    } 
   }
+
   onSubmit(){
+    this.registerForm.updateValueAndValidity();
+    
    (this.registerForm.valid)?this.putUsuario():alert('Hubo un error revisa los campos')
   }
-putUsuario(){
-  const nuevoUsuario =  this.registerForm.value();
-  this.servicio.putData(`/clientes/${this.usuario.id}`,nuevoUsuario).subscribe((data:Response) =>{
-    if(data.ok){
-      alert('Se ha modificado correctamente el usuario '+this.usuario.id)
-      this.router.navigate(['admin','clientes']);
-    }else{
-      alert('ha ocurrido un error');
-    } 
-  })
-}
+  putUsuario(){
+    if(this.registerForm.valid){
+      const formdata =  this.registerForm.value;
+      let cli = {...this.usuario, ...formdata["cliente"]};
+      let dom = {...this.domicilio, ...formdata["domicilio"]}
+      this.servicio.putData(`Cliente`,cli)
+      .subscribe(res =>{
+        this.servicio.putData('Domicilio',dom)
+        .subscribe(res =>this.router.navigate(['admin','cliente']) );
+        ;
+      },
+      error => alert(" un error ha ocurrido "+ error));
+    }
+  }
 
 }

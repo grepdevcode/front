@@ -33,7 +33,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
                                       Editar
                                   </small>
                               </button>
-                              <button (click)="removeRubro(rubro.id)" class="btn btn-sm btn-danger">
+                              <button (click)="removeRubro(rubro)" class="btn btn-sm btn-danger">
                                    <small>
                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                   </small>
@@ -94,19 +94,21 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class RubroComponent implements OnInit {
 
-  listaRubros:RubroArticulo[]=[new RubroArticulo(12,'Conservas')];
+  listaRubros:RubroArticulo[]=[];
   form:FormGroup= new FormGroup({denominacion:new FormControl(null,Validators.required)});
   edit:boolean=false;
   editId:number;
   constructor(private servicio:ProductoService,private modalService: NgbModal) { }
 
   ngOnInit() {
+    this.getRubros();
   }
   getRubros(){
-    this.servicio.getData('/rubro_articulo/')
+    this.servicio.getData('/RubroArticulo')
     .subscribe(data => this.listaRubros = data.map(x => new RubroArticulo(x.id,x.denominacion) ) )
   }
   openmodal(content,id?){
+    
       this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(r =>{
         console.log(r);this.edit = false;
       },(reason)=>{
@@ -117,7 +119,7 @@ export class RubroComponent implements OnInit {
         let rubro = this.getRubro(id);
         this.edit = true;
         this.editId = id
-        this.form.get('denominacion').setValue(rubro);
+        this.form.get('denominacion').setValue(rubro.denominacion);
       }
   }
   onSubmit(edit){
@@ -133,16 +135,25 @@ export class RubroComponent implements OnInit {
     this.cerrarModal();
   }
   createRubro(objeto){
-    this.servicio.postObservable('/rubro_articulo/',objeto)
-    .subscribe((respuesta:Response) => (respuesta.status===200)?alert('Se ha creado un nuevo rubro'):alert('ha ocurrido un error') );
+    console.log(objeto);
+    
+    this.servicio.postObservable('/RubroArticulo',objeto)
+    .subscribe( data =>{
+      console.log(data);
+        this.getRubros()
+    });
   }
   updateRubro(id,obj){
-    this.servicio.putData(`/rubro_articulo/${id}`,new RubroArticulo(id,obj.denominacion))
-    .subscribe(x=>console.log(x));
+    const modificado = new RubroArticulo(id,obj.denominacion);
+    this.servicio.putData(`/RubroArticulo`, modificado)
+    .subscribe(x=>{
+      console.log(x)
+      this.getRubros();
+    });
   }
-  removeRubro(id){
-    if(confirm("Desea eliminar el rubro "+id+"?")){
-      this.servicio.removeData(`/rubro_articulo/${id}`)
+  removeRubro(rubro){
+    if(confirm("Desea eliminar el rubro "+rubro.id+"?")){
+      this.servicio.removeData(`/RubroArticulo`,rubro)
     .subscribe(elim => this.getRubros(),
     error =>{alert('ha habido un error no se ha podido eliminar el rubro'); console.log(error)})
     }
@@ -153,7 +164,14 @@ export class RubroComponent implements OnInit {
     
   }
   getRubro(id){
-    return this.servicio.getData(`/rubro_articulo/${id}`).subscribe(x=> x.shift());
+    return this.listaRubros.
+      filter(row =>{
+        if(row.id == id){
+          console.log(row);
+          return row
+        }
+      })
+      .shift();
   }
 
 }

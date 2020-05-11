@@ -1,0 +1,33 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-7 mx-auto">
+            <p class="h2">Administación de Pedidos</p>
+            <div>
+                <table class="table">
+                    <th>Numero</th>
+                    <th>Estado</th>
+                    <th>horaEstimadaFin</th>
+                    <th>tipoEnvio</th>
+                    <th>clienteId</th>
+                    <th>Total</th>
+                    <tbody>
+                        <tr *ngFor="let pedido of listaPedidos">
+                            <td>{{pedido.numero}}</td>
+                            <td>{{this.getEstado(pedido.estado)}}</td>
+                            <td>{{pedido.horaEstimadaFin}}</td>
+                            <td>{{this.getTipoEnvio(pedido.tipoEnvio)}}</td>
+                            <td>{{pedido.clienteId}}</td>
+                            <td *ngIf="this.isLoaded[1]">${{this.getTotal(pedido.id) - this.getDescuento(pedido.id) * this.getTotal(pedido.id) }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-success" *ngIf="pedido.estado == 3" (click)="this.pagarYGenerarFactura(pedido)">
+                                    <small>Pagar Y Generar Factura</small> 
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

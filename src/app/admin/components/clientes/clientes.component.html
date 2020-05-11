@@ -5,36 +5,33 @@
             <p class="h2">Administación de Clientes y Personal</p>
 
             <div class="text-right m-2 p-1">
-                <!-- <button class="btn btn-sm btn-info">
-                    <i class="fas fa-plus"></i>
-                    Nuevo
-                </button> -->
             </div>
             <div>
                 <table class="table">
-                    <th>Id</th>
+                    <th>email</th>
                     <th>Nombre y apellido</th>
                     <th>Rol</th>
                     <th>Editar/Eliminar</th>
                     <tbody>
-
                         <tr *ngFor="let usuario of listaUsuarios;let i = index">
                             <td>{{usuario.email}}</td>
                             <td>{{usuario.nombre+" "+usuario.apellido}}</td>
-                            <td>{{'rol que cumple'}}</td>
+                            <td><select name="roles" id="roles" class="form-control" (change)="cambiarRol($event,usuario)" value={{usuario.roles}} >
+                                <option value="permiso_Cliente">Cliente</option>
+                                <option value="permiso_Admin">Administrador</option>
+                                <option value="permiso_Cocina">Cocina</option>
+                            </select></td>
                             <td>
-                                <button type="button" class="btn btn-sm btn-info">
+                                <button type="button" class="btn btn-sm btn-info" [routerLink]="['edit', usuario.id]">
                                     <small> <i class="fas fa-edit"></i> </small>
                                   <small>Ver...</small>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-danger">
+                                <button type="button" class="btn btn-sm btn-danger" (click)="removeCliente(usuario)">
                                     <small> <i class="fas fa-trash-alt"></i> </small>
                                     <small>Eliminar</small>
                                   </button>
                             </td>
                         </tr>
-                       
-
                     </tbody>
                 </table>
             </div>

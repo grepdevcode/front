@@ -5,12 +5,12 @@ import { Cliente } from './cliente';
 
 export class Pedido {
     id:number;
-fecha:number;
-numero:number;
-estado:number;
-horaEstimadaFin: Date;
-tipoEnvio:number
-cliente: number;
+    fecha:number;
+    numero:number;
+    estado:number;
+    horaEstimadaFin: Date;
+    tipoEnvio:number
+    clienteId: number;
 
 /**
  *
@@ -20,7 +20,7 @@ constructor(fecha,estado,horaEstimadaFin,tipoEnvio,cliente) {
         this.estado = estado;
         this.horaEstimadaFin = horaEstimadaFin;
         this.tipoEnvio = tipoEnvio;
-        this.cliente = cliente;
+        this.clienteId = cliente;
 }
 
 }

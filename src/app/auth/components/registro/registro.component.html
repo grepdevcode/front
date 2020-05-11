@@ -40,17 +40,17 @@
                           <span *ngIf="this.isSubmitted && this.registerForm.controls.cliente.controls.telefono.invalid" class="text-danger">Revisa este campo</span>
                         </div>
                     </div>
-                    <div formGroupName="passwordgroup">
+                    <div formGroupName="password">
                       <div class="form-group">
                         <label for="password">Contraseña</label>
                         <input formControlName="password" id="password" maxlength="8" minlength="8" name="password" type="password" required="required" class="form-control" >
-                        <span *ngIf="this.isSubmitted && this.registerForm.controls.passwordgroup.controls.password.errors" class="text-danger">Revisa este campo</span>
+                        <span *ngIf="this.isSubmitted && this.registerForm.controls.password.controls.password.errors" class="text-danger">Revisa este campo</span>
                       </div>
                       <div class="form-group">
                         <label for="passwordConfirm">Repetir Contraseña</label>
                         <input formControlName="passwordConfirm" id="passwordConfirm" maxlength="8" minlength="8" name="passwordConfirm" type="password" required="required" class="form-control" >
-                        <span *ngIf="this.isSubmitted && this.registerForm.controls.passwordgroup.controls.passwordConfirm.errors" class="text-danger">Revisa este campo</span>
-                        <span *ngIf="registerForm.controls.passwordgroup.errors" class="text-danger">las contraseñas no coinciden</span>
+                        <span *ngIf="this.isSubmitted && this.registerForm.controls.password.controls.passwordConfirm.errors" class="text-danger">Revisa este campo</span>
+                        <span *ngIf="registerForm.controls.password.errors" class="text-danger">las contraseñas no coinciden</span>
                       </div>
                     </div>
                     <div formGroupName="domicilio">
@@ -68,11 +68,11 @@
                           <label for="localidad">Localidad</label> 
                           <div>
                             <select formControlName="localidad"  id="localidad" name="localidad" class="custom-select" required="required">
-                              <option value="c">Ciudad</option>
-                              <option value="gc">Godoy Cruz</option>
-                              <option value="g">Guaymallén</option>
-                              <option value="m">Maipu</option>
-                              <option value="lh">Las Heras</option>
+                              <option value="Ciudad">Ciudad</option>
+                              <option value="Godoy Cruz">Godoy Cruz</option>
+                              <option value="Guaymallén">Guaymallén</option>
+                              <option value="Maipu">Maipu</option>
+                              <option value="Las Heras">Las Heras</option>
                             </select>
                             <span *ngIf="this.isSubmitted && this.registerForm.controls.domicilio.controls.localidad.errors" class="text-danger">Revisa este campo</span>
                           </div>

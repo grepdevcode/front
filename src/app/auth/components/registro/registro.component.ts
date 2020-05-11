@@ -6,6 +6,8 @@ import { Cliente } from 'src/app/models/cliente';
 import { Domicilio } from 'src/app/models/domicilio';
 import { ProductoService } from 'src/app/services/producto.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
+import { error } from 'protractor';
 
 @Component({
   selector: 'app-registro',
@@ -22,7 +24,7 @@ export class RegistroComponent implements OnInit {
         telefono: new FormControl('',Validators.compose([Validators.required,Validators.minLength(7),Validators.maxLength(12)])),
         email: new FormControl('',Validators.compose([Validators.required,Validators.email]))
       }),
-      passwordgroup:new FormGroup({
+      password:new FormGroup({
         password:new FormControl('',Validators.compose([Validators.required,Validators.maxLength(8),Validators.minLength(8)])),
         passwordConfirm: new FormControl('',Validators.compose([Validators.required,Validators.maxLength(8),Validators.minLength(8)]))
       }, { validators: this.password.bind(this)}),
@@ -34,7 +36,7 @@ export class RegistroComponent implements OnInit {
     }
     )
 
-  constructor( private formBuilder:FormBuilder, private servicio:ProductoService, private auth:AuthService) { }
+  constructor( private formBuilder:FormBuilder, private servicio:ProductoService, private router: Router) { }
 
   ngOnInit(){
   }
@@ -46,25 +48,20 @@ export class RegistroComponent implements OnInit {
     const predomicilio = this.registerForm.get('domicilio').value;
     return new Domicilio(predomicilio.calle, predomicilio.numero,predomicilio.localidad);
   }
-  postCliente(objeto){
-    this.servicio.postObservable('/clientes/',objeto)
-    .subscribe(respuesta => this.postDomicilio(respuesta.id),
-    error=>console.log(error));
+  postCliente(postObject){
+    return this.servicio.postObservable('Cliente',postObject)
   }
-  postDomicilio(fk){
-    let domicilio = this.getFormDomicilio();
-    domicilio.cliente= fk;
-    this.servicio.postObservable('/domicilios/',domicilio)
-    .subscribe(respuesta => console.log('post de domicilio',respuesta),
-    error=>console.log(error));
-  }
+
   onSubmit(){
+    this.registerForm.updateValueAndValidity();
     if(!this.registerForm.invalid){
       this.isSubmitted=true;
-      const cliente = this.getFormCliente();
-      console.log(this.registerForm.value);
-      this.auth.signup(this.registerForm.value).subscribe(data => console.log('respuesta',data));
-      //this.postCliente(cliente);
+      let clienteObj= {...this.registerForm.value["cliente"], telefono: +this.registerForm.value["cliente"]["telefono"], roles:"permiso_Cliente" }
+      let objetoPost = {cliente: clienteObj, domicilio: this.registerForm.value["domicilio"] , password: this.registerForm.value["password"]["password"] }
+      console.log(objetoPost);
+      this.postCliente(objetoPost).subscribe(res => this.router.navigate(["ingreso","login"]),
+      error => console.log(error)
+      )
     }  
   }
   password(formGroup: FormGroup) {

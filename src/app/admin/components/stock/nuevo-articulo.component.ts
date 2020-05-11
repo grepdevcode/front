@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ProductoService } from 'src/app/services/producto.service';
 import { RubroArticulo } from 'src/app/models/rubro-articulo';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nuevo-articulo',
@@ -53,12 +54,14 @@ import { RubroArticulo } from 'src/app/models/rubro-articulo';
     <label for="unidadMedida">Unidad de Medida</label> 
     <div>
       <select [formControlName]="'unidadMedida'" id="unidadMedida" name="unidadMedida" class="custom-select" required="required" aria-describedby="unidadMedidaHelpBlock">
-        <option value="g">Gramos</option>
-        <option value="l">Litros</option>
-        <option value="p">Paquetes</option>
-        <option value="c">Cajas</option>
-        <option value="s">Sobres</option>
-        <option value="u">Unidades</option>
+      <option value="Gramos">Gramos</option>
+      <option value="Litros">Litros</option>
+      <option value="Paquetes">Paquetes</option>
+      <option value="Cajas">Cajas</option>
+      <option value="Sobres">Sobres</option>
+      <option value="Unidades">Unidades</option>
+      <option value="Frasco">Frasco</option>
+      <option value="Botellas">Botellas</option>
       </select> 
       <span id="unidadMedidaHelpBlock" class="form-text text-muted">en que unidad se mide el producto</span>
     </div>
@@ -67,14 +70,14 @@ import { RubroArticulo } from 'src/app/models/rubro-articulo';
   <div class="form-group">
     <label for="rubro">Rubro</label> 
     <div>
-      <select [formControlName]="'rubro'" id="rubro" name="rubro" class="custom-select" required="required" aria-describedby="rubroHelpBlock">
+      <select [formControlName]="'rubroArticuloId'" id="rubro" name="rubro" class="custom-select" required="required" aria-describedby="rubroHelpBlock">
         <option *ngFor="let rubro of listaRubros;" value="{{rubro.id}}">{{rubro.denominacion}}</option>
       </select> 
       <span id="rubroMedidaHelpBlock" class="form-text text-muted">rubro al que pertenece el producto</span>
     </div>
   </div> 
   <div class="form-group">
-    <button name="submit" type="submit" class="btn btn-primary">Enviar</button>
+    <button [disabled]="!this.form.valid" name="submit" type="submit" class="btn btn-primary">Enviar</button>
   </div>
 </form>
 
@@ -86,17 +89,15 @@ import { RubroArticulo } from 'src/app/models/rubro-articulo';
   styles: []
 })
 export class NuevoArticuloComponent implements OnInit {
-  listaRubros: RubroArticulo[];
-
+  listaRubros: RubroArticulo[]=[];
+  form: FormGroup;
+  unsubcribe: any
 
   ngOnInit() {
+    this.getRubros();
   }
 
-
-  public form: FormGroup;
-  unsubcribe: any
-  
-  constructor(private formBuilder: FormBuilder, private servicio:ProductoService) {
+  constructor(private formBuilder: FormBuilder, private servicio:ProductoService, private route: Router) {
     this.form= this.formBuilder.group(
       {
         denominacion:[null,Validators.required],
@@ -105,21 +106,29 @@ export class NuevoArticuloComponent implements OnInit {
         stockActual:[null,Validators.compose([Validators.required,Validators.min(0)])],
         esInsumo:[null,Validators.nullValidator],
         unidadMedida:[null,Validators.compose([Validators.required,Validators.minLength(1)])],
-        rubro:[null,Validators.compose([Validators.required,Validators.minLength(1)])]
+        rubroArticuloId:[null,Validators.compose([Validators.required,Validators.minLength(1)])]
       }
     );
   }
 
   onSubmit(){
     if(this.form.valid){
-      this.servicio.postObservable('/articulos/',this.form.value).subscribe(art=>{
-        alert(`se ha agregado el articulo ${art.denominacion} id: ${art.id}.`)
-      },error =>{ alert('ha ocurrido un error')})
+      let postArt = { ...this.form.value, rubroArticuloId: +this.form.value["rubroArticuloId"] }
+      console.log(postArt);
+      
+      this.servicio.postObservable('/Articulo',postArt)
+        .subscribe(art=>{
+          alert(`se ha agregado un nuevo articulo.`),
+          this.route.navigate(["admin","stock"]);
+        },error =>{
+           console.log("onSubmit",error);
+        }
+      );
     }
-    
   }
+  // Toma los Rubros del backend
   getRubros(){
-    this.servicio.getData('/rubro_articulo/')
+    this.servicio.getData('/RubroArticulo')
     .subscribe(rubros=>this.listaRubros = rubros.map(x => new RubroArticulo(x.id, x.denominacion))
     ,error => console.log('no se han podido acceder a los rubros',error));
   }

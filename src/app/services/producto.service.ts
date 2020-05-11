@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse, HttpRequest } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 
 @Injectable({
@@ -19,8 +19,8 @@ export class ProductoService {
   private pedido = new BehaviorSubject(JSON.stringify(this.carrito));
   currentPedido = this.pedido.asObservable();
   //
-  url:string = '/articulomanufacturado';
-  urlpostpedido = "/recibir_pedido/";
+  url:string = '/ArticuloManufacturado';
+  urlpostpedido = "/Pedido";
 
 
   constructor( private http: HttpClient) { }
@@ -50,6 +50,10 @@ export class ProductoService {
     return this.http.get<any[]>(url);
   }
 
+  getSingleData(url:string):Observable<any>{
+    return this.http.get<any[]>(url);
+  }
+
   postData(url:string, nuevoObjeto:any){
     return this.http.post(url, nuevoObjeto, this.httpOptions)
     .subscribe(
@@ -71,8 +75,19 @@ export class ProductoService {
     return this.http.put(url, objetoModificado, this.httpOptions)
   }
 
-  removeData(url:string, pedirPermiso?: boolean):Observable<any>{
-    return this.http.delete(url,this.httpOptions)
+  patchData(url:string, objetoModificado:any){
+    return this.http.patch(url, objetoModificado, this.httpOptions)
+  }
+
+  removeData(url:string, objetoEliminado:any, pedirPermiso?: boolean):Observable<any>{
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'my-auth-token'
+      }),
+      body: objetoEliminado
+    };
+    return this.http.delete(url, options)
   }
 
   handleHttpError(error: HttpErrorResponse) {

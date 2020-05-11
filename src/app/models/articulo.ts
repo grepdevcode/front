@@ -11,7 +11,7 @@ stockActual: number;
 unidadMedida: string;
 esInsumo: boolean;
 
-rubroArticulo:number;
+rubroArticuloId:number;
 
 /**
  *
@@ -24,7 +24,7 @@ constructor(id,denominacion,precioCompra,precioVenta,stockActual,unidadMedida,es
     this.stockActual = stockActual;
     this.unidadMedida = unidadMedida;
     this.esInsumo = esInsumo;
-    this.rubroArticulo = rubroArticulo;
+    this.rubroArticuloId = rubroArticulo;
 }
 
 }

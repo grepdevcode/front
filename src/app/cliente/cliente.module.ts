@@ -5,6 +5,7 @@ import { ClienteRoutingModule } from './cliente-routing.module';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { PedidosComponent } from './components/pedidos/pedidos.component';
 
+
 @NgModule({
   declarations: [PerfilComponent, PedidosComponent],
   imports: [

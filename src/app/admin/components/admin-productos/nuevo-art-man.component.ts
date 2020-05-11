@@ -1,181 +1,165 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
 import { ProductoService } from 'src/app/services/producto.service';
 import { Articulo } from 'src/app/models/articulo';
 import { ArticuloManufacturado } from 'src/app/models/articulo-manufacturado';
 import { ArticuloManufacturadoDetalle } from 'src/app/models/articulo-manufacturado-detalle';
 import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nuevo-art-man',
   template: `
   <div class="container-fluid">
-  <div class="row p-3">
-  <div class="col-sm-7 offset-sm-2 mx-auto px-3 my-2">
-  <p class="h2 my-3"> Nuevo Articulo Manufacturado</p>
-  <form   [formGroup]='nuevoArtManForm'  (ngSubmit)="onSubmit(nuevoArtManForm.value)">
-  <div class="form-group">
-    <label for="denominacion">Denominacion</label> 
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <div class="input-group-text"></div>
-      </div> 
-      <input formControlName="denominacion" id="denominacion" name="denominacion" type="text" required="required" class="form-control">
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="tiempoEstimadoCocina">Tiempo en Cocina</label> 
-    <input formControlName="tiempoEstimadoCocina" id="tiempoEstimadoCocina" name="tiempoEstimadoCocina" type="text" aria-describedby="tiempoEstimadoCocinaHelpBlock" required="required" class="form-control"> 
-    <span id="tiempoEstimadoCocinaHelpBlock" class="form-text text-muted">ingrese el tiempo en minutos</span>
-  </div>
-  <div class="form-group">
-    <label for="precioVenta">Precio de venta</label> 
-    <input formControlName="precioVenta" id="precioVenta" name="precioVenta" type="text" aria-describedby="precioVentaHelpBlock" required="required" class="form-control"> 
-    <span id="precioVentaHelpBlock" class="form-text text-muted">ingrese el precio sin el signo $</span>
-  </div>
- 
-  <button type="button" (click)="addDetalle()" class="btn btn-sm btn-warning m-3"><small>agregar Insumo</small> </button>
-
-  <div formArrayName="detalles">
-
-  <div *ngFor="let grupo of nuevoArtManForm.controls.detalles.controls; let i=index">
-    <button (click)="removeDetalle(i)" class="btn btn-sm btn-danger float-right"><small><i class="fas fa-minus"></i> </small></button>
-    <div formGroupName="{{i}}">
-      <div class="row" >
-        <div class="col-sm-4">
-          <select class="browser-default custom-select" formControlName="articulo">
-            <option (change)="unidadMedida()" *ngFor="let item of ListaArticulos;let i = index" value="{{item.id}}">{{item.denominacion}}</option>              
-          </select>
-        </div>
-        <div class="col-sm-1 mx-2">
-          <p>cantidad</p>
-        </div>
-        <div class="col-sm-2 mx-2">
+    <div class="row p-3">
+      <div class="col-sm-7 offset-sm-2 mx-auto px-3 my-2">
+        <p class="h2 my-3"> Nuevo Articulo Manufacturado</p>
+        <form   [formGroup]='nuevoArtManForm'  (ngSubmit)="onSubmit()">
+          <!-- DENOMINACION -->
           <div class="form-group">
-            <input formControlName="cantidad" type="number" class="form-control" id="cantidad" aria-describedby="cantidadhelp"> 
+            <label for="denominacion">Denominacion</label> 
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"></div>
+                </div> 
+                <input formControlName="denominacion" id="denominacion" name="denominacion" type="text" required="required" class="form-control">
+              </div>
           </div>
-        </div>
-        <div class="col-sm-2 mx-2">
-          <p>{{getUnidadMedida(i)}}</p>
-        </div>
+          <!-- TIEMPO ESTIMADO COCINA -->
+          <div class="form-group">
+            <label for="tiempoEstimadoCocina">Tiempo en Cocina</label> 
+            <input formControlName="tiempoEstimadoCocina" id="tiempoEstimadoCocina" name="tiempoEstimadoCocina" type="text" aria-describedby="tiempoEstimadoCocinaHelpBlock" required="required" class="form-control"> 
+            <span id="tiempoEstimadoCocinaHelpBlock" class="form-text text-muted">ingrese el tiempo en minutos</span>
+          </div>
+          <!-- PRECIO VENTA -->
+          <div class="form-group">
+            <label for="precioVenta">Precio de venta</label> 
+            <input formControlName="precioVenta" id="precioVenta" name="precioVenta" type="text" aria-describedby="precioVentaHelpBlock" required="required" class="form-control"> 
+            <span id="precioVentaHelpBlock" class="form-text text-muted">ingrese el precio sin el signo $</span>
+          </div>
+          <!-- BOTON AGREGAR DETALLE -->
+          <button type="button" (click)="addDetalle()" class="btn btn-sm btn-warning m-3"><small>agregar Insumo</small> </button>
+          <!-- ARRAY DETALLES -->
+          <div formArrayName="detalles">
+            <div *ngFor="let grupo of nuevoArtManForm.controls.detalles.controls; let i=index">
+              <!-- Boton remover detalle -->
+              
+              <!-- Form Group -->
+              <div formGroupName="{{i}}">
+              <button (click)="removeDetalle(i)" class="btn btn-sm btn-danger float-right"><small><i class="fas fa-minus"></i> </small></button>
+                <div class="row" >
+                  <!-- Select Articulo -->
+                  <div class="col-sm-7">
+                    <select class="browser-default custom-select" formControlName="articuloId" (change)="updateFromGroup()">
+                      <option *ngFor="let item of ListaArticulos" value="{{item.id}}">{{item.denominacion}} ({{item.unidadMedida}})</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-1 mx-2">
+                    <p><small>cantidad</small></p>
+                  </div>
+                  <!-- Input Cantidad -->
+                  <div class="col-sm-3 mx-2">
+                    <div class="form-group">
+                      <input formControlName="cantidad" type="number" class="form-control" id="cantidad" aria-describedby="cantidadhelp" (change)="updateFromGroup()"> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <div class="form-group justify-content-end float-right mt-4">
+            <button [disabled]="!nuevoArtManForm.valid" name="submit" type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
       </div>
     </div>
-
-
   </div>
-  </div>
-
-  <div class="form-group justify-content-end float-right mt-4">
-    <button name="submit" type="submit" class="btn btn-primary">Submit</button>
-  </div>
-</form>
-
-
-</div>
-</div>
-</div>
   `,
   styles: []
 })
 
 export class NuevoArtManComponent implements OnInit {
 
-  ngOnInit() {
-
-    this.getArticulos();
-    this.addDetalle();
-
-  }
   ListaArticulos:Articulo[]=[];
   nuevoArtManForm;
   articulosmanufacturadosLista:any[]=[];
 
-  constructor(private servicio: ProductoService,  private formBuilder:FormBuilder) {
-    
+  ngOnInit() {
+    this.getArticulos();
+  }
+
+  constructor(private servicio: ProductoService,  private formBuilder:FormBuilder,private router:Router) {  
     this.nuevoArtManForm = this.formBuilder.group({
-      tiempoEstimadoCocina:['',Validators.min(10)],
-      denominacion:['', Validators.required],
-      precioVenta:['',Validators.min(1)],
-      detalles: this.formBuilder.array([])
+      tiempoEstimadoCocina:['',Validators.compose( [Validators.min(10), Validators.required])],
+      denominacion:['', Validators.compose([Validators.required, Validators.minLength(3)])],
+      precioVenta:['',Validators.compose([Validators.required,Validators.min(1)])],
+      detalles : this.formBuilder.array([this.initDetalle()])
     });
+    
   }
-
-getUnidadMedida(id){
-  console.log('onchange unidadmedida');
-  const art = this.ListaArticulos.filter(x=> x.id = id) 
-  return (art.shift())? art.shift().unidadMedida : '-' ;
-}
-
+// Envia el Articulo Manufacturado y los detalles al backend.
   onSubmit(){
-    const data = this.getFormManufacturado();
-    let datadetalles =[];
-    this.postArticuloMan(data);
-  }
+    this.nuevoArtManForm.updateValueAndValidity();
+    const formdata = this.nuevoArtManForm.value;
+    let detalles = formdata.detalles.map( row => {
+      return new ArticuloManufacturadoDetalle(0,+row.articuloId,+row.cantidad);
+      })
+    if(this.nuevoArtManForm.valid){
+      let postManufacturado ={
+        articuloManufacturado:{
+          denominacion: formdata.denominacion,
+          tiempoEstimadoCocina: +formdata.tiempoEstimadoCocina,
+          precioVenta:+formdata.precioVenta
+        },
+        ArticuloManufacturadoDetalle: detalles
+      }
+      
+      console.log({...postManufacturado,detalles});
+      
+    this.servicio.postObservable("ArticuloManufacturado",{...postManufacturado})
+    .subscribe(x => {
+      alert(`Se ah agregado un nuevo producto: ${x.denominacion}` );
+      this.router.navigate(["admin","productos"]);
+    }, error=> console.log(error)
+    )
+      }
 
-  postArticuloMan(data){
-    return this.servicio.postObservable("/articulo_manufacturado/",data).toPromise()
-    .then(x=>{
-      console.log(x);
-      this.getFormDetalles(x.id).forEach(x=>{
-        this.postDetalles(x);
-      });
-    })
   }
-
-  postDetalles(data){
-    return this.servicio.postObservable("/articulo_manufacturado_detalle/",data).subscribe(x=>console.log('post detalles',x));
-  }
-
+  // Toma Articulos que sean insumos del Backend 
   getArticulos(){
-    return this.servicio.getData('/articulo/')
+    return this.servicio.getData('/Articulo')
     .subscribe(res=>{
-       this.ListaArticulos = res
+       this.ListaArticulos = res.filter(x => x.esInsumo)
     },
     error=>{
       alert(error);
     })
   }
-
-  getFormManufacturado(){
-    const manufacturado = {
-      denominacion: this.nuevoArtManForm.get('denominacion').value,
-      precio_venta:this.nuevoArtManForm.get('precioVenta').value,
-      tiempo_estimado_cocina: this.nuevoArtManForm.get('tiempoEstimadoCocina').value,
-    }
-    return manufacturado;
+  // Acceder al FormArray  directamente.
+  get detalles(): FormArray {
+    return this.nuevoArtManForm.get('detalles') as FormArray;
   }
-
-  getFormDetalles(id){
-    let listaArticuloManufacturadoDetalle=[];
-    for(let item of this.nuevoArtManForm.get('detalles').controls ){
-      listaArticuloManufacturadoDetalle.push(
-        
-          new ArticuloManufacturadoDetalle(id, item.value.articulo, item.value.cantidad)
-          // articulo_manufacturado: id,
-          // articulo: item.value.articulo,
-          // cantidad: item.value.cantidad
-        
-      );
-    }
-    console.log(listaArticuloManufacturadoDetalle);
-    return listaArticuloManufacturadoDetalle;
-  }
-
-  ///componente detalle articulo
+  // Crear un FormGroup con dos FormControl dentro para detalle articulo
   initDetalle() {
     return this.formBuilder.group({
-      articulo: ['',Validators.required],
-      cantidad: ['',Validators.min(1)]
+      articuloId: [,Validators.required],
+      cantidad: [,Validators.compose([Validators.required, Validators.min(1)])]
     });
   }
-  
+  // Agrega un FormGroup al FormArray
   addDetalle() {
-    const control = this.nuevoArtManForm.controls.detalles.controls;
-    control.push(this.initDetalle());
+    const detalles = this.nuevoArtManForm.get('detalles') as FormArray
+    detalles.controls.push(this.initDetalle());
+    detalles.updateValueAndValidity()
   }
-
-  removeDetalle(i: number) {
-    const control = this.nuevoArtManForm.controls.detalles;
-    control.removeAt(i);
+  // Quita un formGroup del FormArray
+  removeDetalle(i: number) { 
+    this.detalles.removeAt(i);
+  }
+  // Actualiza los valores del FormArray 
+  updateFromGroup(){
+    const detalles = this.nuevoArtManForm.get('detalles') as FormArray
+    detalles.updateValueAndValidity()
   }
 }

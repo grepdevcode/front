@@ -12,7 +12,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { DynamicFormBuilderModule } from '../dynamic-form-builder/dynamic-form-builder.module';
 import { NuevoArticuloComponent } from './components/stock/nuevo-articulo.component';
 import { NuevoArtManComponent } from './components/admin-productos/nuevo-art-man.component';
 import { EditarComponent } from './components/admin-productos/editar.component';
@@ -22,6 +21,7 @@ import { RubroComponent } from './components/rubro.component';
 import { ClientesComponent } from './components/clientes/clientes.component';
 import { NuevoClienteComponent } from './components/clientes/nuevo-cliente.component';
 import { EditarClienteComponent } from './components/clientes/editar-cliente.component';
+import { PedidosComponent } from './components/facturacion/pedidos.component';
 
 @NgModule({
   declarations:
@@ -39,13 +39,13 @@ import { EditarClienteComponent } from './components/clientes/editar-cliente.com
            RubroComponent,
            ClientesComponent,
            NuevoClienteComponent,
-           EditarClienteComponent],
+           EditarClienteComponent,
+           PedidosComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
     ChartsModule,
     ReactiveFormsModule,
-    DynamicFormBuilderModule,
     NgbModule
   ]
 })

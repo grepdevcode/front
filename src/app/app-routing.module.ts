@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './auth.guard';
+import { AuthRoles } from './auth/auth-roles.enum';
 
 const routes: Routes = [
   {
@@ -9,20 +10,26 @@ const routes: Routes = [
   },
   {
     path:'tienda',
-    loadChildren:'./tienda/tienda.module#TiendaModule'
+    loadChildren:'./tienda/tienda.module#TiendaModule',
+    canLoad:[AuthGuard]
   },
   {
     path:'cliente',
     loadChildren:'./cliente/cliente.module#ClienteModule',
-    canActivate: [AuthGuard]
+    canLoad: [AuthGuard],
+    data: { expectedRol: AuthRoles.rolCliente}
   },
   {
     path: 'admin',
-    loadChildren: './admin/admin.module#AdminModule'
+    loadChildren: './admin/admin.module#AdminModule',
+    canLoad: [AuthGuard],
+    data: { expectedRol: AuthRoles.rolAdmin}
   },
   {
-    path: 'cocina',
-    loadChildren: './cocina/cocina.module#CocinaModule'
+    path: "cocina",
+    loadChildren: './cocina/cocina.module#CocinaModule',
+    canLoad: [AuthGuard],
+    data: { expectedRol: AuthRoles.rolCocina}
   }
 ];
 

@@ -1,5 +1,6 @@
 import { Domicilio } from './domicilio';
 import { Pedido } from './pedido';
+import { AuthRoles } from '../auth/auth-roles.enum';
 
 export class Cliente {
     id:number;
@@ -8,6 +9,7 @@ export class Cliente {
     telefono:number;
     email:String;
     domicilio: number;
+    roles:string;
     /**
      *
      */
@@ -15,5 +17,6 @@ export class Cliente {
         this.nombre= nombre;
         this.apellido = apellido;
         this.telefono = telefono;
+        this.roles = AuthRoles.rolEspectador
     }
 }

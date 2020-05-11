@@ -37,7 +37,7 @@ import { Router, ActivatedRoute } from '@angular/router';
     <span id="precioVentaHelpBlock" class="form-text text-muted">ingrese el precio sin el signo $</span>
   </div>
  
-  <button type="button" (click)="addDetalle()" class="btn btn-sm btn-warning m-3"><small>agregar Insumo</small> </button>
+  <button type="button" (click)="addDetalle()" class="btn btn-sm btn-warning m-2"><small>agregar Insumo</small> </button>
 
   <div formArrayName="detalles">
 
@@ -45,21 +45,20 @@ import { Router, ActivatedRoute } from '@angular/router';
     <button (click)="removeDetalle(i)" class="btn btn-sm btn-danger float-right"><small><i class="fas fa-minus"></i> </small></button>
     <div formGroupName="{{i}}">
       <div class="row" >
-        <div class="col-sm-5">
-          <select class="browser-default custom-select" formControlName="articulo">
-            <option (change)="unidadMedida()" *ngFor="let item of ListaArticulos;let i = index" value="{{item.id}}">{{item.denominacion}}</option>              
+        <div class="col-sm-6">
+        
+          <select class="browser-default custom-select" formControlName="articuloId">
+            <option (change)="updataFormArray()" *ngFor="let item of ListaArticulos;let j = index" value="{{item.id}}">{{item.denominacion}} <small> ({{item.unidadMedida}}) </small></option>              
           </select>
+
         </div>
-        <div class="col-sm-1 text-center">
+        <div class="col-sm-1 ">
           <p> <small> cant </small></p>
         </div>
         <div class="col-sm-3 ">
           <div class="form-group">
-            <input formControlName="cantidad" type="number" class="form-control" id="cantidad" aria-describedby="cantidadhelp"> 
+            <input formControlName="cantidad" type="number" class="form-control" id="cantidad" aria-describedby="cantidadhelp" (change)="updataFormArray()"> 
           </div>
-        </div>
-        <div class="col ">
-          <p><small> {{getUnidadMedida(i)}} </small></p>
         </div>
       </div>
     </div>
@@ -69,7 +68,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   </div>
 
   <div class="form-group justify-content-end float-right mt-4">
-    <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+    <button name="submit" type="submit" class="btn btn-primary" [disabled]="!this.nuevoArtManForm.valid" >Submit</button>
   </div>
 </form>
 
@@ -81,115 +80,126 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class EditarComponent implements OnInit {
   id:number;
-  producto:ArticuloManufacturado = new ArticuloManufacturado(13,15,"Tarta",150);
+  producto:ArticuloManufacturado;
   ListaArticulos:Articulo[]=[];
   nuevoArtManForm:FormGroup;
-  listaDetalles:ArticuloManufacturadoDetalle[] = [new ArticuloManufacturadoDetalle(1,2,5), new ArticuloManufacturadoDetalle(1,3,8)];
+  listaDetalles:ArticuloManufacturadoDetalle[] =[];
 
-  constructor(private servicio: ProductoService,  private formBuilder:FormBuilder,private route:ActivatedRoute) {
+  constructor(private servicio: ProductoService,  private formBuilder:FormBuilder,private route:ActivatedRoute,private router:Router) {
     this.nuevoArtManForm = this.formBuilder.group({
-      tiempoEstimadoCocina:['',Validators.min(10)],
-      denominacion:['', Validators.required],
-      precioVenta:['',Validators.min(1)],
-      detalles: this.formBuilder.array([])
+      tiempoEstimadoCocina:['',Validators.compose([Validators.required, Validators.min(10)])],
+      denominacion:['', Validators.compose([ Validators.required, Validators.minLength(3)])],
+      precioVenta:['',Validators.compose([Validators.required, Validators.min(1)])],
+      detalles: this.formBuilder.array([],Validators.required)
     });
    }
   ngOnInit() {
     this.id =Number( this.route.snapshot.paramMap.get('id'));
-    this.getArtmanufacturado();                      
+    this.getArtmanufacturado(); 
     this.getArticulos();
     this.getDetalles();
-    this.initForm(); //ok
+                        
+    setTimeout(() => {
+      this.initForm()
+    }, 1500);
+     //ok
   }
-//FROM ARTICULO MANUFACTURADO
+// Tomar el articulo manufacturado del backend.
   getArtmanufacturado(){
-    this.servicio.getData(`/articulo_manufacturado/${this.id}`)
-    .subscribe(art =>{
-      let item = art.shift();
-      this.producto = 
-      new ArticuloManufacturado(
-        item.id,
-        item.tiempoEstimadoCocina,
-        item.denominacion,
-        item.precioVenta)
+    this.servicio.getSingleData(`/ArticuloManufacturado/${Number( this.route.snapshot.paramMap.get('id'))}`)
+    .subscribe( data =>{
+      this.producto =new ArticuloManufacturado(data["id"], data["tiempoEstimadoCocina"], data["denominacion"],data["precioVenta"]);
+      console.log(this.producto);
+    }); 
+  }
+  // Tomar detalles del backend.
+  getDetalles(){
+    return  this.servicio.getData("/ArticuloManufacturadoDetalle")
+    .subscribe(x => this.listaDetalles = x.filter(z => z.articuloManufacturadoId == this.producto.id));
+  }
+  // Tomar Articulos del backend.
+  getArticulos(){
+    return this.servicio.getData('/Articulo')
+    .subscribe(res=>{
+       this.ListaArticulos = res.filter(row => row.esInsumo)
+    },
+    error=>{
+      alert(error);
     })
-  }//traer articulo de la base de datos
+  }
+// Carga los valores del articulo manufacturado en el form.
   initForm(){
     for(let prop in this.nuevoArtManForm.controls){
       console.log(prop);
 
       (prop !== 'detalles')?
         this.nuevoArtManForm.get(prop).setValue(this.producto[prop]):  
-       this.initDetalle();
+        this.initDetalle();
     }
-  } // llenar formulario
-  getFormManufacturado(){
-    let manufacturado = new ArticuloManufacturado(
-       this.id, this.nuevoArtManForm.get('tiempoEstimadoCocina').value,
-       this.nuevoArtManForm.get('denominacion').value,
-       this.nuevoArtManForm.get('precioVenta').value);
-    return manufacturado;
-  } // tomar valores del form
-  getFromDetalles(){
-    const control = this.nuevoArtManForm.get('detalles') as FormArray;
-    let array =[];
-    control.controls.forEach(x=>{
-      array.push(new ArticuloManufacturadoDetalle(this.id,x.get('articulo').value, x.get('cantidad').value))
-    })
-    return array;
   }
-// DETALLE COMPONENT
-  getDetalles(){
-    return  this.servicio.getData(`/articulo_manufacturado_detalle/${this.producto.id}`)
-    .subscribe(x => this.listaDetalles = x);
-  }
+  // Cargar los detalles en el FormArray
   initDetalle() {
     const control = this.nuevoArtManForm.get('detalles') as FormArray;
     this.listaDetalles.forEach(x=>{
+      console.log("item in lista detalles",x);
       let grupo = new FormGroup({
-        articulo: new FormControl(x.articulo),
+        articuloId: new FormControl(x.articuloId),
         cantidad: new FormControl(x.cantidad)
       })
       control.push(grupo);
     })
+    control.updateValueAndValidity();
   }
+  // Crea un FormGroup con los controls articuloId y cantidad.
   crearDetalle(){
     return this.formBuilder.group({
-      articulo:[null,Validators.required],
-      cantidad:[1,Validators.min(1)]
+      articuloId:[,Validators.compose([ Validators.required, Validators.min(1)])],
+      cantidad:[,Validators.compose([ Validators.required, Validators.min(1)])]
     })
   }
+  // Agrega un detalle vacio
   addDetalle() {
     const control = this.nuevoArtManForm.get('detalles') as FormArray;
     control.push(this.crearDetalle());
+    control.updateValueAndValidity();
   }
+  // Quita un detalle
   removeDetalle(i: number) {
     const control = this.nuevoArtManForm.get('detalles') as FormArray;
     control.removeAt(i);
+    this.updataFormArray();
   }
-  getArticulos(){
-    return this.servicio.getData('/articulo/')
-    .subscribe(res=>{
-       this.ListaArticulos = res
-    },
-    error=>{
-      alert(error);
-    })
-  }
-  getUnidadMedida(id){
-    const art = this.ListaArticulos.filter(x=> x.id = id) 
-    return (art.shift())? art.shift().unidadMedida : '-' ;
-  }
+  // Envia un Put request al backend
   onSubmit(){
-    console.log(this.nuevoArtManForm.value);
-    if(!this.nuevoArtManForm.invalid){
-
-      this.servicio.putData(`/articulo_manufacturado/${this.id}`,this.nuevoArtManForm.value);
+    this.nuevoArtManForm.updateValueAndValidity();
+    const formdata = this.nuevoArtManForm.value;
+    let detalles = formdata.detalles.map( row => {
+      return new ArticuloManufacturadoDetalle(this.producto.id,+row.articuloId,+row.cantidad);
+      })
+    if(this.nuevoArtManForm.valid){
+      let postManufacturado ={
+        articuloManufacturado:{
+          id:this.producto.id,
+          denominacion: formdata.denominacion,
+          tiempoEstimadoCocina: +formdata.tiempoEstimadoCocina,
+          precioVenta:+formdata.precioVenta
+        },
+        ArticuloManufacturadoDetalle:detalles
+      }
+      
+      console.log({...postManufacturado});
+      
+      this.servicio.putData("ArticuloManufacturado",{...postManufacturado})
+      .subscribe(x => {
+        alert(`Se ha modificado el producto: ${this.producto.id}` );
+        this.router.navigate(["admin","productos"]);
+      }, error=> console.log(error)
+      )
     }
+
   }
-
-// PROPIOS
-
-
-
+// actualia los valores del Form
+  updataFormArray(){
+    this.nuevoArtManForm.updateValueAndValidity();
+  }
 }

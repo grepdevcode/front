@@ -16,10 +16,10 @@ export class StockComponent implements OnInit {
 
   ngOnInit() {
     this.getArticulos();
-    this.listaArticulos.push(new Articulo(3,"durazno",12,14,54,'kg',true,12))
   }
+  // Tomar articulos del backend
   getArticulos(){
-    this.servicio.getData('/articulos/')
+    this.servicio.getData('/Articulo')
     .subscribe(art => this.listaArticulos = art.map(x =>
        new Articulo(
          x.id,
@@ -36,13 +36,13 @@ export class StockComponent implements OnInit {
     )
     
   }
-  removeArticulo(id){
-    if(confirm("Desea eliminar el articulo "+id+"?")){
-      this.servicio.removeData(`/articulo/${id}`)
-    .subscribe(elim => this.getArticulos(),
-    error =>{alert('ha habido un error no se ha podido eliminar el articulo'); console.log(error)})
+  // Envia DELETE request con el bojeto a borrar
+  removeArticulo(articulo){
+    if(confirm("Desea eliminar el articulo "+articulo.id+"?")){
+      this.servicio.removeData("/Articulo",articulo)
+      .subscribe(elim => this.getArticulos(),
+      error =>{alert('ha habido un error no se ha podido eliminar el articulo'); console.log(error)})
     }
-    
   }
 
 

@@ -5,7 +5,7 @@ export class Domicilio {
     calle:String;
     numero:number;
     localidad:String;
-    cliente: number;
+    clienteId: number;
 
     constructor(calle,numero,localidad) {
         this.calle = calle;

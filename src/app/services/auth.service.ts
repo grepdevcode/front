@@ -1,66 +1,80 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {map} from 'rxjs/operators';
+import { AuthRoles } from '../auth/auth-roles.enum';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import * as decode from 'jwt-decode';
+import { error } from 'protractor';
+import { CacheService } from './cache.service';
+
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
-  url:string = "https://identitytoolkit.googleapis.com/v1/";
-  miApiKey = "AIzaSyBH83QxcjjEX8-gI56_AEGKJ6DDJWBStHQ";
-  userToken:string;
-  permisos={
-    comprar: true,
-    admin: false,
-    cocina:false
-  }
-// crear nuevos usuarios
-// https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_KEY]
+export class AuthService extends CacheService {
 
-//login
-//https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=[API_KEY]
-  constructor(private http: HttpClient){}
+  private readonly authProvider : (email:string, password: string) => Observable<IServerAuthResponse>;
+  authStatus= new BehaviorSubject<IAuthStatus>(this.getItem('authStatus')|| defaultAuthStatus);
+  constructor( private http: HttpClient) { 
+    super();
+    this.authStatus.subscribe(authStatus=>{
+      this.setItem('authStatus', authStatus)
+    })
+    this.authProvider = this.userAuthProvider;
+  }
+// Envia el Post a el backend 
+  userAuthProvider(email:string, password:string):Observable<IServerAuthResponse>{
+    return this.http.post<IServerAuthResponse>('Token' ,{email:email, password: password})
+  }
+  // Ingreso de usuario, decodifia y devuelve token
+  login(email:string, password:string): Observable<IAuthStatus>{
+    this.logout();
+    const loginResponse = this.userAuthProvider(email,password).pipe(
+      map(value =>{
+        this.setToken(value.accessToken);
+        const result = decode(value.accessToken);
+        return result as IAuthStatus;
+      }));
 
-  login(form){
-
-    const data ={
-      ...form,
-      returnSecureToken: true
-    };
-    return this.http.post(`${this.url}accounts:signInWithPassword?key=${this.miApiKey}`,data).pipe(map(res =>{
-      this.guardarToken(res['idToken']);
-      return res;
-    }));
+    loginResponse.subscribe(res =>{
+      this.authStatus.next(res)
+    },error =>{
+      this.logout();
+      return throwError(error)
+    })
+    return loginResponse;
   }
-  logout(){}
-  signup(cliente){
-    const data = {
-      email: cliente.cliente.email,
-      password: cliente.passwordgroup.password,
-      info:{
-        nombre:cliente.cliente.nombre,
-        apellido:cliente.cliente.apellido,
-        telefono:cliente.cliente.telefono,
-      },
-      domicilio:cliente.domicilio,
-      returnSecureToken: true
-    }
-    console.log(data);
-    return this.http.post(`${this.url}accounts:signUp?key=${this.miApiKey}`,data)
-    .pipe(map(res =>{
-      this.guardarToken(res['idToken']);
-      return res;
-    }));
+  logout(){
+    this.clear();
+    this.authStatus.next(defaultAuthStatus);
   }
-  guardarToken(idToken:string){
-    this.userToken = idToken;
-    localStorage.setItem('token',idToken);
+   setToken(jwt:string){
+    this.setItem('jwt',jwt);
   }
-  leerToken(){
-    if(localStorage.getItem('token')){
-      this.userToken= localStorage.getItem('token');
+   getToken():string{
+    return this.getItem('jwt') || '';
+  }
+   clear(){
+    localStorage.clear();
+  }
+  getAuthStatus():IAuthStatus{
+    return this.getItem('authStatus')
+  }
+  getIdUsuario(){
+    if(this.getAuthStatus().primarysid == null){
+      console.log(this.getAuthStatus().primarysid);
+      
+      return null
     }else{
-      this.userToken= '';
-    }
-    return this.userToken;
+      return Number(this.getAuthStatus().primarysid)
+    } 
   }
 }
+export interface IAuthStatus{
+  role: AuthRoles,
+  primarysid: string,
+  unique_name: string
+}
+interface IServerAuthResponse{
+  accessToken: string;
+}
+const defaultAuthStatus : IAuthStatus = {role: AuthRoles.rolEspectador, primarysid: null, unique_name: null }

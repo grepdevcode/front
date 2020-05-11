@@ -1,15 +1,15 @@
 
 export class ArticuloManufacturadoDetalle {
     cantidad: number;
-    articuloManufacturado: number;
-    articulo: number;
+    articuloManufacturadoId: number;
+    articuloId: number;
 
     /**
      *
      */
     constructor(manufacturado,articulo,cantidad) {
-        this.articuloManufacturado = manufacturado
-        this.articulo = articulo
+        this.articuloManufacturadoId = manufacturado
+        this.articuloId = articulo
         this.cantidad = cantidad
     }
 }

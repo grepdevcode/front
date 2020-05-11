@@ -6,13 +6,13 @@ export class Factura {
     numero: number;
     montoDescuento: number;
     total: number;
-    pedido:number;
+    pedidoId:number;
 
     constructor(fecha,numero,montoDescuento,total,pedido) {
     this.fecha= fecha;
-    this.pedido= numero;
-    this.numero= montoDescuento;
-    this.montoDescuento= total;
-    this.total= pedido;
+    this.pedidoId= pedido;
+    this.numero= numero;
+    this.montoDescuento= montoDescuento;
+    this.total= total;
     }
 }

@@ -7,16 +7,16 @@ export class DetallePedido {
     cantidad : number;
     subtotal : number;
     pedido: number;
-    factura: number;
+    facturaId: number;
     articuloManufacturado: ArticuloManufacturado;
-    articulo:Articulo;
+    articulo:Articulo ;
     /**
      *
      */
     constructor(cantidad,subtotal,articulo,articuloManufacturado) {
         this.cantidad=cantidad;
         this.subtotal = subtotal;
-        this.articulo = articulo;
+        this.articulo = articulo ;
         this.articuloManufacturado = articuloManufacturado;
     }
 }

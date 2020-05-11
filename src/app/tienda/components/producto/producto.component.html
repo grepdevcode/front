@@ -4,6 +4,25 @@
       <h5 class="card-title">{{unidad.denominacion}}</h5>
       <p class="card-text">{{unidad.precioVenta}}</p>
       <button  class="btn btn-primary" (click)="onCarrito(unidad)">Agregar al carro</button>
+
+<!-- lista desplegable -->
+<div *ngIf="checkDataType(unidad)" class=" mt-2">
+
+    <p>
+      <a class="btn btn-sm btn-light" data-toggle="collapse" href="#collapseExample{{unidad.id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+       <small>Ingredientes</small>
+      </a>
+    </p>
+    <div class="collapse" id="collapseExample{{unidad.id}}">
+      <div class="card card-body">
+        <span *ngFor="let art of listaXproducto ">
+          {{art}}- 
+      </span>
+      </div>
+    </div>
+    
+  </div>
+
     </div>
 </div>
 

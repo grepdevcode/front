@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RubroArticulo } from 'src/app/models/rubro-articulo';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProductoService } from 'src/app/services/producto.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Articulo } from 'src/app/models/articulo';
 
 @Component({
@@ -11,7 +11,7 @@ import { Articulo } from 'src/app/models/articulo';
   <div class="col-sm-7 offset-sm-2">
   <p class="h2"> </p>
 <div class="card">
-  <div class="card-header">Articulo N°{{this.id}}</div>
+  <div class="card-header">Articulo N°{{this.route.snapshot.paramMap.get("id")}}</div>
   <div class="card-body">
     
 
@@ -55,13 +55,14 @@ import { Articulo } from 'src/app/models/articulo';
     <label for="unidadMedida">Unidad de Medida</label> 
     <div>
       <select [formControlName]="'unidadMedida'" id="unidadMedida" name="unidadMedida" class="custom-select" required="required" aria-describedby="unidadMedidaHelpBlock">
-        <option value="g">Gramos</option>
-        <option value="l">Litros</option>
-        <option value="p">Paquetes</option>
-        <option value="c">Cajas</option>
-        <option value="s">Sobres</option>
-        <option value="u">Unidades</option>
-        <option value="f">Frasco</option>
+        <option value="Gramos">Gramos</option>
+        <option value="Litros">Litros</option>
+        <option value="Paquetes">Paquetes</option>
+        <option value="Cajas">Cajas</option>
+        <option value="Sobres">Sobres</option>
+        <option value="Unidades">Unidades</option>
+        <option value="Frasco">Frasco</option>
+        <option value="Botellas">Botellas</option>
       </select> 
       <span id="unidadMedidaHelpBlock" class="form-text text-muted">en que unidad se mide el producto</span>
     </div>
@@ -70,14 +71,14 @@ import { Articulo } from 'src/app/models/articulo';
   <div class="form-group">
     <label for="rubro">Rubro</label> 
     <div>
-      <select [formControlName]="'rubro'" id="rubro" name="rubro" class="custom-select" required="required" aria-describedby="rubroHelpBlock">
+      <select [formControlName]="'rubroArticuloId'" id="rubro" name="rubro" class="custom-select" required="required" aria-describedby="rubroHelpBlock">
         <option *ngFor="let rubro of listaRubros;" value="{{rubro.id}}">{{rubro.denominacion}}</option>
       </select> 
       <span id="rubroMedidaHelpBlock" class="form-text text-muted">rubro al que pertenece el producto</span>
     </div>
   </div> 
   <div class="form-group">
-    <button name="submit" type="submit" class="btn btn-primary">Editar</button>
+    <button [disabled]="!this.form.valid" name="submit" type="submit" class="btn btn-primary">Editar</button>
   </div>
 </form>
 
@@ -89,22 +90,26 @@ import { Articulo } from 'src/app/models/articulo';
   styles: []
 })
 export class EditarArticuloComponent implements OnInit {
-
   listaRubros: RubroArticulo[];
-  articulo:Articulo= new Articulo(3,"anchoas",12,50,100,"f",true,1);
-  public form: FormGroup;
+  articulo:Articulo;
+  form: FormGroup;
   unsubcribe: any
   id:number;
-
   ngOnInit() {
-    this.getRubros();
+   // this.id =Number( this.route.snapshot.paramMap.get('id'));
     this.getArticulo();
-    this.id =Number( this.route.snapshot.paramMap.get('id'));
-    console.log(this.articulo)
-    this.initForm();
+    this.getRubros();
+    this.createForm();
+    setTimeout(() => {
+      this.initForm();
+    }, 500);
+    
   }
-
-  constructor(private formBuilder: FormBuilder, private servicio:ProductoService, private route:ActivatedRoute) {
+  constructor(private formBuilder: FormBuilder, private servicio:ProductoService,private router:Router, private route:ActivatedRoute) {
+    
+  }
+  // Crea el Form
+  createForm(){
     this.form= this.formBuilder.group(
       {
         denominacion:[null,Validators.required],
@@ -113,36 +118,57 @@ export class EditarArticuloComponent implements OnInit {
         stockActual:[null,Validators.compose([Validators.required,Validators.min(0)])],
         esInsumo:[null,Validators.nullValidator],
         unidadMedida:[null,Validators.compose([Validators.required,Validators.minLength(1)])],
-        rubro:[null,Validators.compose([Validators.required,Validators.minLength(1)])]
+        rubroArticuloId:[null,Validators.compose([Validators.required,Validators.minLength(1)])]
       }
     );
+   
   }
-
-  onSubmit(){
+  // Envia la PUT request
+  onSubmit(){ 
     if(this.form.valid){
-      this.servicio.putData(`/articulos/${this.id}`,this.form.value).subscribe(art=>{
-        alert(`se ha modificado el articulo ${art}.`)
-      },error =>{ alert('ha ocurrido un error')})
-    }
+      let putArticulo = {id:this.articulo.id, ...this.form.value}
+      console.log(putArticulo);
+      
+      this.servicio.putData("/Articulo",putArticulo)
+      .subscribe((res)=>{
+        if(res){
+          this.router.navigate(["admin","stock"]);
+        }else{
+          console.log(res);
+        }
+    })
   }
+  }
+  // Toma los Rubros del backend
   getRubros(){
-    this.servicio.getData('/rubro_articulo/')
+    this.servicio.getData('/RubroArticulo')
     .subscribe(rubros=>this.listaRubros = rubros.map(x => new RubroArticulo(x.id, x.denominacion))
     ,error => console.log('no se han podido acceder a los rubros',error));
   }
+  // Tomar articulo del Backend
   getArticulo(){
-    this.servicio.getData(`/articulo/${this.id}`)
-    .subscribe(x => {
-      let item = x.shift();
+    const id =  Number( this.route.snapshot.paramMap.get("id"));
+    this.servicio.getSingleData(`/Articulo/${id}`)
+    .subscribe(item => {
       console.log(item)
-      this.articulo = new Articulo(item.id,item.denominacion,item.precioCompra,item.precioVenta,item.stockActual,item.unidadMedida,item.esInsumo,item.rubroArticulo)
-    })
+      this.articulo = 
+      new Articulo(
+        item.id,
+        item.denominacion,
+        item.precioCompra,
+        item.precioVenta,
+        item.stockActual,
+        item.unidadMedida,
+        item.esInsumo,
+        item.rubroArticuloId)
+    }) 
   }
+  // Escribe los valores correspondientes en el form
   initForm(){
+    if(this.articulo){
     for(let el in this.form.controls ){
       this.form.get(el).setValue( this.articulo[el])
     }
   }
-
-
+  }
 }

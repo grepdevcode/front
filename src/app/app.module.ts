@@ -9,7 +9,8 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
-import { DynamicFormBuilderModule } from './dynamic-form-builder/dynamic-form-builder.module';
+import { AuthService } from './services/auth.service';
+import { AuthGuard } from './auth.guard';
 
 
 
@@ -23,12 +24,12 @@ import { DynamicFormBuilderModule } from './dynamic-form-builder/dynamic-form-bu
     AppRoutingModule,
     HttpClientModule,
     NgbModule,
-    ReactiveFormsModule,
-    DynamicFormBuilderModule
+    ReactiveFormsModule
 
   ],
   providers: [
-
+    AuthService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })
