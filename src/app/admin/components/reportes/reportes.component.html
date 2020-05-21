@@ -1,7 +1,49 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-md-10 mx-auto">
+            <select name="reporteSelect" id="reporteSelect" class="form-control w-50 my-3" [(ngModel)]="reporteSelect" >
+                <option value="1">Comidas más pedidas por los clientes</option>
+                <option value="2"> Clientes registrados por periodo de tiempo  </option>
+                <option value="3">Ingresos por períodos de tiempo</option>
+                <option value="4">Pedidos por períodos de tiempo</option>
+                <option value="5">Pedidos por periodo agrupados por cliente</option>
+            </select>
+
+            <div [ngSwitch]="reporteSelect">
+                <div class="col-sm-9" *ngSwitchCase="1">
+                    <app-barchart  [barChartData]="comidasMasPedidas.qq" [barChartLabels]="comidasMasPedidas.nn"></app-barchart>
+                </div>
+                <div class="col-sm-9" *ngSwitchCase="2">
+                    <app-barchart  [barChartData]="clientesRegistrados.qq" [barChartLabels]="clientesRegistrados.nn"></app-barchart>
+                </div>
+                <div class="col-sm-9" *ngSwitchCase="3">
+                    <app-barchart  [barChartData]="ingresos.qq" [barChartLabels]="ingresos.nn"></app-barchart>
+                </div>
+                <div class="col-sm-9" *ngSwitchCase="4">
+                    <app-barchart  [barChartData]="pedidos.qq" [barChartLabels]="pedidos.nn"></app-barchart>
+                </div>
+                
+                <div *ngSwitchCase="5" class="row mx-auto">
+                    <div class="col-md-10 my-3" style="min-height: 200px;">
+                        <app-barchart  [barChartData]="pedidosXCliente.qq" [barChartLabels]="pedidosXCliente.nn"></app-barchart>
+                    </div>
+                    
+                    <div class= "col-md-2" >
+                        <div class="btn-group btn-group-toggle flex-column ajustable "  data-toggle="buttons" >
+                            <label class="btn btn-secondary" *ngFor="let cliente of this.listaClientes;">
+                                <input id="{{cliente.id}}" name="{{cliente.id}}" type="checkbox" checked autocomplete="off" (click)="detectarUsuario($event)">
+                                <small>{{cliente.email}} </small>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <app-linechart *ngSwitchCase="6" [lineChartData]="ingresos.qq" [lineChartLabels]="ingresos.nn" ></app-linechart>
+            </div>
             
+            <!-- Selector de ususarios -->
+            
+
         </div>
     </div>
 </div>

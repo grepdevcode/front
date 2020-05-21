@@ -78,15 +78,17 @@ pagarYGenerarFactura(pedido){
 
   let auxPedido = {...pedido, estado: 4}; // estado 4 -> pagado
   const putObject ={pedido:auxPedido, detallePedido: this.listaDetalles[auxPedido.id]}
+console.log(auxPedido);
 
   let a = new Factura(new Date(),0,descuento,total,pedido.id);
   this.servicio.postObservable('Factura',a)
   .subscribe(res => {
-    alert("La operacion se realizo exitosamente");
     putObject.detallePedido.forEach(element => {
       element.facturaId = Number(res);
     });
-    this.servicio.putData('DetallePedido',putObject);
+    this.servicio.putData('DetallePedido',putObject).subscribe( item=>
+      this.initPedidos()
+    );
   },
   error=>console.log(error)
    );

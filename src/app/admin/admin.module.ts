@@ -22,6 +22,7 @@ import { ClientesComponent } from './components/clientes/clientes.component';
 import { NuevoClienteComponent } from './components/clientes/nuevo-cliente.component';
 import { EditarClienteComponent } from './components/clientes/editar-cliente.component';
 import { PedidosComponent } from './components/facturacion/pedidos.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations:
@@ -46,7 +47,8 @@ import { PedidosComponent } from './components/facturacion/pedidos.component';
     AdminRoutingModule,
     ChartsModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    FormsModule
   ]
 })
 export class AdminModule { }

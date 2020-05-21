@@ -10,6 +10,7 @@ export class Cliente {
     email:String;
     domicilio: number;
     roles:string;
+    fechaRegistro:string;
     /**
      *
      */

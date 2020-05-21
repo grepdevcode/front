@@ -58,6 +58,11 @@
         "target":"http://worldtimeapi.org/api/",
         "secure":false,
         "changeOrigin":true
+    },
+    "/Reportes/*":{
+        "target":"https://localhost:5001/api",
+        "secure":false,
+        "changeOrigin":true
     }
     
 }

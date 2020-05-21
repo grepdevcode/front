@@ -40,7 +40,7 @@ export class CarritoComponent implements OnInit {
     this.precioTotal();
     this.initForm();
     this.HorarioHabilitado = this.checkhorarioHabilitado(new Date())
-    this.TimeGroup.controls["timepicker"].setValue({hour:20,minute:0})
+    this.TimeGroup.controls["timepicker"].setValue({hour:22,minute:0})
   }
 
   initForm(){
@@ -82,6 +82,14 @@ export class CarritoComponent implements OnInit {
       return this.arrayDetalles.reduce(function (acc, obj) { return acc + obj.subtotal ; }, 0); // 7
     }
   }
+  getDemora(valorInicial:number){
+    this.arrayDetalles.forEach(element => {
+      if(element.articuloManufacturado){
+        valorInicial += element.articuloManufacturado.tiempoEstimadoCocina;
+      }
+    });
+    return valorInicial;
+  }
   getHoraEstimada(date:Date){
     if(!this.checkhorarioHabilitado){
       const time = this.TimeGroup.controls["timepicker"].value;
@@ -89,16 +97,8 @@ export class CarritoComponent implements OnInit {
       fecha.setHours(time.hours,time.minute);
       return fecha;
     }
-  let tiempoAnadido= 0;
-  this.arrayDetalles.forEach(element => {
-    if(element.articuloManufacturado){
-      tiempoAnadido += element.articuloManufacturado.tiempoEstimadoCocina;
-    }
-  });
-  console.log("gethora estimada",tiempoAnadido);
-  
-  let fechafinal= new Date(date.getTime() + tiempoAnadido * 60000);
-  return fechafinal;
+    let fechafinal= new Date(date.getTime() + this.getDemora(0) * 60000);
+    return fechafinal;
   }
   getTipoEnvio(){
     let c = this.formCarrito.get('radioDelivery').value;
@@ -161,9 +161,12 @@ export class CarritoComponent implements OnInit {
   checkTimePicker(){
     const dia = new Date().getDay();
     const tiempo = this.TimeGroup.controls["timepicker"].value
+    let tiempoDemora = this.formatoDemora(this.getDemora(0));
+    const minimo = {hour:(11+ tiempoDemora["hour"]),minute:(0+tiempoDemora["minute"])};
+    const maximo = {hour:(20+ tiempoDemora["hour"]),minute:(0+tiempoDemora["minute"])};
     if(dia > 5){
       if(tiempo.hour <  11){
-        this.TimeGroup.controls["timepicker"].setValue({hour:11,minute:0})
+        this.TimeGroup.controls["timepicker"].setValue( {hour:11,minute:0} )
       } else if(tiempo.hour < 20 && tiempo.hour > 15){
         this.TimeGroup.controls["timepicker"].setValue({hour:20,minute:0})
       }
@@ -171,6 +174,14 @@ export class CarritoComponent implements OnInit {
       this.TimeGroup.controls["timepicker"].setValue({hour:20,minute:0})
     }
   }
-
+  formatoDemora(valorDemora){
+    let tiempo={};
+    if(valorDemora > 60){
+      tiempo["hour"] = Math.floor( valorDemora / 60);
+      tiempo["minute"] = valorDemora % 60;
+      return tiempo
+    }
+    return {hour: 0,minute:valorDemora}
+  }
 
 }

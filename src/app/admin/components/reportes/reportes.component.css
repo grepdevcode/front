@@ -1,0 +1,10 @@
+.ajustable{
+    max-height: 451px;
+    overflow-y: scroll;
+}
+
+@media only screen and (max-width: 768px) {
+    .ajustable > button {
+        overflow-y: scroll;
+    }
+  }

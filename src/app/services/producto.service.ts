@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse, HttpRequest } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductoService {
+
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      // 'Authorization': 'my-auth-token'
+      'Authorization': 'bearer '+ this.auth.getToken()
     }),
     params: new HttpParams()
   };
@@ -23,7 +25,7 @@ export class ProductoService {
   urlpostpedido = "/Pedido";
 
 
-  constructor( private http: HttpClient) { }
+  constructor( private http: HttpClient, private auth:AuthService) { }
 
   /* tomar productos del servidor */
   getProductos():Observable<any[]> {
@@ -47,11 +49,11 @@ export class ProductoService {
 
   //universal
   getData(url:string):Observable<any[]>{
-    return this.http.get<any[]>(url);
+    return this.http.get<any[]>(url,this.httpOptions);
   }
 
   getSingleData(url:string):Observable<any>{
-    return this.http.get<any[]>(url);
+    return this.http.get<any[]>(url,this.httpOptions);
   }
 
   postData(url:string, nuevoObjeto:any){
