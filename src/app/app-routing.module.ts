@@ -2,8 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './auth.guard';
 import { AuthRoles } from './auth/auth-roles.enum';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
+  {
+    path:'', component:HomeComponent
+  },
   {
     path:'ingreso',
     loadChildren:'./auth/auth.module#AuthModule'

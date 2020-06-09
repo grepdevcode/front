@@ -4,26 +4,36 @@
         <div class="col-sm-7 mx-auto">
 
             <p class="h2">Lista de Pedidos</p>
+            <div *ngIf="this.isLoaded">
+                <div class="container-fluid border rounded my-2" *ngFor="let item of this.listaPedido;let i = index">
+                    <div class="row justify-content-between pt-2 px-3 pb-1">
+                        <div> <b>Tipo Envio:</b>  {{this.getTipoEnvio(item.tipoEnvio)}}</div>
+                        <div> <b>Hora Fin:</b> {{item.horaEstimadaFin | date: 'shortTime'}}</div>
+                        <div> <b>Estado:</b> {{this.getEstado(item.estado)}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8 px-3 py-1"> <b>Detalles:</b> <br>
+                            <small class="formato">
+                                {{this.getDetalles(i)}} 
+                            </small>
+                        </div>
+                        <div class="col-4 px-3 py-1 text-center">
+                            <div>
+                                <b>Total a pagar:</b> {{this.getTotal(i) | currency}}
+                            </div>
+                            <div class="m-3">
+                                <button class="btn btn-sm btn-danger" (click)="cancelarPedido(item)" [disabled]="!sePuedeCancelar(item.horaEstimadaFin)" data-toggle="tooltip" data-placement="bottom" title="Solo puedes cancelar hasta una hora antes.">
+                                    <small>Cancelar Pedido</small> 
+                                </button>
+                            </div>
+                            
+                        </div>
 
-            <div>
-                <table class="table">
-                    <th>Detalles</th>
-                    <th>Hora Fin</th>
-                    <th>Entrega</th>
-                    <th>Total a pagar</th>
-                    <th>Estado</th>
-                    
-                    <tbody *ngIf="this.isLoaded" >
-                        <tr *ngFor="let item of this.listaPedido;let i = index">
-                            <td>{{this.getDetalles(i)}}</td>
-                            <td>{{item.horaEstimadaFin}}</td>
-                            <td>{{this.getTipoEnvio(item.tipoEnvio)}}</td>
-                            <td>$ {{this.getTotal(i)}}</td>
-                            <td>{{this.getEstado(item.estado)}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    </div>
             </div>
+
+            </div>
+
 
         </div>
         

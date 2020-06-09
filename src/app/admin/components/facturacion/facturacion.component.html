@@ -5,10 +5,20 @@
             <p class="h2">Administación de Facturas</p>
 
             <div class="text-right m-2 p-1">
-                <button class="btn btn-sm btn-info">
+                <!-- <button class="btn btn-sm btn-info">
                     <i class="fas fa-plus"></i>
                     Nuevo
-                </button>
+                </button> -->
+                <!-- <div>
+                    <select [(ngModel)]="periodo" name="periodo" id="periodo" class="form-control">
+                        <option value="1">Hoy</option>
+                        <option value="7">Esta semana</option>
+                        <option value="15">Esta Quincena</option>
+                        <option value="30">Ultimo mes</option>
+                        <option value="0">Historico</option>
+                    </select>
+
+                </div> -->
             </div>
             <div>
                 <table class="table">
@@ -20,7 +30,7 @@
                     <tbody>
                         <tr *ngFor="let factura of listaFacturas">
                             <td>{{factura.fecha}}</td>
-                            <td>{{factura.numero}}</td>
+                            <td>{{factura.id}}</td>
                             <td>{{factura.montoDescuento}}</td>
                             <td>{{factura.total - factura.montoDescuento}}</td>
                             <td>{{factura.pedidoId}}</td>

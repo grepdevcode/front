@@ -25,7 +25,7 @@ export class PedidosComponent implements OnInit {
     this.getId();
     this.getPedidoLista().subscribe(ob => {this.listaPedido = ob; setTimeout(() => {
       this.isLoaded = true
-    }, 5000);  });
+    }, 2000);  });
     this.getManufacturados();
     this.getArticulos();
 
@@ -46,11 +46,11 @@ export class PedidosComponent implements OnInit {
   }
   getDetalles(i){
     let array='';
-    this.listaPedido[0]['listaDetalles'].forEach(item =>{
+    this.listaPedido[i]['listaDetalles'].forEach(item =>{
       if(item.articuloId){
       array += `-${item.cantidad} x ${this.getNombreArticuloById(item.articuloId)} \n`;
       }else if(item.articuloManufacturadoId){
-        array += `-${item.cantidad} x ${this.getNombreManufacturadoById(item.articuloManufacturadoId)} \n`;
+        array += `-${item.cantidad} x ${this.getNombreManufacturadoById(item.articuloManufacturadoId)}\n`;
       }
     });
     return array;
@@ -88,6 +88,44 @@ export class PedidosComponent implements OnInit {
         return "Listo";
       default:
         return "Error";
+    }
+  }
+  cancelarPedido(item){
+   if(!this.sePuedeCancelar(item.horaEstimadaFin)) return false;
+   this.reemplazarCeros(item);
+   const pedido = {...item};
+   delete pedido.listaDetalles
+   const lista = [...item.listaDetalles];
+   console.log({pedido:pedido,listaDetalles:lista});
+    if(confirm("Estas seguro que deseas cancelar el pedido?")){
+      this.servicio.putData('ListaPedido/cancelar',{pedido: pedido, detallePedido:lista}).subscribe(res=>{
+        if(res){
+          this.servicio.removeData("Pedido",{pedido: pedido, detallePedido:lista}).subscribe(ob => this.getPedidoLista().subscribe(ob => this.listaPedido = ob)) 
+        }
+      })
+      //this.servicio.removeData("Pedido",item).subscribe(ob => this.getPedidoLista().subscribe(ob => this.listaPedido = ob)) 
+    }
+  }
+  sePuedeCancelar(horaFin:Date):boolean{
+    const horaActual = new Date();
+    let horaLimite =new Date(horaFin);
+    horaLimite.setHours(horaLimite.getHours() -1);
+    if( horaActual >= horaLimite){
+      return false;
+    }
+    return true;
+  }
+  reemplazarCeros(item){
+    if(item){
+      item.listaDetalles.forEach(element => {
+        if(element.articuloId == 0){
+          element.articuloId = null;
+        }else if(element.articuloManufacturadoId == 0){
+          element.articuloId = null;
+        }
+        if(element.facturaId == 0) element.facturaId =null;
+      });
+      return item;
     }
   }
 }

@@ -2,30 +2,50 @@
     <div class="row">
         <div class="col-sm-7 mx-auto">
             <p class="h2">Administación de Pedidos</p>
-            <div>
-                <table class="table">
-                    <th>Numero</th>
-                    <th>Estado</th>
-                    <th>horaEstimadaFin</th>
-                    <th>tipoEnvio</th>
-                    <th>clienteId</th>
-                    <th>Total</th>
-                    <tbody>
-                        <tr *ngFor="let pedido of listaPedidos">
-                            <td>{{pedido.numero}}</td>
-                            <td>{{this.getEstado(pedido.estado)}}</td>
-                            <td>{{pedido.horaEstimadaFin}}</td>
-                            <td>{{this.getTipoEnvio(pedido.tipoEnvio)}}</td>
-                            <td>{{pedido.clienteId}}</td>
-                            <td *ngIf="this.isLoaded[1]">${{this.getTotal(pedido.id) - this.getDescuento(pedido.id) * this.getTotal(pedido.id) }}</td>
-                            <td>
-                                <button class="btn btn-sm btn-success" *ngIf="pedido.estado == 3" (click)="this.pagarYGenerarFactura(pedido)">
-                                    <small>Pagar Y Generar Factura</small> 
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div *ngIf="this.isLoaded[0] && this.isLoaded[1]">
+                <div class=" bg-light border rounded border-dark my-3" *ngFor="let pedido of listaPedidos">
+                    <div class="d-flex flex-row rounded-top bg-warning justify-content-around">
+                        <div class="px-3 d-flex flex-fill"> <small>{{pedido.fecha}}</small></div>
+                        <div class="px-3 d-flex  bg-dark text-white"> <small>{{this.getEstado(pedido.estado)}}</small> </div>
+                        <div class="px-3 d-flex  bg-danger text-white"> <small> <b>Demora:</b> {{this.getDemora(pedido.id)}}</small> </div>
+                    </div>
+                    <div class="row px-3">
+                        <div class="col-9">
+                            <p><small> <b>Nombre y Apellido:</b> {{this.findCliente(pedido.clienteId).nombre}} {{this.findCliente(pedido.clienteId).apellido}} </small></p>
+                        </div>
+                        <div class="col-3">
+                            <p> <small> <b>Tel:</b> {{this.findCliente(pedido.clienteId).telefono}}</small> </p>
+                        </div>       
+                    </div>
+                    <div class="px-3 border border-bottom">
+                        <p><small> <b>Domicilio: </b>
+                            {{this.findDomicilio(pedido.clienteId).calle}} 
+                            {{this.findDomicilio(pedido.clienteId).numero}}, 
+                            {{this.findDomicilio(pedido.clienteId).localidad}} </small></p>  
+                    </div>
+                    <div class="px-3">
+                        <div class="d-flex justify-content-around">
+                            <span> <small> <b>Denominacion</b> </small> </span>
+                            <span> <small> <b> Cantidad </b> </small> </span>
+                            <span> <small> <b> Subtotal </b></small> </span>
+                        </div>
+                        <div class="d-flex justify-content-around" *ngFor="let detalle of this.listaDetalles[pedido.id]">
+                            <span> <small>{{this.findDenominacion(detalle)}} </small> </span>
+                            <span> <small>{{detalle.cantidad}}</small> </span>
+                            <span> <small>{{detalle.subtotal | currency}}</small> </span>
+                        </div>
+                        <div class="text-right">
+                            <p> <small> <b>Descuento:</b> {{this.getDescuento(pedido.id) * this.getTotal(pedido.id) | currency}} </small> </p>
+                            <p><small> <b>Final:</b> {{this.getTotal(pedido.id) - this.getDescuento(pedido.id) * this.getTotal(pedido.id) | currency }} </small></p>
+                        </div>
+                        
+                    </div>
+                    <div class="d-flex justify-content-between bg-dark rounded-bottom inline-block">
+                        <button class="btn btn-sm btn-danger" [disabled]="!sePuedeCancelar(pedido)" (click)="cancelarPedido(pedido)" > <small>Cancelar</small> </button>
+                        <span class="mx-3 text-white"> <small> Tipo envio: {{this.getTipoEnvio(pedido.tipoEnvio)}} </small>  </span> 
+                        <button class="btn btn-sm btn-success" (click)="pagarYGenerarFactura(pedido)" > <small>Pagar Y Generar Factura</small> </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

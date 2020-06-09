@@ -6,6 +6,7 @@ import { IngresoComponent } from './components/ingreso/ingreso.component';
 import { RegistroComponent } from './components/registro/registro.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
+
 @NgModule({
   declarations: [IngresoComponent, RegistroComponent],
   imports: [

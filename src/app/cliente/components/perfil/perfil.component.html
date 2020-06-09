@@ -2,13 +2,61 @@
     <div class="row mx-3 mt-2">
         <div class="col-sm-4 mx-auto">
             <p class="h2">Mi Perfil</p>
+            <div *ngIf="isLoaded">
 
-            <div class="p-3">
-                <pre *ngIf="this.auth.userProfile$ | async as profile">
-                    <code>{{ profile | json }}</code>
-                </pre>
-            </div>
-            <button type="button" (click)="clickbait()" ></button>
+            
+            <p class="h5" >Nombre: {{this.texto.nombre}} </p>
+            <p class="h5" >Correo: {{this.texto.email}} </p>
+
+            <form>
+                <div>
+                    <div class="form-group">
+                      <label for="telefono">Teléfono</label> 
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="fa fa-phone-square"></i>
+                          </div>
+                        </div> 
+                        <input [disabled]="!modoEditar" [(ngModel)]="telefono" minlength="7" maxlength="12" id="telefono" name="telefono" placeholder="ej.4329905 o 261568034" type="tel" aria-describedby="telefonoHelpBlock" required="required" class="form-control">
+                      </div> 
+                      <span id="telefonoHelpBlock" class="form-text text-muted">ingrese su celular con el prefijo (ej. 261) y sin el 15-</span>
+                    </div>
+                </div>
+                <div>
+                </div>
+                <div>
+                    <div class="form-group">
+                      <label for="calle">Calle</label> 
+                      <input [disabled]="!modoEditar" [(ngModel)]="model.calle"  id="calle" maxlength="60" name="calle" placeholder="ej. Ferrucio Soppelssa" type="text" required="required" class="form-control">
+                    
+                    </div>
+                    <div class="form-group">
+                      <label for="numero">Numero</label> 
+                      <input [disabled]="!modoEditar" [(ngModel)]="model.numero" min="1" max="9999" id="numero" name="numero" type="number" class="form-control" required="required">
+                    
+                    </div>
+                    <div class="form-group">
+                      <label for="localidad">Localidad</label> 
+                      <div>
+                        <select [disabled]="!modoEditar" [(ngModel)]="model.localidad"  id="localidad" name="localidad" class="custom-select" required="required">
+                          <option value="Ciudad">Ciudad</option>
+                          <option value="Godoy Cruz">Godoy Cruz</option>
+                          <option value="Guaymallén">Guaymallén</option>
+                          <option value="Maipu">Maipu</option>
+                          <option value="Las Heras">Las Heras</option>
+                        </select>
+                      </div>
+                    </div> 
+               </div>
+                    <div class="form-group">
+                      <button *ngIf="!modoEditar;else submit"  name="submit" type="submit" class="btn btn-primary" (click)="habilitarEditar()">Editar</button>
+                      <ng-template #submit>
+                        <button  name="submit" type="submit" class="btn btn-primary" (click)="editarCliente()">Enviar</button>
+                      </ng-template>
+                    </div>
+                  </form>
+                </div>
         </div>
     </div>
 </div>

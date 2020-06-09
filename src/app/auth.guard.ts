@@ -11,7 +11,7 @@ import { AuthRoles } from './auth/auth-roles.enum';
 export class AuthGuard implements CanLoad{
   protected currentAuthStatus:IAuthStatus;
   canLoad(route: import("@angular/router").Route, segments: import("@angular/router").UrlSegment[]): boolean | Observable<boolean> | Promise<boolean> {
-    if(route.path === 'tienda'){
+    if(route.path === 'tienda' ){
       return this.accesoTienda(route);
     }else{
       return this.checkLogin() && this.checkPermiso(route);

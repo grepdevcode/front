@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <div class=" col-sm-7">
+        <div class=" col-sm-7 mx-auto">
             <div>
                 <p class="h2"> Carrito</p>
             </div>
@@ -30,6 +30,9 @@
                             <td>{{arrayDetalles[i].subtotal | currency}}</td>
                             <td>
                                 <button class="btn btn-danger btn-sm" (click)="quitarProducto(i)" >Quitar</button>
+                             </td>
+                             <td *ngIf="!this.isLoaded() && !this.checkStock(arrayDetalles[i])" >
+                                Por el momento no contamos con el stock suficiente para satisfacer este pedido.
                              </td>
                         </tr>
 
