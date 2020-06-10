@@ -103,7 +103,7 @@ export class CarritoComponent implements OnInit {
     return valorInicial;
   }
   getHoraEstimada(date:Date){
-    if(!this.checkhorarioHabilitado){
+    if(!this.checkhorarioHabilitado(new Date)){
       const time = this.TimeGroup.controls["timepicker"].value;
       let fecha = new Date();
       fecha.setHours(time.hours,time.minute);

@@ -113,8 +113,8 @@ export class EditarArticuloComponent implements OnInit {
     this.form= this.formBuilder.group(
       {
         denominacion:[null,Validators.required],
-        precioCompra:[null,Validators.compose([Validators.required,Validators.min(1)])],
-        precioVenta:[null,Validators.compose([Validators.required,Validators.min(1)])],
+        precioCompra:[null,Validators.compose([Validators.required,Validators.min(0.1)])],
+        precioVenta:[null,Validators.compose([Validators.required,Validators.min(0.1)])],
         stockActual:[null,Validators.compose([Validators.required,Validators.min(0)])],
         esInsumo:[null,Validators.nullValidator],
         unidadMedida:[null,Validators.compose([Validators.required,Validators.minLength(1)])],
@@ -127,6 +127,7 @@ export class EditarArticuloComponent implements OnInit {
   onSubmit(){ 
     if(this.form.valid){
       let putArticulo = {id:this.articulo.id, ...this.form.value}
+      if(putArticulo.esInsumo == null) putArticulo.esInsumo = false;
       console.log(putArticulo);
       
       this.servicio.putData("/Articulo",putArticulo)

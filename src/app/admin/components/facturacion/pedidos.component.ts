@@ -3,6 +3,7 @@ import { ProductoService } from 'src/app/services/producto.service';
 import { error } from 'protractor';
 import { Factura } from 'src/app/models/factura';
 import { DetallePedido } from 'src/app/models/detalle-pedido';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pedidos',
@@ -17,7 +18,7 @@ isLoaded=[false,false];
 listaDomicilio: any=[];
 listaArticuloManufacturado: any[]=[];
   listaArticulo=[];
-  constructor(private servicio:ProductoService) { 
+  constructor(private servicio:ProductoService, private router:Router) { 
     this.initPedidos()
     .subscribe(list =>{
       this.listaPedidos = list.filter(item => item.estado != 4);
@@ -100,10 +101,27 @@ getTotal(pedidoid){
   return this.listaDetalles[pedidoid].reduce((prev,item) => prev + item.subtotal,0);
 }
 getDemora(id){
-  return this.listaDetalles[id].reduce((prev,current) => {
-    let art = this.listaArticuloManufacturado.find(item => item.id == current.articuloManufacturadoId);
-    return prev + art.tiempoEstimadoCocina
-  },0)
+  const detalles =this.listaDetalles[id].filter(item => item.articuloManufacturadoId != null);
+  const articulosManu = detalles.map(elemento => {
+    return this.listaArticuloManufacturado.find(item => item.id == elemento.articuloManufacturadoId);
+  });
+  return articulosManu.reduce((acc, current) => {
+    return acc+ current.tiempoEstimadoCocina;
+  },0);
+  // return this.listaDetalles[id].reduce((prev,current) => {
+  //   let art;
+  //   if(current.articuloManufacturadoId){
+  //     let aux = this.listaArticuloManufacturado.find(item => item.id == current.articuloManufacturadoId);
+  //     console.log(aux);
+      
+  //     art = aux.tiempoEstimadoCocina;
+  //   }else{
+  //     art =0;
+  //   }
+  //   console.log(prev.tiempoEstimadoCocina + art.tiempoEstimadoCocina);
+    
+  //   return prev.tiempoEstimadoCocina + art
+  // },0)
 }
 findCliente(clienteid){
   return this.listaCliente.find(item => item.id == clienteid);
@@ -146,6 +164,17 @@ console.log(putObject);
     });
     this.servicio.putData('DetallePedido',{pedido: putObject.pedido, ...putObject.detallePedido }).subscribe( item=>
       this.initPedidos()
+      .subscribe(list =>{
+        this.listaPedidos = list.filter(item => item.estado != 4);
+         
+         list.forEach(item=>{
+          this.initDetalles(item.id)
+          .subscribe(subList =>{
+            this.listaDetalles[item.id] = subList;
+          });
+         })
+        })
+
     );
   },
   error=>console.log(error)

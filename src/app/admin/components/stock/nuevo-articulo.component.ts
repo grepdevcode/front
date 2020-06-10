@@ -101,8 +101,8 @@ export class NuevoArticuloComponent implements OnInit {
     this.form= this.formBuilder.group(
       {
         denominacion:[null,Validators.required],
-        precioCompra:[null,Validators.compose([Validators.required,Validators.min(1)])],
-        precioVenta:[null,Validators.compose([Validators.required,Validators.min(1)])],
+        precioCompra:[null,Validators.compose([Validators.required,Validators.min(0.1)])],
+        precioVenta:[null,Validators.compose([Validators.required,Validators.min(0.1)])],
         stockActual:[null,Validators.compose([Validators.required,Validators.min(0)])],
         esInsumo:[null,Validators.nullValidator],
         unidadMedida:[null,Validators.compose([Validators.required,Validators.minLength(1)])],
@@ -113,7 +113,9 @@ export class NuevoArticuloComponent implements OnInit {
 
   onSubmit(){
     if(this.form.valid){
+      
       let postArt = { ...this.form.value, rubroArticuloId: +this.form.value["rubroArticuloId"] }
+      if(postArt.esInsumo == null) postArt.esInsumo = false;
       console.log(postArt);
       
       this.servicio.postObservable('/Articulo',postArt)

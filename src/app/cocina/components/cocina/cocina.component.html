@@ -23,11 +23,11 @@
                     <tbody>
                         <tr *ngFor="let pedido of listaPedidos; let i = index">
                             <td>{{i+1}}</td>
-                            <td>{{pedido.numero}}</td>
+                            <td>{{pedido.id}}</td>
                             <td>
-                                <tr *ngFor="let item of listaDetalles[pedido.id]">
-                                    <td><small>{{item.cantidad}} x</small></td>
-                                    <td><small>{{generarListadeArticulosManufacturado(item.articuloManufacturadoId)}}</small></td>
+                                <tr *ngFor="let item of listaDetalles[pedido.id]| keyvalue ">
+                                    <td><small>{{item.value.cantidad}} x</small></td>
+                                    <td><small>{{generarListadeArticulosManufacturado(item.value)}}</small></td>
                                 </tr>
                             </td>
                             <td>{{this.cambiarFormatoFechaHhMm(pedido.horaEstimadaFin)}}</td>

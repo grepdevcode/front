@@ -22,7 +22,7 @@ export class CocinaComponent implements OnInit {
       this.listaPedidos = array.filter(row => row["estado"] < 3 )
       this.initDetallePedidos();
     } );
-    this.initArticulosManufacturados();
+    this.initArticulosManufacturados().subscribe(list => this.ListaProductos = list);
   }
 /**
  * Estados:
@@ -41,14 +41,14 @@ export class CocinaComponent implements OnInit {
     this.listaPedidos.forEach(pedido=>{
       this.servicio.getData(`DetallePedido/${pedido.id}`)
       .subscribe(list => {
-        this.listaDetalles[pedido.id]= list
+        this.listaDetalles[pedido.id]= list.filter(item => item.articuloManufacturadoId)
     })
   });
   }
   //Tomar los Articulos Manufacturados del backend.
   initArticulosManufacturados(){
-    this.servicio.getData('ArticuloManufacturado')
-    .subscribe(list => this.ListaProductos = list);
+    return this.servicio.getData('ArticuloManufacturado')
+
   }
   // Envia una Put request al backend
   updateEstadoPedido(pedido:Pedido){
@@ -67,7 +67,10 @@ export class CocinaComponent implements OnInit {
         this.updateEstadoPedido(pedido)
         this.initPedidos().subscribe(array =>{
           this.listaPedidos = array.filter(row => row["estado"] < 3 )
-          this.initDetallePedidos();
+          this.initPedidos().subscribe(array =>{
+            this.listaPedidos = array.filter(row => row["estado"] < 3 )
+            this.initDetallePedidos();
+          } );
         } );
       }
     }
@@ -78,7 +81,7 @@ export class CocinaComponent implements OnInit {
     return `${fecha.getHours()}:${fecha.getMinutes()}`
   }
   // Extraer lista de Articulos Manufacturados por id Pedido
-  generarListadeArticulosManufacturado(id){
-    return this.ListaProductos.find(art => art.id == id).denominacion;
+  generarListadeArticulosManufacturado(item:any|null){
+      return this.ListaProductos.find(art => art.id == item.articuloManufacturadoId).denominacion;
   }
 }

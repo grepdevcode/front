@@ -66,7 +66,7 @@ generarPdf(factura:Factura){
 escribirFactura(factura:Factura,detalles){
   var doc = new jsPDF();
   doc.text('Gracias por comprar en el Buen Sabor!', 10, 10);
-  doc.text(`N° Factura: ${factura.numero}`, 10, 20);
+  doc.text(`N° Factura: ${factura.pedidoId}`, 10, 20);
   doc.text(`Fecha: ${factura.fecha}`, 10, 30);
   doc.text(`Pedido: ${factura.pedidoId}`, 10, 40);
   doc.text(`Total: $${factura.total}`, 10, 50);

@@ -31,8 +31,8 @@
                         <tr *ngFor="let factura of listaFacturas">
                             <td>{{factura.fecha}}</td>
                             <td>{{factura.id}}</td>
-                            <td>{{factura.montoDescuento}}</td>
-                            <td>{{factura.total - factura.montoDescuento}}</td>
+                            <td>{{factura.montoDescuento |currency}}</td>
+                            <td>{{factura.total - factura.montoDescuento |currency}}</td>
                             <td>{{factura.pedidoId}}</td>
                             <td>
                                 <button class="btn btn-sm btn-success" (click)="this.generarPdf(factura)">

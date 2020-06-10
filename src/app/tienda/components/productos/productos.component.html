@@ -1,12 +1,12 @@
 <div class="container-fluid">
     <p class="h1">Nuestros Productos</p>
-    <div class="row mx-auto justify-content-center">
-            <div class=" mx-2 justify-content-center ">
+    <div class="d-flex flex-wrap mx-auto justify-content-center">
+            
                     <app-producto *ngFor='let un of productos;let i = index' class="m-2" [unidad]="un"  (carrito)="addProductoCarrito($event)"></app-producto>
-            </div>
-            <div class=" mx-2 justify-content-center ">
+           
+
                 <app-producto *ngFor='let art of articulos' class="m-2" [unidad]="art" (carrito)="addArticuloCarrito($event)"></app-producto>
-            </div>
+         
     </div>
 </div>
 

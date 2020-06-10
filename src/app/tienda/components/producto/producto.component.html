@@ -2,7 +2,7 @@
     <img src="https://via.placeholder.com/100" class="card-img-top" alt="...">
     <div class="card-body">
       <h5 class="card-title">{{unidad.denominacion}}</h5>
-      <p class="card-text">{{unidad.precioVenta}}</p>
+      <p class="card-text">{{unidad.precioVenta | currency}}</p>
       <button  class="btn btn-primary" (click)="onCarrito(unidad)">Agregar al carro</button>
 
 <!-- lista desplegable -->
