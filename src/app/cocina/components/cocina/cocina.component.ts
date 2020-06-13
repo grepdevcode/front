@@ -56,7 +56,10 @@ export class CocinaComponent implements OnInit {
     this.servicio.putData(`Pedido`,pedido)
     .subscribe(row =>{
       if(row){
-        this.initPedidos()
+        this.initPedidos().subscribe(array =>{
+          this.listaPedidos = array.filter(row => row["estado"] < 3 )
+          this.initDetallePedidos();
+        } );
       }
     });
   }
@@ -64,15 +67,15 @@ export class CocinaComponent implements OnInit {
   cambiarEstadoPedido(pedido:Pedido){
     if(pedido.estado <= 3){
       if(confirm("cambiaras el estado a "+ this.estados[`${pedido.estado + 1 }`]+ ", estas seguro?" )){
-        this.updateEstadoPedido(pedido)
-        this.initPedidos().subscribe(array =>{
-          this.listaPedidos = array.filter(row => row["estado"] < 3 )
-          this.initPedidos().subscribe(array =>{
-            this.listaPedidos = array.filter(row => row["estado"] < 3 )
-            this.initDetallePedidos();
-          } );
-        } );
-      }
+        this.updateEstadoPedido(pedido);
+      //   this.initPedidos().subscribe(array =>{
+      //     this.listaPedidos = array.filter(row => row["estado"] < 3 );
+      //     this.initPedidos().subscribe(array =>{
+      //       this.listaPedidos = array.filter(row => row["estado"] < 3 )
+      //       this.initDetallePedidos();
+      //     } );
+      //   });
+       }
     }
   }
   // Cambia la fecha date a un formato hh:mm

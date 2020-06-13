@@ -86,6 +86,8 @@ export class PedidosComponent implements OnInit {
         return "En Cocina";
       case 3:
         return "Listo";
+      case 4:
+        return "Pagado";
       default:
         return "Error";
     }

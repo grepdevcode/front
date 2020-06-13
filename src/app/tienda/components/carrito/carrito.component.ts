@@ -103,11 +103,14 @@ export class CarritoComponent implements OnInit {
     return valorInicial;
   }
   getHoraEstimada(date:Date){
-    if(!this.checkhorarioHabilitado(new Date)){
+    if(!this.checkhorarioHabilitado(date)){
       const time = this.TimeGroup.controls["timepicker"].value;
       let fecha = new Date();
-      fecha.setHours(time.hours,time.minute);
-      return fecha;
+      fecha.setHours(time.hour,time.minute);
+      const isoDate = `${fecha.getFullYear()}-${('0' + (fecha.getMonth()+1)).slice(-2) }-${('0'+fecha.getDate()).slice(-2)}T${('0'+time.hour).slice(-2)}:${('0'+time.minute).slice(-2)}:00`
+      console.log(isoDate);
+      "2020-06-10T12:10:48.000Z"
+      return isoDate;
     }
     let fechafinal= new Date(date.getTime() + this.getDemora(0) * 60000);
     return fechafinal;
@@ -136,11 +139,19 @@ export class CarritoComponent implements OnInit {
       }
     })
 
+    let estadoTentativo=1;
+    if(! this.tieneArticulosManufacturados()){
+      estadoTentativo =3;
+    }
+
     console.log('realizando pedido')
     let listaDetalles= [];
     const fecha = new  Date();
-    const pedido= new Pedido(fecha,1,this.getHoraEstimada(fecha),this.getTipoEnvio(),this.getIdCliente()); 
+    const horaestimada =this.getHoraEstimada(fecha);
+    const pedido= {fecha:fecha.toISOString(),estado:estadoTentativo,horaEstimadaFin:horaestimada, tipoEnvio:this.getTipoEnvio(),clienteId:this.getIdCliente()}; 
     // array detalles
+  console.log('arraydetalles',this.arrayDetalles);
+  
     this.arrayDetalles.forEach(element => {
       if(element.articuloManufacturado){
         listaDetalles.push(
@@ -162,14 +173,19 @@ export class CarritoComponent implements OnInit {
     }});
     //objeto con pedido  y detalles
     const envio = { pedido:pedido, detallePedido: listaDetalles};
+    console.log(envio);
     // post de envio
+    
     this.servicio.postObservable("Pedido",envio).subscribe(x =>{
       console.log(x);
       envio.detallePedido.forEach(item =>{
         this.descontarStock(item);
       })
+      this.arrayDetalles =[];
+      this.servicio.cambiarPedido(JSON.stringify(this.arrayDetalles));
       this.route.navigate(["cliente","pedidos"])
     });
+    
     // El pedido va a la cocina y cuando está listo se informa al que lo tomó para que se
     //genere la factura correspondiente y se le entregue el pedido al cliente.
   }
@@ -268,5 +284,9 @@ export class CarritoComponent implements OnInit {
     }else if(detallePedido.articuloManufacturado){
       this.descontarStockArticuloManufacturado(detallePedido);
     }
+  }
+  tieneArticulosManufacturados(){
+    const manufacturado = (element) => element.articuloManufacturado != null;
+    return this.arrayDetalles.some(item => manufacturado(item));
   }
 }

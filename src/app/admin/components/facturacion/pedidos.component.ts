@@ -95,7 +95,7 @@ getDescuento(id){
   if(tipoEnvio == 1){
     return 0.10
   }
-  return 1
+  return 0
 }
 getTotal(pedidoid){
   return this.listaDetalles[pedidoid].reduce((prev,item) => prev + item.subtotal,0);
@@ -159,10 +159,12 @@ console.log(putObject);
   let a = new Factura(new Date(),0,descuento,total,pedido.id);
   this.servicio.postObservable('Factura',a)
   .subscribe(res => {
+    console.log(res);
     putObject.detallePedido.forEach(element => {
+
       element.facturaId = Number(res);
     });
-    this.servicio.putData('DetallePedido',{pedido: putObject.pedido, ...putObject.detallePedido }).subscribe( item=>
+    this.servicio.putData('DetallePedido', putObject).subscribe( item=>
       this.initPedidos()
       .subscribe(list =>{
         this.listaPedidos = list.filter(item => item.estado != 4);

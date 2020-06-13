@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
-
 @Component({
   selector: 'app-barchart',
   templateUrl: './barchart.component.html',
@@ -12,7 +11,9 @@ export class BarchartComponent implements OnInit {
   public barChartOptions: ChartOptions = {
     responsive: true,
     // We use these empty structures as placeholders for dynamic theming.
-    scales: { xAxes: [{}], yAxes: [{}] },
+    scales: { xAxes: [{}], yAxes: [{ticks: {
+      beginAtZero: true
+  }}] },
     plugins: {
       datalabels: {
         anchor: 'end',
@@ -43,6 +44,9 @@ export class BarchartComponent implements OnInit {
   }
 
   public randomize(): void {
+    console.log("datachartslabels",this.barChartLabels);
+    console.log("barchartdata",this.barChartData);
+
     // Only Change 3 values
     const data = [
       Math.round(Math.random() * 100),
@@ -53,6 +57,7 @@ export class BarchartComponent implements OnInit {
       (Math.random() * 100),
       40];
     this.barChartData[0].data = data;
+
   }
 
 }
