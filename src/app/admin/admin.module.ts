@@ -23,6 +23,7 @@ import { NuevoClienteComponent } from './components/clientes/nuevo-cliente.compo
 import { EditarClienteComponent } from './components/clientes/editar-cliente.component';
 import { PedidosComponent } from './components/facturacion/pedidos.component';
 import { FormsModule } from '@angular/forms';
+import { NgbdDatepickerRangePopup } from './components/datepicker-range-popup/datepicker-range-popup.component';
 
 @NgModule({
   declarations:
@@ -41,7 +42,8 @@ import { FormsModule } from '@angular/forms';
            ClientesComponent,
            NuevoClienteComponent,
            EditarClienteComponent,
-           PedidosComponent],
+           PedidosComponent,
+           NgbdDatepickerRangePopup],
   imports: [
     CommonModule,
     AdminRoutingModule,

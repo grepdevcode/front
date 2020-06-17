@@ -1,10 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 html,body{
-    min-height: 100vh;
-
     margin: 0px;
     padding: 0px;
-    overflow: auto;
 }
-
-
+html, body, .full {
+    height: 100%;
+}
+.full {
+    display: flex;
+    flex-direction: column;
+}
+.cuerpo{
+margin: 0px;
+flex-grow: 1;
+}

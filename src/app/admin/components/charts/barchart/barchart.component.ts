@@ -44,20 +44,23 @@ export class BarchartComponent implements OnInit {
   }
 
   public randomize(): void {
-    console.log("datachartslabels",this.barChartLabels);
-    console.log("barchartdata",this.barChartData);
-
-    // Only Change 3 values
-    const data = [
-      Math.round(Math.random() * 100),
-      59,
-      80,
-      (Math.random() * 100),
-      56,
-      (Math.random() * 100),
-      40];
-    this.barChartData[0].data = data;
-
+    // this.barChartData.forEach(item=>{
+    //   item.backgroundColor = 'rgba(255, 99, 132, 0.2)'
+    // })
+    // console.log("datachartslabels",this.barChartLabels);
+    // console.log("barchartdata",this.barChartData);
+    // var data =  this.barChartData[0].data;
+    // this.barChartData[0].data = data;
   }
 
 }
+
+
+// backgroundColor: [
+//   'rgba(255, 99, 132, 0.2)',
+//   'rgba(54, 162, 235, 0.2)',
+//   'rgba(255, 206, 86, 0.2)',
+//   'rgba(75, 192, 192, 0.2)',
+//   'rgba(153, 102, 255, 0.2)',
+//   'rgba(255, 159, 64, 0.2)'
+// ]

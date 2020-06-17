@@ -25,14 +25,19 @@ export class ReportesComponent implements OnInit {
   }
 
   ingresos={
-    qq : [{ data: [78,54,42,95,12,23], label: 'Ingresos' }],
-    nn : ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]
+    qq : [{ data: [], label: 'Ingresos' }],
+    nn : []
   }
 
   pedidos={
     qq : [{ data: [], label: 'Pedidos' }],
     nn : []
   }
+
+  // public barChartData: ChartDataSets[] = [
+  //   { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
+  //   { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
+  // ];
 
   pedidosXCliente={
     qq:[{data:[], label:""}],
@@ -45,12 +50,14 @@ export class ReportesComponent implements OnInit {
     this.getCliente().subscribe(list => {
       this.listaClientes = list.filter(item => item.roles == "permiso_Cliente")
     })
+    
     // Comidas mas pedidas ----> Funciona
     this.getReporte().subscribe(list =>{
       console.log(list)
       this.comidasMasPedidas.nn= list.map(item=> item["Denominacion"]);
       this.comidasMasPedidas.qq[0] = {data: list.map(item=> item["Total"]), label:'Comidas Mas Pedidas' }
     });
+    /*
     // Clintes registrados por periodo de tiempo  ---> Funciona
     this.getReporte(1,"2020-1-1","2020-6-30").subscribe(list =>{
       console.log("clientes registrados",list);
@@ -77,7 +84,7 @@ export class ReportesComponent implements OnInit {
       console.log("AGRUPADOS POR CLIENTES PEDIDOS",list);
       this.listaPedidos = list;
     });
-
+*/
   }
 
   getReporte(op?:number, from?:string, to?:string){
@@ -110,10 +117,16 @@ export class ReportesComponent implements OnInit {
 // - Control de Stock
 detectarUsuario($event){
   const ev = $event.target.id;
-  const arr = this.listaPedidos.filter(item => item.Id == ev);
+  const arr = this.listaPedidos.filter(item => Number(item.Id) == Number(ev));
+  console.log('id',ev);
+  console.log("array",arr); 
+  if(arr.length <1) return false
+  // setear meses
   const arrayMeses= this.findArrayMes();
-  this.pedidosXCliente.nn = arrayMeses.map(item => this.switchMes(item))
-  
+  this.pedidosXCliente.nn = arrayMeses.map(item => this.switchMes(item));
+
+  if(this.pedidosXCliente.qq.length < 1) return false;
+
   if( this.pedidosXCliente.qq.find(item => item.label == arr[0].Email)){ // si ya existe
 
   }else{ // si no existe
@@ -131,11 +144,12 @@ detectarUsuario($event){
       if(this.pedidosXCliente.qq[0].data.length < 1  ){
         Object.assign(this.pedidosXCliente.qq[0],qq )
       }else{
-        this.pedidosXCliente.qq.push(qq)
-        
+        qq['backgroundColor'] = 'rgba(255, 99, 132, 0.7)'
+        this.pedidosXCliente.qq.push(qq);        
       }
   }
 }
+
 
 // encontrar mes menor
 findArrayMes(){
@@ -155,6 +169,56 @@ findArrayMes(){
   const mayor = Math.max(...arrayMeses);
 
   return Array.from({ length: (mayor - menor) + 1}, (_, i) => menor + (i));
+}
+manejarEmiter($event){
+  const periodo = JSON.parse($event);
+  const inicio =`${periodo.fromDate.year}-${periodo.fromDate.month}-1`;
+  const fin =`${periodo.toDate.year}-${periodo.toDate.month}-30`;
+  console.log(inicio);
+  if(true){
+    switch (Number(this.reporteSelect)) {
+      case 1:
+      
+        break;
+      case 2:
+        this.getReporte(1,inicio,fin).subscribe(list =>{
+          console.log("clientes registrados",list);
+          let qq =[{ data: list.map(item => item.Cantidad), label: 'Clientes Registrados' }];
+          Object.assign(this.clientesRegistrados.qq,qq)
+          this.clientesRegistrados.nn = list.map(item => this.switchMes( item.Mes));
+        });
+          break;
+      case 3: // funciona Perfecto
+        this.getReporte(2,inicio,fin).subscribe(list =>{
+          console.log("Ingreso por periodo de tiempo",list);
+          let qq =[{ data: list.map(item => item.Total), label: 'Ingresos' }];
+          this.ingresos.qq=qq
+          this.ingresos.nn = list.map(item => this.switchMes( item.Mes))
+        });
+        break;
+      case 4: // Funciona Perfecto
+        this.getReporte(4,inicio,fin).subscribe(list => {
+          console.log("opcion 4,",list);
+          let qq = [{data: list.map(item => item.Total), label: 'Pedidos'}];
+          this.pedidos.qq =qq 
+          this.pedidos.nn = list.map(item => this. switchMes(item.Mes))
+        });
+        break;
+      case 5:
+        this.getReporte(3,inicio,fin).subscribe(list => {
+          console.log("AGRUPADOS POR CLIENTES PEDIDOS en switch",list);
+          this.listaPedidos = list;
+          //this.pedidosXCliente.nn = list.map(item => this. switchMes(item.Mes));
+          const arrayMeses= this.findArrayMes();
+          this.pedidosXCliente.nn = arrayMeses.map(item => this.switchMes(item));
+        });
+      
+        break;
+    
+      default:
+        break;
+    }
+  }
 }
 
 }
