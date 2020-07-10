@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class StockComponent implements OnInit {
   listaArticulos:Articulo[]=[];
-  
+  page=1;
   constructor(private servicio:ProductoService,private router:Router) { }
 
   ngOnInit() {
@@ -19,7 +19,7 @@ export class StockComponent implements OnInit {
   }
   // Tomar articulos del backend
   getArticulos(){
-    this.servicio.getData('/Articulo')
+    this.servicio.getData(`/Articulo/${this.page}/10`)
     .subscribe(art => this.listaArticulos = art.map(x =>
        new Articulo(
          x.id,
@@ -44,8 +44,9 @@ export class StockComponent implements OnInit {
       error =>{alert('ha habido un error no se ha podido eliminar el articulo'); console.log(error)})
     }
   }
-
-
+  paginationChange(){
+    this.getArticulos();
+  }
 
 
 }

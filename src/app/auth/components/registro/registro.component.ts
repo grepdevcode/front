@@ -7,7 +7,6 @@ import { Domicilio } from 'src/app/models/domicilio';
 import { ProductoService } from 'src/app/services/producto.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
-import { error } from 'protractor';
 
 @Component({
   selector: 'app-registro',
@@ -69,4 +68,5 @@ export class RegistroComponent implements OnInit {
     const { value: passwordConfirm } = formGroup.get('passwordConfirm');
     return password === passwordConfirm ? null : { passwordNotMatch: true };
   }
+
 }

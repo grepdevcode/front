@@ -27,6 +27,11 @@ import { Router } from '@angular/router';
     </div>
   </div>
   <div class="form-group">
+    <label for="linkImagen">Foto</label> 
+    <input [formControlName]="'linkImagen'" id="linkImagen" name="linkImagen" placeholder="link a la imagen" type="url" class="form-control" aria-describedby="linkImagenHelpBlock" > 
+    <span id="linkImagenHelpBlock" class="form-text text-muted">copie y pegue un link a la imagen del articulo</span>
+  </div>
+  <div class="form-group">
     <label for="precioCompra">Precio de Compra</label> 
     <input [formControlName]="'precioCompra'" id="precioCompra" name="precioCompra" placeholder="ej. 12.50" type="number" class="form-control" aria-describedby="precioCompraHelpBlock" required="required"> 
     <span id="precioCompraHelpBlock" class="form-text text-muted">ingrese el precio sin el signo $</span>
@@ -106,14 +111,17 @@ export class NuevoArticuloComponent implements OnInit {
         stockActual:[null,Validators.compose([Validators.required,Validators.min(0)])],
         esInsumo:[null,Validators.nullValidator],
         unidadMedida:[null,Validators.compose([Validators.required,Validators.minLength(1)])],
-        rubroArticuloId:[null,Validators.compose([Validators.required,Validators.minLength(1)])]
+        rubroArticuloId:[null,Validators.compose([Validators.required,Validators.minLength(1)])],
+        linkImagen: [null,Validators.nullValidator]
       }
     );
   }
 
   onSubmit(){
     if(this.form.valid){
-      
+      if(this.form.value['linkImagen'] == null){
+        this.form.value['linkImagen'] = "https://picsum.photos/250/250";
+      }
       let postArt = { ...this.form.value, rubroArticuloId: +this.form.value["rubroArticuloId"] }
       if(postArt.esInsumo == null) postArt.esInsumo = false;
       console.log(postArt);
@@ -130,7 +138,7 @@ export class NuevoArticuloComponent implements OnInit {
   }
   // Toma los Rubros del backend
   getRubros(){
-    this.servicio.getData('/RubroArticulo')
+    this.servicio.getData('/RubroArticulo/0/0')
     .subscribe(rubros=>this.listaRubros = rubros.map(x => new RubroArticulo(x.id, x.denominacion))
     ,error => console.log('no se han podido acceder a los rubros',error));
   }

@@ -9,7 +9,7 @@ import { ArticuloManufacturado } from 'src/app/models/articulo-manufacturado';
   styleUrls: ['./admin-productos.component.css']
 })
 export class AdminProductosComponent implements OnInit {
-
+  page=1;
   listaArtManufacturados: ArticuloManufacturado[]=[];
   closeResult: string;
   
@@ -21,7 +21,7 @@ export class AdminProductosComponent implements OnInit {
   }
   // Tomar articulos manufacturados del Backend.
   getArticulosManufacturados(){
-    return this.servicio.getData('/ArticuloManufacturado')
+    return this.servicio.getData(`/ArticuloManufacturado/${this.page}/10`)
     .subscribe(lam =>{
       this.listaArtManufacturados = lam}
       ,error=>{
@@ -43,6 +43,8 @@ export class AdminProductosComponent implements OnInit {
     }
   }
 
-
+  paginationChange(){
+    this.getArticulosManufacturados();
+  }
 
 }

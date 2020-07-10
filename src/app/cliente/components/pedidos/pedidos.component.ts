@@ -37,10 +37,10 @@ export class PedidosComponent implements OnInit {
     return this.servicio.getData(`ListaPedido/${this.Id}`)
   }
   getManufacturados(){
-   return this.servicio.getData(`ArticuloManufacturado`).subscribe(list => this.listaManufacturados = list);
+   return this.servicio.getData(`ArticuloManufacturado/0/0`).subscribe(list => this.listaManufacturados = list);
   }
   getArticulos(){
-    this.servicio.getData(`Articulo`).subscribe(list => this.listaArticulos = list);
+    this.servicio.getData(`Articulo/0/0`).subscribe(list => this.listaArticulos = list);
     console.log(this.listaPedido);
     
   }

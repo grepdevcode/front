@@ -46,6 +46,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
                   </tbody>
               </table>
           </div>
+          <div class="my-4">
+          <ngb-pagination [collectionSize]="30" [(page)]="page" (pageChange)="this.paginationChange()" ></ngb-pagination>
+          </div>
       </div>
   </div>
 </div>
@@ -93,7 +96,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styles: []
 })
 export class RubroComponent implements OnInit {
-
+page=1;
   listaRubros:RubroArticulo[]=[];
   form:FormGroup= new FormGroup({denominacion:new FormControl(null,Validators.required)});
   edit:boolean=false;
@@ -104,7 +107,7 @@ export class RubroComponent implements OnInit {
     this.getRubros();
   }
   getRubros(){
-    this.servicio.getData('/RubroArticulo')
+    this.servicio.getData(`/RubroArticulo/${this.page}/10`)
     .subscribe(data => this.listaRubros = data.map(x => new RubroArticulo(x.id,x.denominacion) ) )
   }
   openmodal(content,id?){
@@ -173,7 +176,9 @@ export class RubroComponent implements OnInit {
       })
       .shift();
   }
-
+  paginationChange(){
+    this.getRubros();
+  }
 }
 
 

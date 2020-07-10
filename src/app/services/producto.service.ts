@@ -20,7 +20,7 @@ export class ProductoService {
   private pedido = new BehaviorSubject(JSON.stringify(this.carrito));
   currentPedido = this.pedido.asObservable();
   //
-  url:string = '/ArticuloManufacturado';
+  url:string = '/ArticuloManufacturado/0/0';
   urlpostpedido = "/Pedido";
 
 

@@ -13,28 +13,29 @@ import { ArticuloManufacturado } from 'src/app/models/articulo-manufacturado';
   styleUrls: ['./facturacion.component.css']
 })
 export class FacturacionComponent implements OnInit {
+  page=0;
   listaFacturas:Factura[];
   listaArticulos:Articulo[]=[];
   listaManufacturados:ArticuloManufacturado[]=[];
   constructor(private servicio: ProductoService) { }
 
   ngOnInit() {
-    this.initFacturas().subscribe(list=> this.listaFacturas = list)
+    this.initFacturas('Factura/1/10').subscribe(list=> this.listaFacturas = list)
     this.getArticulos();
     this.getManufacturados();
   }
   
-initFacturas(){
- return this.servicio.getData('Factura');
+initFacturas(url){
+ return this.servicio.getData(url);
 }
 getDetalleByPedido(pedidoId){
   return this.servicio.getData(`DetallePedido/${pedidoId}`);
 }
 getArticulos(){
- this.servicio.getData('Articulo').subscribe(list => this.listaArticulos = list);
+ this.servicio.getData('Articulo/0/0').subscribe(list => this.listaArticulos = list);
 }
 getManufacturados(){
-  this.servicio.getData('ArticuloManufacturado').subscribe(list => this.listaManufacturados = list);
+  this.servicio.getData('ArticuloManufacturado/0/0').subscribe(list => this.listaManufacturados = list);
 }
 findDenominacion(detalle:Detalles){
   if(detalle.articuloId){
@@ -77,6 +78,10 @@ escribirFactura(factura:Factura,detalles){
     doc.text(item,20,(90 + 10 * index))
   })
   doc.output('dataurlnewwindow');
+}
+
+paginationChange(){
+  this.initFacturas(`Factura/${this.page}/10`).subscribe(list=> this.listaFacturas = list)
 }
 
 }

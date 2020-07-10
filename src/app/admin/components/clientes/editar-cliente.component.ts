@@ -59,7 +59,7 @@ import { Cliente } from 'src/app/models/cliente';
                     <label for="localidad">Localidad</label> 
                     <div>
                       <select formControlName="localidad"  id="localidad" name="localidad" class="custom-select" required="required">
-                        <option value="Capital">Capital</option>
+                        <option value="Ciudad">Ciudad</option>
                         <option value="Godoy Cruz">Godoy Cruz</option>
                         <option value="Guaymallén">Guaymallén</option>
                         <option value="Maipu">Maipu</option>
@@ -86,8 +86,10 @@ ngOnInit() {
   this.getCliente()
   this.getDomicilio()
   setTimeout(() => {
-    this.initForm()
-  }, 1000);
+    this.initForm();
+    console.log(this.domicilio);
+    
+  }, 2000);
 }
   
   constructor(private formBuilder: FormBuilder, private servicio:ProductoService,private router: Router, private route: ActivatedRoute ) {

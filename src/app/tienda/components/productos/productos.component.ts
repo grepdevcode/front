@@ -24,19 +24,27 @@ export class ProductosComponent implements OnInit {
   ngOnInit() {
     this.getArticulos();
     this.getArticulosManufacturados();
-    this.loadCarrito();
-
+    this.loadCarrito();   
   }
   getArticulosManufacturados(){
-    this.servicio.getProductos().subscribe(data =>data.map(p => this.productos.push( new ArticuloManufacturado(p.id,p.tiempoEstimadoCocina,p.denominacion,p.precioVenta))));
+    this.servicio.getProductos()
+    .subscribe(data =>
+      data.map(p =>{
+        console.log(p);
+        
+        const nuevoProducto =new ArticuloManufacturado(p.id,p.tiempoEstimadoCocina,p.denominacion,p.precioVenta);
+        nuevoProducto.linkImage= p.linkImage;
+        this.productos.push( nuevoProducto);
+        }
+      )
+    );
   }
   getArticulos(){
-    this.servicio.getData("/Articulo")
+    this.servicio.getData("/Articulo/0/0")
     .subscribe(data =>{
       data.filter(row => !row.esInsumo)
       .map(a =>{
-        this.articulos.push(
-           new Articulo(
+        const nuevoArticulo =  new Articulo(
           a.id,
           a.denominacion,
           a.precioCompra,
@@ -44,7 +52,9 @@ export class ProductosComponent implements OnInit {
           a.stockActual,
           a.unidadMedida,
           a.esInsumo,
-          a.rubroArticuloId));
+          a.rubroArticuloId);
+        nuevoArticulo.linkImage = a.linkImage;
+        this.articulos.push(nuevoArticulo);
         }
         )
       }

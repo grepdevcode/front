@@ -6,6 +6,7 @@ export class ArticuloManufacturado {
     tiempoEstimadoCocina: number;
     denominacion: string;
     precioVenta: number;
+    linkImage:string;
 
     constructor(id,tiempo,denominacion,precioVenta) {
         this.id=id;

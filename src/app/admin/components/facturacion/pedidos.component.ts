@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
   styles: []
 })
 export class PedidosComponent implements OnInit {
+  page=1;
 listaPedidos=[];
 listaDetalles={};
 listaCliente=[];
@@ -19,7 +20,7 @@ listaDomicilio: any=[];
 listaArticuloManufacturado: any[]=[];
   listaArticulo=[];
   constructor(private servicio:ProductoService, private router:Router) { 
-    this.initPedidos()
+    this.initPedidos('Pedido/1/10')
     .subscribe(list =>{
       this.listaPedidos = list.filter(item => item.estado != 4);
        
@@ -50,23 +51,23 @@ ngOnInit() {
     this.isLoaded[1]=true;
   }, 1500);
 }
-initPedidos(){
-  return this.servicio.getData('Pedido');
+initPedidos(url){
+  return this.servicio.getData(url);
 }
 initDetalles(id){
    return  this.servicio.getData(`DetallePedido/${id}`);
 }
 getClientes(){
- return this.servicio.getData("Cliente")
+ return this.servicio.getData("Cliente/0/0")
 }
 getDomicilio(){
   return this.servicio.getData("Domicilio")
 }
 getArticulos(){
-  return this.servicio.getData("Articulo")
+  return this.servicio.getData("Articulo/0/0")
 }
 getArticulosManufacturados(){
-  return this.servicio.getData("ArticuloManufacturado")
+  return this.servicio.getData("ArticuloManufacturado/0/0")
 }
 getTipoEnvio(tipoEnvio){
   switch (tipoEnvio) {
@@ -165,7 +166,7 @@ console.log(putObject);
       element.facturaId = Number(res);
     });
     this.servicio.putData('DetallePedido', putObject).subscribe( item=>
-      this.initPedidos()
+      this.initPedidos(`Pedido/${this.page}/10`)
       .subscribe(list =>{
         this.listaPedidos = list.filter(item => item.estado != 4);
          
@@ -192,7 +193,7 @@ cancelarPedido(item){
        if(res){
          this.servicio.removeData("Pedido",{pedido: item, detallePedido:lista})
          .subscribe( x=>{
-          this.initPedidos()
+          this.initPedidos(`Pedido/${this.page}/10`)
           .subscribe(list =>{
             this.listaPedidos = list.filter(item => item.estado != 4);
              
@@ -230,4 +231,19 @@ cancelarPedido(item){
    }
  }
 
+ paginationChange(){
+  this.initPedidos(`Pedido/${this.page}/10`)
+  .subscribe(list =>{
+    this.listaPedidos = list.filter(item => item.estado != 4);
+     
+     list.forEach(item=>{
+      this.initDetalles(item.id)
+      .subscribe(subList =>{
+        this.listaDetalles[item.id] = subList;
+      });
+     })
+    });
 }
+
+}
+

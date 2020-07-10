@@ -1,5 +1,9 @@
 <div class="card" style="width: 15rem;">
-    <img src="https://via.placeholder.com/100" class="card-img-top" alt="...">
+    <!-- <img src="https://via.placeholder.com/100" class="card-img-top" alt="..." height="100px" width="100px"> -->
+    <!-- <img src="{{unidad.linkImage}}" class="card-img-top" alt="..."  width="100px"> -->
+    <a href="{{unidad.linkImage}}">
+      <img src="{{unidad.linkImage}}.jpg" title="source: imgur.com" class="card-img-top" alt="..."  width="100px" />
+    </a>
     <div class="card-body">
       <h5 class="card-title">{{unidad.denominacion}}</h5>
       <p class="card-text">{{unidad.precioVenta | currency}}</p>

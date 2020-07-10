@@ -106,7 +106,7 @@ export class ReportesComponent implements OnInit {
   }
 
   getCliente(){
-    return this.servicio.getData("Cliente");
+    return this.servicio.getData("Cliente/0/0");
   }
 
 // - Comidas más pedidas por los clientes.

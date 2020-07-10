@@ -26,6 +26,16 @@ import { Router, ActivatedRoute } from '@angular/router';
       <input formControlName="denominacion" id="denominacion" name="denominacion" type="text" required="required" class="form-control">
     </div>
   </div>
+  <!-- LINKIMAGEN -->
+          <div class="form-group">
+            <label for="denominacion">Link a la Imagen</label> 
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"></div>
+                </div> 
+                <input formControlName="linkImagen" id="linkImagen" name="linkImagen" type="url" required="required" class="form-control">
+              </div>
+          </div>
   <div class="form-group">
     <label for="tiempoEstimadoCocina">Tiempo en Cocina</label> 
     <input formControlName="tiempoEstimadoCocina" id="tiempoEstimadoCocina" name="tiempoEstimadoCocina" type="text" aria-describedby="tiempoEstimadoCocinaHelpBlock" required="required" class="form-control"> 
@@ -89,6 +99,7 @@ export class EditarComponent implements OnInit {
     this.nuevoArtManForm = this.formBuilder.group({
       tiempoEstimadoCocina:['',Validators.compose([Validators.required, Validators.min(10)])],
       denominacion:['', Validators.compose([ Validators.required, Validators.minLength(3)])],
+      linkImagen:['', Validators.nullValidator],
       precioVenta:['',Validators.compose([Validators.required, Validators.min(1)])],
       detalles: this.formBuilder.array([],Validators.required)
     });
@@ -101,7 +112,7 @@ export class EditarComponent implements OnInit {
                         
     setTimeout(() => {
       this.initForm()
-    }, 1500);
+    }, 3500);
      //ok
   }
 // Tomar el articulo manufacturado del backend.
@@ -119,7 +130,7 @@ export class EditarComponent implements OnInit {
   }
   // Tomar Articulos del backend.
   getArticulos(){
-    return this.servicio.getData('/Articulo')
+    return this.servicio.getData('/Articulo/0/0')
     .subscribe(res=>{
        this.ListaArticulos = res.filter(row => row.esInsumo)
     },
@@ -182,7 +193,8 @@ export class EditarComponent implements OnInit {
           id:this.producto.id,
           denominacion: formdata.denominacion,
           tiempoEstimadoCocina: +formdata.tiempoEstimadoCocina,
-          precioVenta:+formdata.precioVenta
+          precioVenta:+formdata.precioVenta,
+          linkImagen:formdata.linkImagen
         },
         ArticuloManufacturadoDetalle:detalles
       }

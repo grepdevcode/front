@@ -46,6 +46,7 @@
           <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-right">
             <a [routerLink]="'cliente/perfil'" ngbDropdownItem  (click)="$event.preventDefault()">Perfil</a>
             <a [routerLink]="'cliente/pedidos'" ngbDropdownItem (click)="$event.preventDefault()">Mis Pedidos</a>
+            <a [routerLink]="'ingreso/recuperarpassword'" ngbDropdownItem (click)="$event.preventDefault()">Cambiar Contraseña</a>
             <a style="cursor: pointer;" ngbDropdownItem (click)="$event.preventDefault()" (click)= "this.salir()">Cerrar Sesion</a>
           </div>
         </li>

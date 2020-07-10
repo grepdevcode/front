@@ -11,6 +11,7 @@ import { ArticuloManufacturado } from 'src/app/models/articulo-manufacturado';
   styleUrls: ['./cocina.component.css']
 })
 export class CocinaComponent implements OnInit {
+  page=1;
   listaPedidos : Pedido[]=[];
   listaDetalles={};
   ListaProductos:ArticuloManufacturado[]=[];
@@ -34,7 +35,7 @@ export class CocinaComponent implements OnInit {
  */
   // Tomar los pedidos del backend, excepto los que ya estan listos( estado 3)
   initPedidos(){
-    return this.servicio.getData("Pedido")
+    return this.servicio.getData(`Pedido/${this.page}/10`)
   }
   // Tomar los Detalles del backend 
   initDetallePedidos(){
@@ -47,7 +48,7 @@ export class CocinaComponent implements OnInit {
   }
   //Tomar los Articulos Manufacturados del backend.
   initArticulosManufacturados(){
-    return this.servicio.getData('ArticuloManufacturado')
+    return this.servicio.getData('ArticuloManufacturado/0/0')
 
   }
   // Envia una Put request al backend
@@ -86,5 +87,12 @@ export class CocinaComponent implements OnInit {
   // Extraer lista de Articulos Manufacturados por id Pedido
   generarListadeArticulosManufacturado(item:any|null){
       return this.ListaProductos.find(art => art.id == item.articuloManufacturadoId).denominacion;
+  }
+
+  paginationChange(){
+    this.initPedidos().subscribe(array =>{
+      this.listaPedidos = array.filter(row => row["estado"] < 3 )
+      this.initDetallePedidos();
+    } );
   }
 }

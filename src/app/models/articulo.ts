@@ -10,6 +10,7 @@ precioVenta: number;
 stockActual: number;
 unidadMedida: string;
 esInsumo: boolean;
+linkImage:string;
 
 rubroArticuloId:number;
 

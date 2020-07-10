@@ -25,6 +25,16 @@ import { Router } from '@angular/router';
                 <input formControlName="denominacion" id="denominacion" name="denominacion" type="text" required="required" class="form-control">
               </div>
           </div>
+          <!-- LINKIMAGEN -->
+          <div class="form-group">
+            <label for="denominacion">Link a la Imagen</label> 
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"></div>
+                </div> 
+                <input formControlName="linkImagen" id="linkImagen" name="linkImagen" type="url" required="required" class="form-control">
+              </div>
+          </div>
           <!-- TIEMPO ESTIMADO COCINA -->
           <div class="form-group">
             <label for="tiempoEstimadoCocina">Tiempo en Cocina</label> 
@@ -86,7 +96,13 @@ export class NuevoArtManComponent implements OnInit {
   articulosmanufacturadosLista:any[]=[];
 
   ngOnInit() {
-    this.getArticulos();
+    this.getArticulos().subscribe(res=>{
+      this.ListaArticulos = res.filter(x => x.esInsumo)
+   },
+   error=>{
+     console.log(error);
+     
+   })
   }
 
   constructor(private servicio: ProductoService,  private formBuilder:FormBuilder,private router:Router) {  
@@ -94,6 +110,7 @@ export class NuevoArtManComponent implements OnInit {
       tiempoEstimadoCocina:['',Validators.compose( [Validators.min(10), Validators.required])],
       denominacion:['', Validators.compose([Validators.required, Validators.minLength(3)])],
       precioVenta:['',Validators.compose([Validators.required,Validators.min(1)])],
+      linkImagen:['', Validators.compose([Validators.required, Validators.minLength(3)])],
       detalles : this.formBuilder.array([this.initDetalle()])
     });
     
@@ -110,7 +127,8 @@ export class NuevoArtManComponent implements OnInit {
         articuloManufacturado:{
           denominacion: formdata.denominacion,
           tiempoEstimadoCocina: +formdata.tiempoEstimadoCocina,
-          precioVenta:+formdata.precioVenta
+          precioVenta:+formdata.precioVenta,
+          linkImagen: formdata.linkImagen
         },
         ArticuloManufacturadoDetalle: detalles
       }
@@ -128,13 +146,7 @@ export class NuevoArtManComponent implements OnInit {
   }
   // Toma Articulos que sean insumos del Backend 
   getArticulos(){
-    return this.servicio.getData('/Articulo')
-    .subscribe(res=>{
-       this.ListaArticulos = res.filter(x => x.esInsumo)
-    },
-    error=>{
-      alert(error);
-    })
+    return this.servicio.getData('/Articulo/0/0');
   }
   // Acceder al FormArray  directamente.
   get detalles(): FormArray {

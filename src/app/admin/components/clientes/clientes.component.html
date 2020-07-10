@@ -35,7 +35,9 @@
                     </tbody>
                 </table>
             </div>
-
+            <div class="my-4">
+                <ngb-pagination [collectionSize]="30" [(page)]="page" (pageChange)="this.paginationChange()" ></ngb-pagination>
+            </div>
         </div>
     </div>
 </div>

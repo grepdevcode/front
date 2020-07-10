@@ -21,9 +21,7 @@ export class ProductoComponent implements OnInit {
 
   ngOnInit() {
     this.initDetalles();
-    this.initInsumos();
-    console.log(this.unidad);
-    
+    this.initInsumos(); 
     setTimeout(()=>{
     this.fillListaxPorducto()},500);
   }
@@ -36,19 +34,20 @@ export class ProductoComponent implements OnInit {
      ); 
   }
   initInsumos(){
-    this.servicio.getData("/Articulo")
+    this.servicio.getData("/Articulo/0/0")
     .subscribe(data => data.filter(x => x.esInsumo).map(
       a =>{
-        this.insumos.push(
-       new Articulo(
-        a.id,
-        a.denominacion,
-        a.precioCompra,
-        a.precioVenta,
-        a.stockActual,
-        a.unidadMedida,
-        a.esInsumo,
-        a.rubroArticulo))}))    
+        const nuevoArticulo= new Articulo(
+          a.id,
+          a.denominacion,
+          a.precioCompra,
+          a.precioVenta,
+          a.stockActual,
+          a.unidadMedida,
+          a.esInsumo,
+          a.rubroArticulo)
+        this.insumos.push(nuevoArticulo)
+      }))    
   }
   onCarrito(unidad){
     console.log(unidad);

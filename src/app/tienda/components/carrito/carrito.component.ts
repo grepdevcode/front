@@ -64,7 +64,7 @@ export class CarritoComponent implements OnInit {
     this.servicio.getData("ArticuloManufacturadoDetalle").pipe(map(list =>{return this.DetallesArtMan = list}));
   }
   getArticulos(){
-    this.servicio.getData("Articulo").pipe(map(list =>{return this.listaArticulos = list}));
+    this.servicio.getData("Articulo/0/0").pipe(map(list =>{return this.listaArticulos = list}));
   }
   getCantidad(event,index){
     this.arrayDetalles[index].cantidad = Number(event.target.value);
