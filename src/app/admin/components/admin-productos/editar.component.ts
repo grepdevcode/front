@@ -99,7 +99,7 @@ export class EditarComponent implements OnInit {
     this.nuevoArtManForm = this.formBuilder.group({
       tiempoEstimadoCocina:['',Validators.compose([Validators.required, Validators.min(10)])],
       denominacion:['', Validators.compose([ Validators.required, Validators.minLength(3)])],
-      linkImagen:['', Validators.nullValidator],
+      linkImagen:['', Validators.maxLength(150)],
       precioVenta:['',Validators.compose([Validators.required, Validators.min(1)])],
       detalles: this.formBuilder.array([],Validators.required)
     });

@@ -110,7 +110,7 @@ export class NuevoArtManComponent implements OnInit {
       tiempoEstimadoCocina:['',Validators.compose( [Validators.min(10), Validators.required])],
       denominacion:['', Validators.compose([Validators.required, Validators.minLength(3)])],
       precioVenta:['',Validators.compose([Validators.required,Validators.min(1)])],
-      linkImagen:['', Validators.compose([Validators.required, Validators.minLength(3)])],
+      linkImagen:['', Validators.compose([Validators.required, Validators.maxLength(150)])],
       detalles : this.formBuilder.array([this.initDetalle()])
     });
     

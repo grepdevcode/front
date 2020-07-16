@@ -112,7 +112,7 @@ export class NuevoArticuloComponent implements OnInit {
         esInsumo:[null,Validators.nullValidator],
         unidadMedida:[null,Validators.compose([Validators.required,Validators.minLength(1)])],
         rubroArticuloId:[null,Validators.compose([Validators.required,Validators.minLength(1)])],
-        linkImagen: [null,Validators.nullValidator]
+        linkImagen: [null,Validators.maxLength(150)]
       }
     );
   }
