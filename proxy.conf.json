@@ -1,56 +1,56 @@
 {
     "/ArticuloManufacturado/*":{
-        "target":"https://localhost:5001/api",
+        "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
         "secure":false,
         "changeOrigin":true
     },
     "/Pedido/*":{
-        "target":"https://localhost:5001/api",
+        "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
         "secure":false,
         "changeOrigin":true
     },
     "/RubroArticulo/*":{
-        "target":"https://localhost:5001/api",
+        "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
         "secure":false,
         "changeOrigin":true
     },
     "/Articulo/*":{
-        "target":"https://localhost:5001/api",
+        "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
         "secure":false,
         "changeOrigin":true
     },
     "/ArticuloManufacturadoDetalle/*":{
-        "target":"https://localhost:5001/api",
+        "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
         "secure":false,
         "changeOrigin":true
     },
     "/DetallePedido/*":{
-        "target":"https://localhost:5001/api",
+        "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
         "secure":false,
         "changeOrigin":true
     },
     "/Token/*":{
-        "target":"https://localhost:5001/api",
+        "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
         "secure":false,
         "changeOrigin":true
     },
     "/Cliente/*":{
-        "target":"https://localhost:5001/api",
+        "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
         "secure":false,
         "changeOrigin":true
     },
     "/Domicilio/*":{
-        "target":"https://localhost:5001/api",
+        "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
         "secure":false,
         "changeOrigin":true
     },
     "/Factura/*":{
-        "target":"https://localhost:5001/api",
+        "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
         "secure":false,
         "changeOrigin":true
     },
     "/ListaPedido/*":{
-        "target":"https://localhost:5001/api",
+        "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
         "secure":false,
         "changeOrigin":true
     },
@@ -60,14 +60,13 @@
         "changeOrigin":true
     },
     "/Reportes/*":{
-        "target":"https://localhost:5001/api",
+        "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
         "secure":false,
         "changeOrigin":true
     },
     "/ResetPassword/*":{
-        "target":"https://localhost:5001/api",
+        "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
         "secure":false,
         "changeOrigin":true
     }
-    
 }
