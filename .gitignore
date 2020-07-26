@@ -4,7 +4,6 @@
 /public
 .firebaserc
 firebase.json
-karma.conf.js
 # compiled output
 /dist
 /tmp
