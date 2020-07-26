@@ -6,7 +6,7 @@ import { RecuperarPasswordComponent } from './components/recuperar-password/recu
 import { UpdatePasswordComponent } from './components/update-password/update-password.component';
 
 const routes: Routes = [
-{path:'',component:IngresoComponent},
+{path:'',component:IngresoComponent,pathMatch:'full'},
 {path:'registrarse',component:RegistroComponent},
 {path:'login', component:IngresoComponent},
 {path:'recuperarpassword', component:RecuperarPasswordComponent},

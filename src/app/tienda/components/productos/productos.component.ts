@@ -40,7 +40,7 @@ export class ProductosComponent implements OnInit {
     );
   }
   getArticulos(){
-    this.servicio.getData("/Articulo/0/0")
+    this.servicio.getData("Articulo/0/0")
     .subscribe(data =>{
       data.filter(row => !row.esInsumo)
       .map(a =>{

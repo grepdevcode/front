@@ -22,62 +22,62 @@ const routes: Routes = [
         children:[
           { 
             path:'stock',children:[
-              {path: '', component: StockComponent, outlet:'dashoutlet'}
+              {path: '', component: StockComponent,pathMatch:'full', outlet:'dashoutlet'}
             ] 
           },
           {
             path:'stock/nuevo', children:[
-              {path:'', component: NuevoArticuloComponent, outlet:'dashoutlet'}
+              {path:'', component: NuevoArticuloComponent,pathMatch:'full', outlet:'dashoutlet'}
             ]
           },
           {
             path:'stock/edit/:id', children:[
-              {path:'',component:EditarArticuloComponent, outlet:'dashoutlet'}
+              {path:'',component:EditarArticuloComponent,pathMatch:'full', outlet:'dashoutlet'}
             ]
           },
           {
             path:'facturacion', children:[
-             { path: '',component: FacturacionComponent, outlet:'dashoutlet'}
+             { path: '',component: FacturacionComponent,pathMatch:'full', outlet:'dashoutlet'}
             ] 
           },
           {
             path:'reportes', children:[
-              { path: '',component: ReportesComponent, outlet:'dashoutlet'}
+              { path: '',component: ReportesComponent,pathMatch:'full', outlet:'dashoutlet'}
             ]
           },
           {
             path:'productos', children:[
-              {path:'', component: AdminProductosComponent, outlet:'dashoutlet'}
+              {path:'', component: AdminProductosComponent,pathMatch:'full', outlet:'dashoutlet'}
             ]
           },
           {
             path:'productos/nuevo', children:[
-              {path:'', component: NuevoArtManComponent, outlet:'dashoutlet'}
+              {path:'', component: NuevoArtManComponent,pathMatch:'full', outlet:'dashoutlet'}
             ]
           },
           {
             path:'productos/editmanufacturado/:id', children:[
-              {path:'', component: EditarComponent, outlet:'dashoutlet'}
+              {path:'', component: EditarComponent,pathMatch:'full', outlet:'dashoutlet'}
             ]
           },
           {
             path:'rubro', children:[
-              {path:'', component: RubroComponent, outlet:'dashoutlet'}
+              {path:'', component: RubroComponent,pathMatch:'full', outlet:'dashoutlet'}
             ]
           },
           {
             path:'cliente', children:[
-              {path:'', component:ClientesComponent, outlet:'dashoutlet'}
+              {path:'', component:ClientesComponent,pathMatch:'full', outlet:'dashoutlet'}
             ]
           },
           {
             path:'cliente/edit/:id', children:[
-              {path:'', component:EditarClienteComponent, outlet:'dashoutlet'}
+              {path:'', component:EditarClienteComponent,pathMatch:'full', outlet:'dashoutlet'}
             ]
           },
           {
             path:'pedidos', children:[
-              {path:'', component:PedidosComponent, outlet:'dashoutlet'}
+              {path:'', component:PedidosComponent,pathMatch:'full', outlet:'dashoutlet'}
             ]
           }
         ]

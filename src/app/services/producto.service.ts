@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse, HttpRequest } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
+import {environment} from  '../../environments/environment'
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class ProductoService {
 
   httpOptions = {
     headers: new HttpHeaders({
+      'Access-Control-Allow-Origin':'*',
       'Content-Type': 'application/json'
     }),
     params: new HttpParams()
@@ -28,7 +30,7 @@ export class ProductoService {
 
   /* tomar productos del servidor */
   getProductos():Observable<any[]> {
-    return this.http.get<any[]>(this.url);
+    return this.http.get<any[]>(environment.apiUrl+'/api'+this.url,this.httpOptions);
   }
   
 
@@ -42,20 +44,20 @@ export class ProductoService {
         'Content-Type':  'application/json'
       })
     };
-    return this.http.post<any>(this.urlpostpedido, pedido, httpOptions);
+    return this.http.post<any>(environment.apiUrl+'/api/Pedido', pedido, httpOptions);
   }
 
   //universal
   getData(url:string):Observable<any[]>{
-    return this.http.get<any[]>(url,this.httpOptions);
+    return this.http.get<any[]>(environment.apiUrl+'/api/'+url,this.httpOptions)
   }
 
   getSingleData(url:string):Observable<any>{
-    return this.http.get<any[]>(url,this.httpOptions);
+    return this.http.get<any[]>(environment.apiUrl+'/api/'+url,this.httpOptions);
   }
 
   postData(url:string, nuevoObjeto:any){
-    return this.http.post(url, nuevoObjeto, this.httpOptions)
+    return this.http.post(environment.apiUrl+'/api/'+url, nuevoObjeto, this.httpOptions)
     .subscribe(
       (res:any) =>{
         console.log(res)
@@ -67,11 +69,11 @@ export class ProductoService {
   }
 
   postObservable(url:string, nuevoObjeto:any):Observable<any>{
-    return this.http.post<any>(url, nuevoObjeto, this.httpOptions)
+    return this.http.post<any>(environment.apiUrl+'/api/'+url, nuevoObjeto, this.httpOptions)
   }
 
   putData(url:string, objetoModificado:any){
-    return this.http.put(url, objetoModificado, this.httpOptions)
+    return this.http.put(environment.apiUrl+'/api/'+url, objetoModificado, this.httpOptions)
   }
 
   patchData(url:string, objetoModificado:any){
@@ -81,12 +83,11 @@ export class ProductoService {
   removeData(url:string, objetoEliminado:any, pedirPermiso?: boolean):Observable<any>{
     const options = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'my-auth-token'
+        'Content-Type':  'application/json'
       }),
       body: objetoEliminado
     };
-    return this.http.delete(url, options)
+    return this.http.delete(environment.apiUrl+'/api/'+url, options)
   }
 
   handleHttpError(error: HttpErrorResponse) {

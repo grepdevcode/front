@@ -1,72 +1,77 @@
 {
+    "/api/*":{
+        "target":"https://enzochaconlaboratorio.azurewebsites.net",
+        "secure":true,
+        "changeOrigin":true
+    },
     "/ArticuloManufacturado/*":{
         "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
-        "secure":false,
+        "secure":true,
         "changeOrigin":true
     },
     "/Pedido/*":{
         "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
-        "secure":false,
+        "secure":true,
         "changeOrigin":true
     },
     "/RubroArticulo/*":{
         "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
-        "secure":false,
+        "secure":true,
         "changeOrigin":true
     },
     "/Articulo/*":{
         "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
-        "secure":false,
+        "secure":true,
         "changeOrigin":true
     },
     "/ArticuloManufacturadoDetalle/*":{
         "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
-        "secure":false,
+        "secure":true,
         "changeOrigin":true
     },
     "/DetallePedido/*":{
         "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
-        "secure":false,
+        "secure":true,
         "changeOrigin":true
     },
     "/Token/*":{
         "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
-        "secure":false,
+        "secure":true,
         "changeOrigin":true
     },
     "/Cliente/*":{
         "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
-        "secure":false,
+        "secure":true,
         "changeOrigin":true
     },
     "/Domicilio/*":{
         "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
-        "secure":false,
+        "secure":true,
         "changeOrigin":true
     },
     "/Factura/*":{
         "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
-        "secure":false,
+        "secure":true,
         "changeOrigin":true
     },
     "/ListaPedido/*":{
         "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
-        "secure":false,
+        "secure":true,
         "changeOrigin":true
     },
     "/timezone/America/Argentina/Mendoza/*":{
         "target":"http://worldtimeapi.org/api/",
-        "secure":false,
+        "secure":true,
         "changeOrigin":true
     },
     "/Reportes/*":{
         "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
-        "secure":false,
+        "secure":true,
         "changeOrigin":true
     },
     "/ResetPassword/*":{
         "target":"https://enzochaconlaboratorio.azurewebsites.net/api",
-        "secure":false,
+        "secure":true,
         "changeOrigin":true
     }
 }
