@@ -21,7 +21,7 @@
     "@angular/router": "~8.0.0",
     "@ng-bootstrap/ng-bootstrap": "^5.1.4",
     "@types/jwt-decode": "^2.2.1",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "jspdf": "^1.5.3",
     "jwt-decode": "^2.2.0",
     "ng2-charts": "^2.3.0",
